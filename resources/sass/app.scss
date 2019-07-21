@@ -24,7 +24,7 @@ body {
 .sidebar {
   margin: 0;
   padding: 0;
-  width: 200px;
+  width: 300px;
   background-color: $sideMenuBg;
   position: fixed;
   height: 100%;
@@ -51,25 +51,30 @@ body {
 }
 
 div.content {
-  margin-right: 200px;
+  margin-right: 300px;
   padding: 1px 16px;
-  height: 1000px;
 }
 
-@media screen and (max-width: 768px) {
+//@media screen and (max-width: 768px) {
+//  .sidebar {
+//    width: 100%;
+//    height: auto;
+//    position: relative;
+//  }
+//  .sidebar a {float: right;}
+//  div.content {margin-right: 0;}
+//}
+
+@media screen and (max-width: 600px) {
   .sidebar {
     width: 100%;
     height: auto;
     position: relative;
   }
-  .sidebar a {float: right;}
-  div.content {margin-right: 0;}
-}
-
-@media screen and (max-width: 400px) {
   .sidebar a {
     text-align: center;
     float: none;
+    div.content {margin-right: 0;}
   }
 }
 
