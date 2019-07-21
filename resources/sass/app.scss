@@ -1,8 +1,76 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
 @import 'variables';
-
-// Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+//Root And Body
+@font-face {
+  src: url("../font/app.ttf");
+  font-family: 'app-main';
+}
+
+
+*{
+  direction: rtl;
+  text-align: right;
+  font-family: app-main, serif;
+}
+
+body {
+  margin: 0;
+  background-color: $body-bg;
+}
+
+//Sidebar And Content
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color: $sideMenuBg;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+.sidebar a {
+  display: block;
+  background-color: $sideInActiveBg;
+  color: $sideInActiveC;
+  padding: 16px;
+  text-decoration: none;
+  transition: .4s;
+}
+
+.sidebar a.active {
+  background-color: $sideActiveBg;
+  color: $sideActiveC;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: $sideHoverBg;
+  color: $sideHoverC;
+}
+
+div.content {
+  margin-right: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: right;}
+  div.content {margin-right: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
+
+//
