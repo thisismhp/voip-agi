@@ -35,7 +35,7 @@ body {
   display: block;
   background-color: $sideInActiveBg;
   color: $sideInActiveC;
-  padding: 13px;
+  padding: 10px;
   text-decoration: none;
   transition: .4s;
 }
@@ -58,7 +58,7 @@ div.content {
 .sidebar .menu-title {
     display: block;
     color: $sideTitleC;
-    padding: 15px;
+    padding: 12px;
 }
 
 //@media screen and (max-width: 768px) {
