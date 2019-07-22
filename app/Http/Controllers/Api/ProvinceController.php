@@ -15,6 +15,6 @@ class ProvinceController extends Controller
      */
     public function __invoke()
     {
-        return new Response(Province::all());
+        return new Response(Province::with('cities')->get());
     }
 }
