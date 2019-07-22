@@ -58,22 +58,24 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-type">عنوان</label>
-                        <input type="text" v-model="customerData.city" id="i-customer-phone-type" class="form-control" />
+                        <input type="text" v-model="customerData.numbers" id="i-customer-phone-type" class="form-control" />
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-phone-number">شماره تلفن</label>
-                        <input type="text" v-model="customerData.address" id="i-customer-phone-phone-number" class="form-control" />
+                        <input type="text" v-model="customerData.numbers" id="i-customer-phone-phone-number" class="form-control" />
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-charge-type">نوع اعتبار</label>
-                        <input type="text" v-model="customerData.city" id="i-customer-phone-charge-type" class="form-control" />
+                        <input type="text" v-model="customerData.numbers" id="i-customer-phone-charge-type" class="form-control" />
                     </div>
                     <div class="form-group col-md-2">
                         <label for="i-customer-phone-active">فعال</label>
                         <br />
-                        <input type="checkbox" v-model="customerData.address" id="i-customer-phone-active"/>
+                        <input type="checkbox" v-model="customerData.numbers" id="i-customer-phone-active"/>
                     </div>
                 </div>
+                <button class="btn btn-info">افزودن شماره تلفن</button>
+                <button class="btn btn-success">ثبت</button>
             </div>
         </div>
     </div>
