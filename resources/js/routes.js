@@ -8,6 +8,10 @@ import ChargeMultiCustomer from './components/main/charge-multi-customer/ChargeM
 import ChargeMultiDemoUser from './components/main/charge-multi-demo-user/ChargeMultiDemoUser'
 import NoChargeChecked from './components/main/no-charge-checked-list/NoChargeChecked'
 import NoChargeUnchecked from './components/main/no-charge-unchecked-list/NoChargeUnchecked'
+import AddService from './components/main/add-service/AddService'
+import ServicesList from './components/main/services-list/ServicesList'
+import AddServiceGroups from './components/main/add-service-groups/AddServiceGroups'
+import SymbolsList from './components/main/symbols-list/SymbolsList'
 
 export const routes = [
     {path:'/', component:Home},
@@ -19,5 +23,9 @@ export const routes = [
     {path:'/charge-multi-customer', component:ChargeMultiCustomer},
     {path:'/charge-multi-demo-user', component:ChargeMultiDemoUser},
     {path:'/no-charge-checked-list', component:NoChargeChecked},
-    {path:'/no-charge-unchecked-list', component:NoChargeUnchecked}
+    {path:'/no-charge-unchecked-list', component:NoChargeUnchecked},
+    {path:'/add-service', component:AddService},
+    {path:'/services-list', component:ServicesList},
+    {path:'/add-service-groups', component:AddServiceGroups},
+    {path:'/symbols-list', component:SymbolsList},
 ];
