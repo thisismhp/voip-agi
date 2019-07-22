@@ -15,7 +15,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="i-customer-nation-code">کد ملی</label>
-                    <input type="text" v-model="customerData.name" id="i-customer-nation-code" class="form-control" />
+                    <input type="text" v-model="customerData.nation_code" id="i-customer-nation-code" class="form-control" />
                 </div>
                 <div class="form-group col-md-6">
                     <label for="i-customer-birth-day">تاریخ تولد</label>
@@ -26,7 +26,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="i-customer-province">استان</label>
-                    <select type="text" v-model="customerData.province_id" id="i-customer-province" class="form-control" @change="onProvinceSelect($event.target.value)">
+                    <select v-model="customerData.province_id" id="i-customer-province" class="form-control" @change="onProvinceSelect($event.target.value)">
                         <option value="null" disabled selected>انتخاب کنید</option>
                         <option v-for="province in provinces" v-bind:value="province.id">
                             {{province.name}}
@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="i-customer-city">شهر</label>
-                    <select type="text" v-model="customerData.city_id" id="i-customer-city" class="form-control">
+                    <select v-model="customerData.city_id" id="i-customer-city" class="form-control">
                         <option value="null" disabled selected>انتخاب کنید</option>
                         <option v-for="city in cities" v-bind:value="city.id">
                             {{city.name}}
@@ -55,27 +55,46 @@
             </div>
             <div id="customer-form-numbers" class="customer-form-numbers">
                 <h4>شماره تلفن ها</h4>
-                <div class="form-row">
+                <div class="form-row tiny-margin-b">
+                    <button @click="addNumber" class="btn btn-info">افزودن شماره تلفن</button>
+                </div>
+                <div v-for="(number, index) in customerData.numbers" class="form-row">
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-type">عنوان</label>
-                        <input type="text" v-model="customerData.numbers" id="i-customer-phone-type" class="form-control" />
+                        <select v-model="number.type" id="i-customer-phone-type" class="form-control">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="phoneType in phoneTypes" v-bind:value="phoneType.id">
+                                {{phoneType.name}}
+                            </option>
+                        </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-phone-number">شماره تلفن</label>
-                        <input type="text" v-model="customerData.numbers" id="i-customer-phone-phone-number" class="form-control" />
+                        <input type="text" v-model="number.number" id="i-customer-phone-phone-number" class="form-control" />
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-charge-type">نوع اعتبار</label>
-                        <input type="text" v-model="customerData.numbers" id="i-customer-phone-charge-type" class="form-control" />
+                        <select v-model="number.charge_type" id="i-customer-phone-charge-type" class="form-control" >
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
+                                {{chargeType.name}}
+                            </option>
+                        </select>
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-1 d-none d-md-block"></div>
+                    <div class="form-group col-md-1">
                         <label for="i-customer-phone-active">فعال</label>
                         <br />
-                        <input type="checkbox" v-model="customerData.numbers" id="i-customer-phone-active"/>
+                        <input type="checkbox" v-model="number.is_active" id="i-customer-phone-active"/>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="d-none d-md-block"><br /></div>
+                        <button @click="removeNumber(index)" class="btn btn-danger">حذف</button>
                     </div>
                 </div>
-                <button class="btn btn-info">افزودن شماره تلفن</button>
-                <button class="btn btn-success">ثبت</button>
+                <div class="form-row">
+                    <button class="btn btn-success">ثبت</button>
+                </div>
             </div>
         </div>
     </div>
@@ -93,7 +112,7 @@
             return {
                 customerData:{
                     name:null,
-                    code:null,
+                    id:null,
                     nation_code:null,
                     birth_date:null,
                     province_id:null,
@@ -103,14 +122,32 @@
                     numbers:[]
                 },
                 provinces:[],
-                cities:[]
+                cities:[],
+                phoneTypes: [],
+                chargeTypes: [],
             }
         },
         methods:{
             initForm(){
-                axios.get('/api/province')
+                 axios.get('/api/province')
                     .then(res => {
                         this.provinces = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                ;
+                 axios.get('/api/charge_type')
+                     .then(res => {
+                         this.chargeTypes = res.data;
+                     })
+                     .catch(err => {
+                         console.log(err)
+                     })
+                ;
+                axios.get('/api/phone_number_type')
+                    .then(res => {
+                        this.phoneTypes = res.data;
                     })
                     .catch(err => {
                         console.log(err)
@@ -123,6 +160,12 @@
                     this.cities = this.provinces[id - 1].cities;
                 }
             },
+            addNumber(){
+                this.customerData.numbers.push({type: null, number: null, charge_type: null, is_active:true});
+            },
+            removeNumber(index){
+                this.customerData.numbers.splice(index, 1)
+            }
         },
         created() {
             this.initForm();
