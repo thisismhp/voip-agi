@@ -61,27 +61,7 @@ div.content {
     padding: 12px;
 }
 
-//@media screen and (max-width: 768px) {
-//  .sidebar {
-//    width: 100%;
-//    height: auto;
-//    position: relative;
-//  }
-//  .sidebar a {float: right;}
-//  div.content {margin-right: 0;}
-//}
-
-@media screen and (max-width: 600px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .sidebar a {
-    text-align: center;
-    float: none;
-    div.content {margin-right: 0;}
-  }
+//Customer Form
+.customer-form-numbers {
+    margin-top:10px;
 }
-
-//
