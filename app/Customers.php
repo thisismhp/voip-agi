@@ -25,4 +25,14 @@ class Customers extends Model
     {
         return $this->hasMany(Number::class);
     }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
 }
