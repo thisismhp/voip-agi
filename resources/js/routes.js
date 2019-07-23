@@ -1,6 +1,7 @@
 import Home from './components/main/home/Home'
 import AddCustomer from './components/main/add-customer/AddCustomer'
 import CustomersList from './components/main/customers-list/CustomersList'
+import CustomerProfile from './components/main/customer-profile/CustomerProfile'
 import DemoUsersList from './components/main/demo-users-list/DemoUsersList'
 import ChargeOneCustomer from './components/main/charge-one-customer/ChargeOneCustomer'
 import ChargeOneDemoUser from './components/main/charge-one-demo-user/ChargeOneDemoUser'
@@ -15,12 +16,14 @@ import SymbolsList from './components/main/symbols-list/SymbolsList'
 
 export const routes = [
     {path:'/', component:Home},
+    // Customer
     {path:'/add-customer', component:AddCustomer},
     {path:'/customer-list', component:CustomersList},
-    {path:'/demo-users-list', component:DemoUsersList},
+    {path:'/customer/:id', component:CustomerProfile},
     {path:'/charge-one-customer', component:ChargeOneCustomer},
-    {path:'/charge-one-demo-user', component:ChargeOneDemoUser},
     {path:'/charge-multi-customer', component:ChargeMultiCustomer},
+    {path:'/demo-users-list', component:DemoUsersList},
+    {path:'/charge-one-demo-user', component:ChargeOneDemoUser},
     {path:'/charge-multi-demo-user', component:ChargeMultiDemoUser},
     {path:'/no-charge-checked-list', component:NoChargeChecked},
     {path:'/no-charge-unchecked-list', component:NoChargeUnchecked},
