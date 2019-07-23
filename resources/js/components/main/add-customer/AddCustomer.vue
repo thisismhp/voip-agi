@@ -44,11 +44,11 @@
                 </div>
             </div>
             <div class="form-row border-bottom">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-9">
                     <label for="i-customer-address">آدرس</label>
                     <input type="text" v-model="customerData.address" id="i-customer-address" class="form-control" />
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="i-customer-phone-number">شماره تماس</label>
                     <input type="text" v-model="customerData.phone_number" id="i-customer-phone-number" class="form-control" />
                 </div>
