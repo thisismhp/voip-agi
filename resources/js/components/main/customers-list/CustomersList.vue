@@ -13,7 +13,7 @@
                 <tbody>
                 <tr v-for="(customer, index) in customers">
                     <td>{{index + 1}}</td>
-                    <td>{{customer.name}}</td>
+                    <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
                     <td>{{customer.city.name}}</td>
                 </tr>
                 </tbody>
