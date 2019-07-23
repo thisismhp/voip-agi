@@ -17,7 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return new Response(Customers::all());
+        return new Response(Customers::with(['province','city'])->get());
     }
 
     /**
