@@ -9,7 +9,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="i-customer-code">کد مشتری</label>
-                    <input type="text" v-model="customerData.code" id="i-customer-code" class="form-control" disabled/>
+                    <input type="text" v-model="customerData.id" id="i-customer-code" class="form-control" disabled/>
                 </div>
             </div>
             <div class="form-row">
