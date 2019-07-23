@@ -14,8 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property array|string|null address
  * @property array|string|null phone_number
  * @property mixed id
+ * @method static findOrFail(int $id)
  */
-class Customers extends Model
+class Customer extends Model
 {
     use SoftDeletes;
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Customers;
+use App\Customer;
 use App\Http\Controllers\Controller;
 use App\Number;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return new Response(Customers::with(['province','city'])->get());
+        return new Response(Customer::with(['province','city'])->get());
     }
 
     /**
@@ -28,7 +28,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $customer = new Customers();
+        $customer = new Customer();
         $customer->name = $request->input('name');
         $customer->nation_code = $request->input('nation_code');
         $customer->birth_date = $request->input('birth_date');
@@ -58,7 +58,8 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $customer = Customers::findOrFail($id);
+        $customer = Customer::findOrFail($id);
+        $customer->numbers;
         return new Response($customer);
     }
 
@@ -82,7 +83,7 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $customer = Customers::findOrFail($id);
+        $customer = Customer::findOrFail($id);
         $customer->delete();
         return new Response(["message" => "deleted"]);
     }
