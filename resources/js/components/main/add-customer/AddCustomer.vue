@@ -61,20 +61,20 @@
                 <div v-for="(number, index) in customerData.numbers" class="form-row">
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-type">عنوان</label>
-                        <select v-model="number.type" id="i-customer-phone-type" class="form-control">
+                        <select v-model="number.phone_number_type_id" id="i-customer-phone-type" class="form-control">
                             <option value="null" disabled selected>انتخاب کنید</option>
-                            <option v-for="phoneType in phoneTypes" v-bind:value="phoneType.id">
-                                {{phoneType.name}}
+                            <option v-for="phoneNumberType in phoneNumberTypes" v-bind:value="phoneNumberType.id">
+                                {{phoneNumberType.name}}
                             </option>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-phone-number">شماره تلفن</label>
-                        <input type="text" v-model="number.number" id="i-customer-phone-phone-number" class="form-control" />
+                        <input type="text" v-model="number.phone_number" id="i-customer-phone-phone-number" class="form-control" />
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-charge-type">نوع اعتبار</label>
-                        <select v-model="number.charge_type" id="i-customer-phone-charge-type" class="form-control" >
+                        <select v-model="number.charge_type_id" id="i-customer-phone-charge-type" class="form-control" >
                             <option value="null" disabled selected>انتخاب کنید</option>
                             <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
                                 {{chargeType.name}}
@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <button class="btn btn-success">ثبت</button>
+                    <button @click="save" class="btn btn-success">ثبت</button>
                 </div>
             </div>
         </div>
@@ -111,8 +111,8 @@
         data(){
             return {
                 customerData:{
-                    name:null,
                     id:null,
+                    name:null,
                     nation_code:null,
                     birth_date:null,
                     province_id:null,
@@ -123,7 +123,7 @@
                 },
                 provinces:[],
                 cities:[],
-                phoneTypes: [],
+                phoneNumberTypes: [],
                 chargeTypes: [],
             }
         },
@@ -147,7 +147,7 @@
                 ;
                 axios.get('/api/phone_number_type')
                     .then(res => {
-                        this.phoneTypes = res.data;
+                        this.phoneNumberTypes = res.data;
                     })
                     .catch(err => {
                         console.log(err)
@@ -161,10 +161,31 @@
                 }
             },
             addNumber(){
-                this.customerData.numbers.push({type: null, number: null, charge_type: null, is_active:true});
+                this.customerData.numbers.push({phone_number_type_id: null, phone_number: null, charge_type_id: null, is_active:true});
             },
             removeNumber(index){
                 this.customerData.numbers.splice(index, 1)
+            },
+            save(){
+                axios.post('/api/customer',this.customerData)
+                    .then(res => {
+                        console.log(res);
+                        this.customerData = {
+                            name:null,
+                                id:null,
+                                nation_code:null,
+                                birth_date:null,
+                                province_id:null,
+                                city_id:null,
+                                address:null,
+                                phone_number:null,
+                                numbers:[]
+                        };
+                    })
+                    .catch(err => {
+                        console.log(err.response.data)
+                    })
+                ;
             }
         },
         created() {
