@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Number;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
@@ -28,13 +29,14 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validateRequest($request);
         $customer = new Customer();
         $customer->name = $request->input('name');
         $customer->nation_code = $request->input('nation_code');
         $customer->birth_date = $request->input('birth_date');
         $customer->province_id = $request->input('province_id');
         $customer->city_id = $request->input('city_id');
-        $customer->address = $request->input('province_id');
+        $customer->address = $request->input('address');
         $customer->phone_number = $request->input('phone_number');
         $customer->save();
         $numbers = $request->input('numbers');
@@ -72,7 +74,10 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return new Response([$request,$id]);
+        $customer = Customer::findOrFail($id);
+        $this->validateRequest($request, true, $customer->numbers);
+        $customer->update($request->except(['id']));
+        return new Response($request);
     }
 
     /**
@@ -86,5 +91,42 @@ class CustomerController extends Controller
         $customer = Customer::findOrFail($id);
         $customer->delete();
         return new Response(["message" => "deleted"]);
+    }
+
+    /**
+     * Validate the request.
+     *
+     * @param Request $request
+     * @param bool $isUpdate
+     */
+    private function validateRequest(Request $request, $isUpdate=false, $lNumbers = null){
+        $request->validate([
+            'name' => ['required','string','max:100'],
+            'nation_code' => ['required','string','max:20'],
+            'birth_date' => ['required','string','max:20'],
+            'province_id' => ['required','exists:provinces,id'],
+            'city_id' => ['required','exists:cities,id'],
+            'address' => ['required','string','max:255'],
+            'phone_number' => ['required','string','max:20'],
+            'numbers' => ['nullable','array'],
+            'numbers.*.phone_number_type_id' => ['required','exists:phone_number_types,id'],
+            'numbers.*.phone_number' => ['required','string','max:20','distinct'],
+            'numbers.*.charge_type_id' => ['required','exists:charge_types,id'],
+            'numbers.*.is_active' => ['required','boolean'],
+        ]);
+        if ($isUpdate){
+            $rules = [];
+            $lastNumbers = [];
+            foreach ($lNumbers as $k=>$lNumber) {
+                $lastNumbers[$k]= $lNumber->phone_number;
+            }
+            $numbers = $request->input('numbers');
+            foreach ($numbers as $i=>$num) {
+                $rules["numbers.$i.phone_number"] = [Rule::unique('numbers','phone_number')->whereNot('phone_number',$lastNumbers)];
+            }
+            $request->validate($rules);
+        }else{
+            $request->validate(['numbers.*.phone_number' => ['unique:numbers,phone_number']]);
+        }
     }
 }
