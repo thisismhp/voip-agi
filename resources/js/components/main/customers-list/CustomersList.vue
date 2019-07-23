@@ -14,7 +14,7 @@
                 <tr v-for="(customer, index) in customers">
                     <td>{{index + 1}}</td>
                     <td>{{customer.name}}</td>
-                    <td>{{customer.city}}</td>
+                    <td>{{customer.city.name}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         name: "CustomersList",
         data(){
@@ -30,6 +31,20 @@
                 customers:[]
             }
         },
+        methods:{
+            getCustomers(){
+                axios.get('api/customer')
+                    .then(res => {
+                        this.customers = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+        created() {
+            this.getCustomers();
+        }
     }
 </script>
 
