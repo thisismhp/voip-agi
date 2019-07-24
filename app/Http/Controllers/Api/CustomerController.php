@@ -77,7 +77,39 @@ class CustomerController extends Controller
         $customer = Customer::findOrFail($id);
         $this->validateRequest($request, true, $customer->numbers);
         $customer->update($request->except(['id']));
-        return new Response($request);
+        $cusNumbers = $customer->numbers;
+        $reqNumbers = $request->input('numbers');
+        foreach ($cusNumbers as $cusNumber) {
+            $isDeleted = true;
+            foreach ($reqNumbers as $reqNumber) {
+                if(array_key_exists('id',$reqNumber)){
+                    $numId = $reqNumber['id'];
+                    if($numId == $cusNumber->id){
+                        unset($reqNumber['id']);
+                        $cusNumber->update($reqNumber);
+                        $isDeleted = false;
+                        break;
+                    }
+                }
+            }
+            if($isDeleted){
+                $cusNumber->delete();
+            }
+        }
+        foreach ($reqNumbers as $num) {
+            if(!array_key_exists('id',$num) and !Number::all()->contains('phone_number',$num['phone_number'])){
+                $number = new Number();
+                $number->customer_id = $customer->id;
+                $number->phone_number_type_id = $num['phone_number_type_id'];
+                $number->phone_number = $num['phone_number'];
+                $number->charge_type_id = $num['charge_type_id'];
+                $number->is_active = $num['is_active'];
+                $number->save();
+            }
+        }
+        $customer = Customer::findOrFail($id);
+        $customer->numbers;
+        return new Response($customer);
     }
 
     /**
@@ -98,6 +130,7 @@ class CustomerController extends Controller
      *
      * @param Request $request
      * @param bool $isUpdate
+     * @param null $lNumbers
      */
     private function validateRequest(Request $request, $isUpdate=false, $lNumbers = null){
         $request->validate([
