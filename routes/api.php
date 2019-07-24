@@ -8,4 +8,5 @@ Route::namespace('Api')->group(function () {
     Route::get('phone_number_type','PhoneNumberTypeController');
     Route::get('charge_type','ChargeTypeController');
     Route::apiResource('customer','CustomerController');
+    Route::get('demo_user','DemoUserController');
 });
