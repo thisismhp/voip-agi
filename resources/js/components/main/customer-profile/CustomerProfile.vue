@@ -178,7 +178,7 @@
             update(id){
                 axios.patch(`/api/customer/${id}`,this.customerData)
                     .then(res => {
-                        console.log(res)
+                        this.customerData = res.data;
                     })
                     .catch(err => {
                         console.log(err.response.data);
