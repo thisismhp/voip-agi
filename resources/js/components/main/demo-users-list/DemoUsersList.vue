@@ -10,9 +10,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(demo_user, index) in demo_users">
+                <tr v-for="(demoUser, index) in demoUsers">
                     <td>{{index + 1}}</td>
-                    <td>{{demo_user.number}}</td>
+                    <td>{{demoUser.phone_number}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -21,12 +21,28 @@
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         name: "DemoUsersList",
         data(){
             return {
-                demo_users:[]
+                demoUsers:[]
             }
+        },
+        methods:{
+            getDemoUsers(){
+                axios.get('api/demo_user')
+                    .then(res => {
+                        this.demoUsers = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+        created() {
+            this.getDemoUsers();
         }
     }
 </script>
