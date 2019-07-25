@@ -207,7 +207,6 @@
                         this.sending = false;
                     })
                     .catch(err => {
-                        console.log(err.response.data);
                         this.sending = false;
                     })
                 ;

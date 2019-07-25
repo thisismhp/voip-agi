@@ -38,7 +38,6 @@
                         this.customers = res.data;
                     })
                     .catch(err => {
-                        console.log(err);
                     })
             }
         },
