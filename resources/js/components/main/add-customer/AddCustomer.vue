@@ -1,5 +1,6 @@
 <template>
     <div>
+        <DialogMessage :show="dialogVars.show" :title="dialogVars.title" :content="dialogVars.content" :mode="dialogVars.mode" :show-time="dialogVars.showTime" @show="dialogVars.show = false"/>
         <Loading v-if="loading" />
         <div class="failed center-align" v-else-if="loadFailed">
             <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
@@ -112,9 +113,11 @@
     import axios from 'axios';
     import VuePersianDatetimePicker from 'vue-persian-datetime-picker';
     import Loading from "../../layout/element/Loading";
+    import DialogMessage from "../../layout/element/DialogMessage";
     export default {
         name: "AddCustomer",
         components: {
+            DialogMessage,
             Loading,
             datePicker: VuePersianDatetimePicker
         },
@@ -123,6 +126,14 @@
                 sending: false,
                 loading: true,
                 loadFailed:false,
+                dialogVars:{
+                    title:'',
+                    content:'',
+                    mode:'',
+                    show:false,
+                    showTime:2000
+
+                },
                 customerData:{
                     id:null,
                     name:null,
@@ -150,6 +161,13 @@
                 this.loading = true;
                 this.loadFailed = false;
                 this.initForm();
+            },
+            showDialog(show, title, content, mode, showTime){
+                this.dialogVars.show=show;
+                this.dialogVars.title=title;
+                this.dialogVars.content=content;
+                this.dialogVars.mode=mode;
+                this.dialogVars.showTime=showTime;
             },
             initForm(){
                  axios.get('/api/province')
@@ -206,9 +224,11 @@
                                 phone_number:null,
                                 numbers:[]
                         };
+                        this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
                     })
                     .catch(err => {
                         this.sending = false;
+                        this.showDialog(true, "ثبت ناموفق",err.toString(),'danger',0);
                     })
                 ;
             }
