@@ -193,7 +193,7 @@
             save(){
                 this.sending = true;
                 axios.post('/api/customer',this.customerData)
-                    .then(res => {
+                    .then(() => {
                         this.sending = false;
                         this.customerData = {
                             name:null,
