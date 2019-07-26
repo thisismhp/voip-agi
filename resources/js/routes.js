@@ -1,3 +1,4 @@
+import NotFound from './components/layout/element/NotFound'
 import Home from './components/main/home/Home'
 import AddCustomer from './components/main/add-customer/AddCustomer'
 import CustomersList from './components/main/customers-list/CustomersList'
@@ -15,6 +16,7 @@ import AddServiceGroups from './components/main/add-service-groups/AddServiceGro
 import SymbolsList from './components/main/symbols-list/SymbolsList'
 
 export const routes = [
+    {path:'*', component:NotFound},
     {path:'/', component:Home},
     // Customer
     {path:'/add-customer', component:AddCustomer},
