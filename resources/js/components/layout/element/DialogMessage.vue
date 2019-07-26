@@ -1,6 +1,6 @@
 <template>
     <div class="modal fade" id="message-modal" tabindex="-1" role="dialog" aria-labelledby="myMessage" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div :class="`modal-header text-${mode}`">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -9,7 +9,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
                 </div>
                 <div class="modal-body">
-                    {{content}}
+                    <div v-html="content"></div>
                 </div>
             </div>
         </div>
