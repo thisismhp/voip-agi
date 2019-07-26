@@ -114,6 +114,8 @@
     import VuePersianDatetimePicker from 'vue-persian-datetime-picker';
     import Loading from "../../layout/element/Loading";
     import DialogMessage from "../../layout/element/DialogMessage";
+    import {mixins} from "../../../mixins";
+    // import {mixins} from "../../../mixins";
     export default {
         name: "AddCustomer",
         components: {
@@ -208,6 +210,17 @@
             removeNumber(index){
                 this.customerData.numbers.splice(index, 1)
             },
+            errorHandling(err){
+                if(err.response){
+                    if(err.response.status === 422){
+                        this.showDialog(true, "ثبت ناموفق",mixins.parseValidation(err.response),'danger',0);
+                    }else{
+                        this.showDialog(true, "خطای سرور",'مشکلی در سرور به وجود آمده است','danger',0);
+                    }
+                }else {
+                    this.showDialog(true, "خطای ارتباط با سرور","ارتباط با سرور انجام نشد",'danger',0);
+                }
+            },
             save(){
                 this.sending = true;
                 axios.post('/api/customer',this.customerData)
@@ -228,7 +241,7 @@
                     })
                     .catch(err => {
                         this.sending = false;
-                        this.showDialog(true, "ثبت ناموفق",err.toString(),'danger',0);
+                        this.errorHandling(err)
                     })
                 ;
             }
