@@ -5,6 +5,7 @@
         <div class="failed center-align" v-else-if="loadFailed">
             <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
         </div>
+        <NotFound not-found-title="مشتری" v-else-if="notFound" />
         <div v-else-if="!loading" id="customer-profile">
             <h3 class="border-bottom">پرونده مشتری</h3>
             <div>
@@ -115,9 +116,11 @@
     import Loading from "../../layout/element/Loading";
     import DialogMessage from "../../layout/element/DialogMessage";
     import {mixins} from "../../../mixins";
+    import NotFound from "../../layout/element/NotFound";
     export default {
         name: "CustomerProfile",
         components: {
+            NotFound,
             DialogMessage,
             Loading,
             datePicker: VuePersianDatetimePicker
@@ -127,6 +130,7 @@
                 sending: false,
                 loading: true,
                 loadFailed:false,
+                notFound:false,
                 dialogVars:{
                     title:'',
                     content:'',
@@ -214,7 +218,15 @@
                         this.customerData = res.data;
                     })
                     .catch(err => {
-                        this.err(err);
+                        const res = err.response;
+                        if(res){
+                            if(res.status === 404){
+                                this.notFound = true;
+                                this.loading = false;
+                            }
+                        }else {
+                            this.err(err);
+                        }
                     })
                 ;
             },
