@@ -241,7 +241,7 @@
                     })
                     .catch(err => {
                         this.sending = false;
-                        this.errorHandling(err)
+                        this.errorHandling(err);
                     })
                 ;
             }
