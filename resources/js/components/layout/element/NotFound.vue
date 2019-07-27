@@ -1,6 +1,9 @@
 <template>
-    <div>
-        <h1 class="center-align not-found">
+    <div class="not-found">
+        <h1 class="center-align">
+            404
+        </h1>
+        <h1 class="center-align">
             {{notFoundTitle}}
             مورد نظر شما وجود ندارد.
         </h1>
