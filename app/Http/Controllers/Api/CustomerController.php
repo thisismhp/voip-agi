@@ -155,11 +155,11 @@ class CustomerController extends Controller
             }
             $numbers = $request->input('numbers');
             foreach ($numbers as $i=>$num) {
-                $rules["numbers.$i.phone_number"] = [Rule::unique('numbers','phone_number')->whereNot('phone_number',$lastNumbers)];
+                $rules["numbers.$i.phone_number"] = [Rule::unique('numbers','phone_number')->whereNot('phone_number',$lastNumbers)->whereNull('deleted_at')];
             }
             $request->validate($rules);
         }else{
-            $request->validate(['numbers.*.phone_number' => ['unique:numbers,phone_number']]);
+            $request->validate(['numbers.*.phone_number' => [Rule::unique('numbers','phone_number')->whereNull('deleted_at')]]);
         }
     }
 }
