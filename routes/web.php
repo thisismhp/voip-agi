@@ -3,4 +3,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/{any}', 'LayoutController')->where('any', '.*');
+if (!request()->expectsJson()) {
+    Route::get('/{any}', 'LayoutController')->where('any', '.*');
+}
