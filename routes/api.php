@@ -9,4 +9,5 @@ Route::namespace('Api')->group(function () {
     Route::get('charge_type','ChargeTypeController');
     Route::apiResource('customer','CustomerController');
     Route::get('demo_user','DemoUserController');
+    Route::post('charge','ChargeController');
 });
