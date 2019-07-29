@@ -11,7 +11,7 @@ class PhoneNumberTypeController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function __invoke()
     {
