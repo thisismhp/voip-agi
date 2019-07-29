@@ -17,24 +17,20 @@ class ChargeController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $this->validateRequest($request);
+        return new Response($request);
+    }
+
+    public function validateRequest(Request $request)
+    {
         $request->validate([
             'charge_type_id' => ['required',Rule::exists('charge_types','id')],
             'destination_type' => ['required',Rule::in([1,2])],
             'destination_id' => ['required'],
-            'value' => ['required'],
+            'value' => ['required','integer','min:1'],
 
         ]);
-        $chargeType = $request->input('charge_type_id');
         $destinationType = $request->input('destination_type');
-        if($chargeType == 1){
-            $request->validate([
-                'value' => ['integer','min:1'],
-            ]);
-        }else if($chargeType == 2){
-            $request->validate([
-
-            ]);
-        }
         if($destinationType == 1){
             $request->validate([
                 'destination_id' => [Rule::exists('customers', 'id')->whereNull('deleted_at')]
@@ -44,6 +40,5 @@ class ChargeController extends Controller
                 'destination_id' => [Rule::exists('demo_users', 'id')->whereNull('deleted_at')]
             ]);
         }
-        return new Response($request);
     }
 }
