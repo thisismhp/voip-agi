@@ -133,33 +133,64 @@ class CustomerController extends Controller
      * @param null $lNumbers
      */
     private function validateRequest(Request $request, $isUpdate=false, $lNumbers = null){
-        $request->validate([
-            'name' => ['required','string','max:100'],
-            'nation_code' => ['required','string','max:20'],
-            'birth_date' => ['required','string','max:20'],
-            'province_id' => ['required','exists:provinces,id'],
-            'city_id' => ['required','exists:cities,id'],
-            'address' => ['required','string','max:255'],
-            'phone_number' => ['required','string','max:20'],
-            'numbers' => ['nullable','array'],
-            'numbers.*.phone_number_type_id' => ['required','exists:phone_number_types,id'],
-            'numbers.*.phone_number' => ['required','string','max:20','distinct'],
-            'numbers.*.charge_type_id' => ['required','exists:charge_types,id'],
-            'numbers.*.is_active' => ['required','boolean'],
-        ]);
+        $numbers = $request->input('numbers');
+        $rules = [];
+        $messages = [];
+        foreach ((array)$numbers as $i=>$number) {
+            $rules += [
+                "numbers.$i.phone_number_type_id" => ['required','exists:phone_number_types,id'],
+                "numbers.$i.phone_number" => ['required','string','max:20'],
+                "numbers.$i.charge_type_id" => ['required','exists:charge_types,id'],
+                "numbers.$i.is_active" => ['required','boolean'],
+            ];
+            $messages += [
+                "numbers.$i.phone_number_type_id.required" => "فیلد عنوان شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                "numbers.$i.phone_number_type_id.exists" => "عنوان شماره تلفن ردیف " . ($i+1) . " معتبر نیست",
+                "numbers.$i.charge_type_id.required" => "فیلد نوع اعتبار شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                "numbers.$i.charge_type_id.exists" => "نوع اعتبار شماره تلفن ردیف " . ($i+1) . " معتبر نیست",
+                "numbers.$i.is_active.required" => "فیلد وضعیت فعال شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                "numbers.$i.is_active.boolean" => "وضعیت فعال شماره تلفن ردیف " . ($i+1) . " معتبر نیست",
+            ];
+        }
         if ($isUpdate){
-            $rules = [];
             $lastNumbers = [];
             foreach ($lNumbers as $k=>$lNumber) {
                 $lastNumbers[$k]= $lNumber->phone_number;
             }
-            $numbers = $request->input('numbers');
-            foreach ($numbers as $i=>$num) {
-                $rules["numbers.$i.phone_number"] = [Rule::unique('numbers','phone_number')->whereNot('phone_number',$lastNumbers)->whereNull('deleted_at')];
+            foreach ((array)$numbers as $i=>$num) {
+                $rules += ["numbers.$i.phone_number" => ['required','string','max:20','distinct',Rule::unique('numbers','phone_number')->whereNot('phone_number',$lastNumbers)->whereNull('deleted_at')],];
+                $messages += [
+                    "numbers.$i.phone_number.required" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                    "numbers.$i.phone_number.string" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " باید به صورت رشته باشد",
+                    "numbers.$i.phone_number.max" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " نباید بیشتر از " . ":max" . " کاراکتر باشد",
+                    "numbers.$i.phone_number.distinct" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " در ردیف دیگر این فرم وجود دارد",
+                    "numbers.$i.phone_number.unique" => "فیلد  شماره تلفن  ردیف " . ($i+1) . " قبلا ثبت شده است",
+                    ];
             }
-            $request->validate($rules);
         }else{
-            $request->validate(['numbers.*.phone_number' => [Rule::unique('numbers','phone_number')->whereNull('deleted_at')]]);
+            foreach ((array)$numbers as $i=>$number) {
+                $rules["numbers.$i.phone_number"] = ['required','string','max:20','distinct',Rule::unique('numbers','phone_number')->whereNull('deleted_at')];
+                $messages += [
+                    "numbers.$i.phone_number.required" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                    "numbers.$i.phone_number.string" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " باید به صورت رشته باشد",
+                    "numbers.$i.phone_number.max" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " نباید بیشتر از " . ":max" . " کاراکتر باشد",
+                    "numbers.$i.phone_number.distinct" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " در ردیف دیگر این فرم وجود دارد",
+                    "numbers.$i.phone_number.unique" => "فیلد  شماره تلفن  ردیف " . ($i+1) . " قبلا ثبت شده است",
+                    ];
+            }
         }
+        $request->validate([
+                'name' => ['required','string','max:100'],
+                'nation_code' => ['required','string','max:20'],
+                'birth_date' => ['required','string','max:20'],
+                'province_id' => ['required','exists:provinces,id'],
+                'city_id' => ['required','exists:cities,id'],
+                'address' => ['required','string','max:255'],
+                'phone_number' => ['required','string','max:20'],
+                'numbers' => ['nullable','array'],
+            ] + $rules,$messages);
+        $request->validate([
+            "numbers.*.phone_number" => ['distinct']
+        ],$messages);
     }
 }
