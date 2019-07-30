@@ -148,10 +148,10 @@ class CustomerController extends Controller
             'city_id' => ['required','exists:cities,id'],
             'address' => ['required','string','max:255'],
             'phone_number' => ['required','string','max:20'],
-            'numbers.*.phone_number' => ['distinct'],
             'numbers' => ['nullable','array'],
         ];
         $messages = [];
+        $distinctMessages = [];
         foreach ((array)$numbers as $i=>$number) {
             $rules += [
                 "numbers.$i.phone_number_type_id" => ['required','exists:phone_number_types,id'],
@@ -160,7 +160,7 @@ class CustomerController extends Controller
                 "numbers.$i.is_active" => ['required','boolean'],
             ];
             if ($isUpdate){
-                $rules["numbers.$i.phone_number"] = ['required','string','max:20',Rule::unique('numbers','phone_number')->whereNull('deleted_at')->whereNot('phone_number',$lastNumbers),];
+                $rules["numbers.$i.phone_number"] = ['required','string','max:20',Rule::unique('numbers','phone_number')->whereNot('phone_number',$lastNumbers)->whereNull('deleted_at'),];
             }else{
                 $rules["numbers.$i.phone_number"] = ['required','string','max:20',Rule::unique('numbers','phone_number')->whereNull('deleted_at')];
             }
@@ -174,10 +174,13 @@ class CustomerController extends Controller
                 "numbers.$i.phone_number.required" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " اجباری است",
                 "numbers.$i.phone_number.string" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " باید به صورت رشته باشد",
                 "numbers.$i.phone_number.max" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " نباید بیشتر از " . ":max" . " کاراکتر باشد",
-                "numbers.$i.phone_number.distinct" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " در ردیف دیگر این فرم وجود دارد",
                 "numbers.$i.phone_number.unique" => "فیلد  شماره تلفن  ردیف " . ($i+1) . " قبلا ثبت شده است",
+            ];
+            $distinctMessages += [
+                "numbers.$i.phone_number.distinct" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " در ردیف دیگر این فرم وجود دارد",
             ];
         }
         $request->validate($rules,$messages);
+        $request->validate(['numbers.*.phone_number' => ['distinct'],],$distinctMessages);
     }
 }
