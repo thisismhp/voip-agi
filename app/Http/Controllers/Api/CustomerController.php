@@ -165,13 +165,13 @@ class CustomerController extends Controller
                 $rules["numbers.$i.phone_number"] = ['required','string','max:20',Rule::unique('numbers','phone_number')->whereNull('deleted_at')];
             }
             $messages += [
-                "numbers.$i.phone_number_type_id.required" => "فیلد عنوان شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                "numbers.$i.phone_number_type_id.required" => "فیلد عنوان شماره تلفن ردیف " . ($i+1) . " الزامی است",
                 "numbers.$i.phone_number_type_id.exists" => "عنوان شماره تلفن ردیف " . ($i+1) . " معتبر نیست",
-                "numbers.$i.charge_type_id.required" => "فیلد نوع اعتبار شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                "numbers.$i.charge_type_id.required" => "فیلد نوع اعتبار شماره تلفن ردیف " . ($i+1) . " الزامی است",
                 "numbers.$i.charge_type_id.exists" => "نوع اعتبار شماره تلفن ردیف " . ($i+1) . " معتبر نیست",
-                "numbers.$i.is_active.required" => "فیلد وضعیت فعال شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                "numbers.$i.is_active.required" => "فیلد وضعیت فعال شماره تلفن ردیف " . ($i+1) . " الزامی است",
                 "numbers.$i.is_active.boolean" => "وضعیت فعال شماره تلفن ردیف " . ($i+1) . " معتبر نیست",
-                "numbers.$i.phone_number.required" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " اجباری است",
+                "numbers.$i.phone_number.required" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " الزامی است",
                 "numbers.$i.phone_number.string" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " باید به صورت رشته باشد",
                 "numbers.$i.phone_number.max" => "فیلد شماره تلفن شماره تلفن ردیف " . ($i+1) . " نباید بیشتر از " . ":max" . " کاراکتر باشد",
                 "numbers.$i.phone_number.unique" => "فیلد  شماره تلفن  ردیف " . ($i+1) . " قبلا ثبت شده است",
