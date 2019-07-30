@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCustomerDateChargesTable extends Migration
+class CreateCustomerChargesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateCustomerDateChargesTable extends Migration
      */
     public function up()
     {
-        Schema::create('customer_date_charges', function (Blueprint $table) {
+        Schema::create('customer_charges', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->unsignedBigInteger('destination_id');
+            $table->foreign('destination_id')->references('id')->on('customers')->onDelete('cascade');
             $table->integer('value');
+            $table->unsignedBigInteger('charge_type_id');
+            $table->foreign('charge_type_id')->references('id')->on('charge_types');
             $table->timestamp('created_at');
         });
     }
@@ -29,6 +31,6 @@ class CreateCustomerDateChargesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customer_date_charges');
+        Schema::dropIfExists('customer_charges');
     }
 }
