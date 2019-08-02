@@ -22,10 +22,11 @@ class ChargeController extends Controller
     public function __invoke(Request $request)
     {
         $request->validate(['destination_type' => ['required',Rule::in([1,2])],]);
+        $export = [];
         $destinationType = $request->input('destination_type');
         $this->validateRequest($request, $destinationType);
         $items = $request->input('items');
-        foreach ($items as $item) {
+        foreach ((array)$items as $item) {
             $destination = null;
             $chargeRecord = null;
             $chargeTypeId = $item['charge_type_id'];
@@ -47,7 +48,18 @@ class ChargeController extends Controller
                 $newCharge = $lastCharge + $value;
                 $destination->update(['time_charge' => $newCharge]);
             }
-            //if charge type id = 2
+            elseif ($chargeTypeId == 2){
+                $lastCharge = $destination->date_charge;
+                $lastChargeDate = now();
+                if($lastCharge != null){
+                    if(now() < $lastCharge){
+                        $lastChargeDate = $lastCharge;
+                    }
+                }
+                $newCharge = date("Y/m/d H:i:s",strtotime("$lastChargeDate + $value day"));
+                $destination->update(['date_charge' => $newCharge]);
+            }
+            array_push($export, $destination);
         }
         return new Response($request);
     }
