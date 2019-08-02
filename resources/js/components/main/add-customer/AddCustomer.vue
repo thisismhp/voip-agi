@@ -115,7 +115,6 @@
     import Loading from "../../layout/element/Loading";
     import DialogMessage from "../../layout/element/DialogMessage";
     import {mixins} from "../../../mixins";
-    // import {mixins} from "../../../mixins";
     export default {
         name: "AddCustomer",
         components: {
