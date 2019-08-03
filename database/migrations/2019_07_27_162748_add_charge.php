@@ -34,11 +34,11 @@ class AddCharge extends Migration
         Schema::table('demo_users', function (Blueprint $table) {
             $table->dropColumn('time_charge');
             $table->dropColumn('date_charge');
-            $table->dropColumn('end_charge_checked');
         });
         Schema::table('customers', function (Blueprint $table) {
             $table->dropColumn('time_charge');
             $table->dropColumn('date_charge');
+            $table->dropColumn('end_charge_checked');
         });
     }
 }
