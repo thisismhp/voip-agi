@@ -30,6 +30,16 @@ export const mixins = {
         } else {
             return true;
         }
+    },
+    mapSearchSelect : function (data) {
+        let exp = [];
+        data.forEach((item) => {
+            exp.push({
+                value: item.id,
+                text: item.name
+            });
+        });
+        return exp;
     }
 };
 
