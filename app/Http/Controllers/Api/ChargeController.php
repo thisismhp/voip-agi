@@ -84,8 +84,16 @@ class ChargeController extends Controller
             ];
             if($destinationType == 1){
                 $rules += ["items.$i.destination_id" => ['required',Rule::exists('customers', 'id')->whereNull('deleted_at')],];
+                $messages += [
+                    "items.$i.destination_id.required" => "فیلد مشتری ردیف " . ($i+1) . " الزامی است",
+                    "items.$i.destination_id.exists" => "فیلد مشتری ردیف " . ($i+1) . "معتبر نیست",
+                ];
             }elseif($destinationType == 2){
                 $rules += ["items.$i.destination_id" => ['required',Rule::exists('demo_users', 'id')->whereNull('deleted_at')],];
+                $messages += [
+                    "items.$i.destination_id.required" => "فیلد کاربر دمو ردیف " . ($i+1) . " الزامی است",
+                    "items.$i.destination_id.exists" => "فیلد کاربر دمو ردیف " . ($i+1) . "معتبر نیست",
+                ];
             }
         }
         $request->validate($rules, $messages);
