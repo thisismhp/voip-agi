@@ -22,7 +22,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="i-customer-nation-code">کد ملی</label>
-                        <input type="text" v-model="customerData.nation_code" id="i-customer-nation-code" class="form-control" />
+                        <input type="text" v-model="customerData.nation_code" id="i-customer-nation-code" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="i-customer-birth-day">تاریخ تولد</label>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-number">شماره تماس</label>
-                        <input type="text" v-model="customerData.phone_number" id="i-customer-phone-number" class="form-control" />
+                        <input type="text" v-model="customerData.phone_number" id="i-customer-phone-number" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                 </div>
                 <div id="customer-form-numbers" class="customer-form-numbers">
@@ -67,8 +67,8 @@
                     </div>
                     <div v-for="(number, index) in customerData.numbers" class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="i-customer-phone-type">عنوان</label>
-                            <select v-model="number.phone_number_type_id" id="i-customer-phone-type" class="form-control">
+                            <label :for="`${index}-customer-phone-type`">عنوان</label>
+                            <select v-model="number.phone_number_type_id" :id="`${index}-customer-phone-type`" class="form-control">
                                 <option value="null" disabled selected>انتخاب کنید</option>
                                 <option v-for="phoneNumberType in phoneNumberTypes" v-bind:value="phoneNumberType.id">
                                     {{phoneNumberType.name}}
@@ -76,12 +76,12 @@
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="i-customer-phone-phone-number">شماره تلفن</label>
-                            <input type="text" v-model="number.phone_number" id="i-customer-phone-phone-number" class="form-control" />
+                            <label :for="`${index}-customer-phone-phone-number`">شماره تلفن</label>
+                            <input type="text" v-model="number.phone_number" :id="`${index}-customer-phone-phone-number`" class="form-control" @keypress="isNumber($event)"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="i-customer-phone-charge-type">نوع اعتبار</label>
-                            <select v-model="number.charge_type_id" id="i-customer-phone-charge-type" class="form-control" >
+                            <label :for="`${index}-customer-phone-charge-type`">نوع اعتبار</label>
+                            <select v-model="number.charge_type_id" :id="`${index}-customer-phone-charge-type`" class="form-control" >
                                 <option value="null" disabled selected>انتخاب کنید</option>
                                 <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
                                     {{chargeType.name}}
@@ -90,9 +90,9 @@
                         </div>
                         <div class="form-group col-md-1 d-none d-md-block"></div>
                         <div class="form-group col-md-1">
-                            <label for="i-customer-phone-active">فعال</label>
+                            <label :for="`${index}-customer-phone-active`">فعال</label>
                             <br />
-                            <input type="checkbox" v-model="number.is_active" id="i-customer-phone-active"/>
+                            <input type="checkbox" v-model="number.is_active" :id="`${index}-customer-phone-active`"/>
                         </div>
                         <div class="col-md-1">
                             <div class="d-none d-md-block"><br /></div>
@@ -149,6 +149,7 @@
             }
         },
         methods: {
+            isNumber : mixins.isNumber,
             err(err){
                 this.loadFailed = true;
                 this.loading = false;
