@@ -138,6 +138,7 @@ return [
         "province_id" => 'استان',
         "city_id" => 'شهر',
         "phone_number" => 'شماره تماس',
+        "destination_type" => 'نوع مقصد (کاربر)'
     ],
 
 ];
