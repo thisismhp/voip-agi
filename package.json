@@ -25,6 +25,7 @@
         "vue": "^2.5.17",
         "vue-router": "^3.0.7",
         "vue-template-compiler": "^2.6.10",
-        "vue-persian-datetime-picker": "^2.0.2"
+        "vue-persian-datetime-picker": "^2.0.2",
+        "vue-search-select": "^2.8.3"
     }
 }
