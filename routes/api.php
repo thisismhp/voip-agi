@@ -4,12 +4,13 @@ use Illuminate\Support\Facades\Route;
 
 if (request()->expectsJson()) {
     Route::namespace('Api')->group(function () {
+        Route::apiResource('customer', 'CustomerController');
+        Route::post('charge', 'ChargeController');
         Route::get('province', 'ProvinceController');
         Route::get('city', 'CityController');
         Route::get('phone_number_type', 'PhoneNumberTypeController');
         Route::get('charge_type', 'ChargeTypeController');
-        Route::apiResource('customer', 'CustomerController');
         Route::get('demo_user', 'DemoUserController');
-        Route::post('charge', 'ChargeController');
+        Route::get('no_charge', 'NoChargeController');
     });
 }
