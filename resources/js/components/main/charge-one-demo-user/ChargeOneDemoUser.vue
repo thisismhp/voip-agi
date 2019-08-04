@@ -1,6 +1,6 @@
 <template>
     <div>
-        <dialog-message :show="dialogVars.show" :title="dialogVars.title" :content="dialogVars.content" :mode="dialogVars.mode" :show-time="dialogVars.showTime" @show="dialogVars.show = false"/>
+        <DialogMessage :show="dialogVars.show" :title="dialogVars.title" :content="dialogVars.content" :mode="dialogVars.mode" :show-time="dialogVars.showTime" @show="dialogVars.show = false"/>
         <Loading v-if="loading" />
         <div class="failed center-align" v-else-if="loadFailed">
             <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
@@ -8,6 +8,32 @@
         <div v-else-if="!loading" id="cod-form">
             <h3 class="border-bottom">افزایش اعتبار تکی کاربران دمو</h3>
             <div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="phone-charge-type">نوع اعتبار</label>
+                        <select v-model="chargeData.items[0].charge_type_id" id="phone-charge-type" class="form-control">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
+                                {{chargeType.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="value">مقدار</label>
+                        <input type="text" v-model="chargeData.items[0].value" id="value" class="form-control" @keypress="isNumber($event)" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="customer_id">کاربر دمو</label>
+                        <model-select  id="customer_id" placeholder="انتخاب کنید" :options="mapCds" v-model="chargeData.items[0].destination_id" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <button @click="save" class="btn btn-success" :disabled="sending">ثبت
+                        <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -17,9 +43,11 @@
     import DialogMessage from "../../layout/element/DialogMessage";
     import Loading from "../../layout/element/Loading";
     import {mixins} from "../../../mixins";
+    import axios from "axios";
+    import { ModelSelect } from 'vue-search-select';
     export default {
         name: "ChargeOneDemoUser",
-        components: {Loading, DialogMessage},
+        components: {ModelSelect, Loading, DialogMessage},
         data(){
             return {
                 sending: false,
@@ -31,11 +59,24 @@
                     mode:'',
                     show:false,
                     showTime:2000
-
+                },
+                chargeTypes : [],
+                cds : [],
+                mapCds : [],
+                chargeData : {
+                    destination_type:2,
+                    items:{
+                        0:{
+                            charge_type_id : null,
+                            value : null,
+                            destination_id : null,
+                        }
+                    }
                 },
             }
         },
         methods:{
+            isNumber : mixins.isNumber,
             err(err){
                 this.loadFailed = true;
                 this.loading = false;
@@ -54,7 +95,24 @@
                 this.dialogVars.showTime=showTime;
             },
             initForm() {
-                this.loading = false;
+                axios.get('/api/charge_type')
+                    .then(res => {
+                        this.chargeTypes = res.data;
+                        axios.get('/api/demo_user')
+                            .then(res => {
+                                this.cds = res.data;
+                                this.mapCds = mixins.mapSearchSelect(this.cds, 'phone_number');
+                                this.loading = false;
+                            })
+                            .catch(err => {
+                                this.err(err);
+                            })
+                        ;
+                    })
+                    .catch(err => {
+                        this.err(err);
+                    })
+                ;
             },
             errorHandling(err){
                 if(err.response){
@@ -66,6 +124,29 @@
                 }else {
                     this.showDialog(true, "خطای ارتباط با سرور","ارتباط با سرور انجام نشد",'danger',0);
                 }
+            },
+            save(){
+                this.sending = true;
+                axios.post('/api/charge',this.chargeData)
+                    .then(() => {
+                        this.sending = false;
+                        this.chargeData = {
+                            destination_type:2,
+                            items:{
+                                0:{
+                                    charge_type_id : null,
+                                    value : null,
+                                    destination_id : null,
+                                }
+                            }
+                        };
+                        this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
+                    })
+                    .catch((err) => {
+                        this.sending = false;
+                        this.errorHandling(err);
+                    })
+                ;
             },
         },
         created() {
