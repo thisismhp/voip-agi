@@ -1,10 +1,71 @@
 <template>
-    <p>اتمام اعتبار (چک شده)</p>
+    <div>
+        <Loading v-if="loading" />
+        <div class="failed center-align" v-else-if="loadFailed">
+            <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
+        </div>
+        <div v-else-if="!loading" id="ncc-list">
+            <h3>لیست اتمام اعتبار (بررسی شده)</h3>
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ردیف</th>
+                        <th>نام</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(customer, index) in customers">
+                        <td>{{index + 1}}</td>
+                        <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+    import axios from 'axios';
+    import Loading from "../../layout/element/Loading";
     export default {
-        name: "NoChargeChecked"
+        name: "NoChargeChecked",
+        components: {Loading},
+        data(){
+            return {
+                loading: true,
+                loadFailed:false,
+                customers:[]
+            }
+        },
+        methods:{
+            err(err){
+                this.loadFailed = true;
+                this.loading = false;
+                return err;
+            },
+            reload(){
+                this.loading = true;
+                this.loadFailed = false;
+                this.getCustomers();
+            },
+            getCustomers(){
+                axios.get('api/no_charge?state=3')
+                    .then(res => {
+                        this.customers = res.data;
+                        this.loading = false;
+
+                    })
+                    .catch(err => {
+                        this.err(err)
+                    })
+                ;
+            },
+        },
+        created() {
+            this.getCustomers();
+        }
     }
 </script>
 
