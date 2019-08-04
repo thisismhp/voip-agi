@@ -101,7 +101,7 @@
                         axios.get('/api/customer')
                             .then(res => {
                                 this.cds = res.data;
-                                this.mapCds = mixins.mapSearchSelect(this.cds);
+                                this.mapCds = mixins.mapSearchSelect(this.cds, 'name');
                                 this.loading = false;
                             })
                             .catch(err => {
