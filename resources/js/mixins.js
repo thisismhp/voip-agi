@@ -31,12 +31,12 @@ export const mixins = {
             return true;
         }
     },
-    mapSearchSelect : function (data) {
+    mapSearchSelect : function (data, nameField) {
         let exp = [];
         data.forEach((item) => {
             exp.push({
                 value: item.id,
-                text: item.name
+                text: item[nameField]
             });
         });
         return exp;
