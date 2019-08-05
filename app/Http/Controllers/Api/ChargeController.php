@@ -45,7 +45,7 @@ class ChargeController extends Controller
             if($chargeTypeId == 1) {
                 $lastCharge = (int)$destination->time_charge;
                 $newCharge = $lastCharge + $value;
-                $destination->update(['time_charge' => $newCharge,'end_charge_checked' => 1]);
+                $destination->update(['time_charge' => $newCharge,'end_charge_checked' => 1,'end_charge_comment' => null]);
             }
             elseif ($chargeTypeId == 2){
                 $lastCharge = $destination->date_charge;
@@ -56,7 +56,7 @@ class ChargeController extends Controller
                     }
                 }
                 $newCharge = date("Y/m/d H:i:s",strtotime("$lastChargeDate + $value day"));
-                $destination->update(['date_charge' => $newCharge,'end_charge_checked' => 1]);
+                $destination->update(['date_charge' => $newCharge,'end_charge_checked' => 1,'end_charge_comment' => null]);
             }
             array_push($export, $destination);
         }
