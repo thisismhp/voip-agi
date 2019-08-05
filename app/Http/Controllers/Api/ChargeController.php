@@ -55,7 +55,7 @@ class ChargeController extends Controller
                         $lastChargeDate = $lastCharge;
                     }
                 }
-                $newCharge = date("Y/m/d H:i:s",strtotime("$lastChargeDate + $value day"));
+                $newCharge = date("Y/m/d 23:59:59",strtotime("$lastChargeDate + $value day"));
                 $destination->update(['date_charge' => $newCharge,'end_charge_checked' => 1,'end_charge_comment' => null]);
             }
             array_push($export, $destination);
@@ -67,7 +67,7 @@ class ChargeController extends Controller
     {
         $request->validate([
             'destination_type' => ['required',Rule::in([1,2])],
-            'charge_type_id' => ['required',Rule::exists('charge_types','id')],
+            'charge_type_id' => ['required',Rule::exists('manage.charge_types','id')],
             'value' => ['required','integer','min:1'],
             'items' => ['required','array','min:1']
             ]);
@@ -79,12 +79,12 @@ class ChargeController extends Controller
         ];
         foreach ((array)$items as $i=>$item) {
             if($destinationType == 1){
-                $rules += ["items.$i" => [Rule::exists('customers', 'id')->whereNull('deleted_at')],];
+                $rules += ["items.$i" => [Rule::exists('service.customers', 'id')->whereNull('deleted_at')],];
                 $messages += [
                     "items.$i.exists" => "فیلد مشتری ردیف " . ($i+1) . "معتبر نیست",
                 ];
             }elseif($destinationType == 2){
-                $rules += ["items.$i" => [Rule::exists('demo_users', 'id')->whereNull('deleted_at')],];
+                $rules += ["items.$i" => [Rule::exists('service.demo_users', 'id')->whereNull('deleted_at')],];
                 $messages += [
                     "items.$i.exists" => "فیلد کاربر دمو ردیف " . ($i+1) . "معتبر نیست",
                 ];
