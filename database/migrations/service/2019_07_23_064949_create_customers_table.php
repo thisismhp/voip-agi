@@ -19,11 +19,15 @@ class CreateCustomersTable extends Migration
             $table->char('nation_code',20);
             $table->char('birth_date',20)->nullable();
             $table->unsignedBigInteger('province_id');
-            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->foreign('province_id')->references('id')->on(config('database.connections.manage.database').'.provinces');
             $table->unsignedBigInteger('city_id');
-            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('city_id')->references('id')->on(config('database.connections.manage.database').'.cities');
             $table->char('address',255)->nullable();
             $table->char('phone_number',20)->nullable();
+            $table->integer('time_charge')->nullable();
+            $table->dateTime('date_charge')->nullable();
+            $table->tinyInteger('end_charge_checked')->default(1);
+            $table->longText('end_charge_comment')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
