@@ -11,5 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CustomerCharge extends Model
 {
+    protected $connection = "service";
+
     const UPDATED_AT = null;
 }

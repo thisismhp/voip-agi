@@ -20,6 +20,8 @@ class Customer extends Model
 {
     use SoftDeletes;
 
+    protected $connection = "service";
+
     protected $fillable = ['name','nation_code','birth_date','province_id','city_id','address','phone_number','time_charge','date_charge','end_charge_checked','end_charge_comment'];
 
     public function numbers()
