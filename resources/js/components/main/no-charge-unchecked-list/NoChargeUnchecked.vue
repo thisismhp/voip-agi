@@ -12,20 +12,21 @@
                     <tr>
                         <th>ردیف</th>
                         <th>نام</th>
-                        <th>توضیحات</th>
                         <th>بررسی</th>
+                        <th>توضیحات</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(customer, index) in customers">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                        <td class="pointer-cursor" @click="showCmtDialog(customer,index)">{{(customer.end_charge_comment !== null)?customer.end_charge_comment:'اضافه کنید'}}</td>
                         <td>
                             <button @click="check(index,customer.id)" class="btn btn-success" :disabled="sending">بررسی شد
                                 <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
                         </td>
+                        <td v-if="customer.end_charge_comment === null"><span class="pointer-cursor btn btn-warning" @click="showCmtDialog(customer,index)">اضافه کنيد</span></td>
+                        <td v-else-if="customer.end_charge_comment !== null" class="pointer-cursor" @click="showCmtDialog(customer,index)">{{customer.end_charge_comment}}</td>
                     </tr>
                     </tbody>
                 </table>

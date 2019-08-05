@@ -19,7 +19,8 @@
                     <tr v-for="(customer, index) in customers">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                        <td class="pointer-cursor" @click="showCmtDialog(customer,index)">{{(customer.end_charge_comment !== null)?customer.end_charge_comment:'اضافه کنید'}}</td>
+                        <td v-if="customer.end_charge_comment === null"><span class="pointer-cursor btn btn-warning" @click="showCmtDialog(customer,index)">اضافه کنيد</span></td>
+                        <td v-else-if="customer.end_charge_comment !== null" class="pointer-cursor" @click="showCmtDialog(customer,index)">{{customer.end_charge_comment}}</td>
                     </tr>
                     </tbody>
                 </table>
