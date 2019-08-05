@@ -18,10 +18,10 @@ class CreateNumbersTable extends Migration
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->unsignedBigInteger('phone_number_type_id');
-            $table->foreign('phone_number_type_id')->references('id')->on('phone_number_types');
+            $table->foreign('phone_number_type_id')->references('id')->on(config('database.connections.manage.database').'.phone_number_types');
             $table->char('phone_number',20);
             $table->unsignedBigInteger('charge_type_id');
-            $table->foreign('charge_type_id')->references('id')->on('charge_types');
+            $table->foreign('charge_type_id')->references('id')->on(config('database.connections.manage.database').'.charge_types');
             $table->tinyInteger('is_active')->default(1);
             $table->softDeletes();
             $table->timestamps();
