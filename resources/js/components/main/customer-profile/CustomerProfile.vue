@@ -122,7 +122,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <button @click="update(id)" class="btn btn-warning" :disabled="sending">به روزرسانی
+                        <button @click="update(id)" class="btn btn-success" :disabled="sending">ثبت
                             <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         </button>
                     </div>
