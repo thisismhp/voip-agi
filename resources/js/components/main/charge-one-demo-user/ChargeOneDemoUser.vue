@@ -11,7 +11,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="phone-charge-type">نوع اعتبار</label>
-                        <select v-model="chargeData.items[0].charge_type_id" id="phone-charge-type" class="form-control">
+                        <select v-model="chargeData.charge_type_id" id="phone-charge-type" class="form-control">
                             <option value="null" disabled selected>انتخاب کنید</option>
                             <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
                                 {{chargeType.name}}
@@ -20,13 +20,13 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="value">مقدار</label>
-                        <input type="text" v-model="chargeData.items[0].value" id="value" class="form-control" @keypress="isNumber($event)" />
+                        <input type="text" v-model="chargeData.value" id="value" class="form-control" @keypress="isNumber($event)" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="customer_id">کاربر دمو</label>
-                        <model-select  id="customer_id" placeholder="انتخاب کنید" :options="mapCds" v-model="chargeData.items[0].destination_id" />
+                        <model-select  id="customer_id" placeholder="انتخاب کنید" :options="mapCds" v-model="chargeData.items[0]" />
                     </div>
                 </div>
                 <div class="form-row">
@@ -65,12 +65,10 @@
                 mapCds : [],
                 chargeData : {
                     destination_type:2,
+                    charge_type_id : null,
+                    value : null,
                     items:{
-                        0:{
-                            charge_type_id : null,
-                            value : null,
-                            destination_id : null,
-                        }
+                        0:null,
                     }
                 },
             }
@@ -132,12 +130,10 @@
                         this.sending = false;
                         this.chargeData = {
                             destination_type:2,
+                            charge_type_id : null,
+                            value : null,
                             items:{
-                                0:{
-                                    charge_type_id : null,
-                                    value : null,
-                                    destination_id : null,
-                                }
+                                0:null,
                             }
                         };
                         this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
