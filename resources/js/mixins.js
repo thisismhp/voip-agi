@@ -47,6 +47,17 @@ export const mixins = {
             exp.push(item.id);
         });
         return exp;
+    },
+    toJalaaliJustDate : function (date,as,ds) {
+        let exp = '';
+        if(date !== null){
+            let jalaali = require('jalaali-js');
+            const udate = date.split(as);
+            const sDate = udate[0].split(ds);
+            const cDate = jalaali.toJalaali(parseInt(sDate[0]), parseInt(sDate[1]), parseInt(sDate[2]));
+            exp = `${cDate.jy}/${cDate.jm}/${cDate.jd}`;
+        }
+        return exp;
     }
 };
 
