@@ -22,7 +22,7 @@
                         <td>{{index + 1}}</td>
                         <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
                         <td>{{customer.time_charge}}</td>
-                        <td>{{customer.date_charge}}</td>
+                        <td>{{toJalaali(customer.date_charge,' ','-')}}</td>
                         <td><router-link class="btn btn-secondary" :to="`/charge-one-customer?id=${customer.id}`" >افزایش اعتبار</router-link></td>
                     </tr>
                     </tbody>
@@ -35,6 +35,7 @@
 <script>
     import axios from 'axios'
     import Loading from "../../layout/element/Loading";
+    import {mixins} from "../../../mixins";
     export default {
         name: "CustomersList",
         components: {Loading},
@@ -46,6 +47,7 @@
             }
         },
         methods:{
+            toJalaali : mixins.toJalaaliJustDate,
             err(err){
                 this.loadFailed = true;
                 this.loading = false;

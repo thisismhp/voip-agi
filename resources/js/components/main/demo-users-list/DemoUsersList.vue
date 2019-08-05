@@ -22,7 +22,7 @@
                         <td>{{index + 1}}</td>
                         <td>{{demoUser.phone_number}}</td>
                         <td>{{demoUser.time_charge}}</td>
-                        <td>{{demoUser.date_charge}}</td>
+                        <td>{{toJalaali(demoUser.date_charge,' ','-')}}</td>
                         <td><router-link class="btn btn-secondary" :to="`/charge-one-demo-user?id=${demoUser.id}`" >افزایش اعتبار</router-link></td>
                     </tr>
                     </tbody>
@@ -35,6 +35,7 @@
 <script>
     import axios from "axios";
     import Loading from "../../layout/element/Loading";
+    import {mixins} from "../../../mixins";
 
     export default {
         name: "DemoUsersList",
@@ -47,6 +48,7 @@
             }
         },
         methods:{
+            toJalaali : mixins.toJalaaliJustDate,
             err(err){
                 this.loadFailed = true;
                 this.loading = false;

@@ -20,7 +20,7 @@
                     <div class="form-group col-md-5">
                         <span class="profile-title">اعتبار بازه ای تا</span>
                         <span> : </span>
-                        <span class="profile-value">{{customerData.date_charge}}</span>
+                        <span class="profile-value">{{toJalaali(customerData.date_charge,' ','-')}}</span>
                     </div>
                     <div class="form-group col-md-2">
                         <router-link class="btn btn-secondary" :to="`/charge-one-customer?id=${customerData.id}`" >افزایش اعتبار</router-link>
@@ -172,6 +172,7 @@
         },
         methods: {
             isNumber : mixins.isNumber,
+            toJalaali : mixins.toJalaaliJustDate,
             err(err){
                 this.loadFailed = true;
                 this.loading = false;
