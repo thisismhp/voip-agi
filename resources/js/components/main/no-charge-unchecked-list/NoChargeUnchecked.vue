@@ -12,6 +12,7 @@
                     <tr>
                         <th>ردیف</th>
                         <th>نام</th>
+                        <th>توضیحات</th>
                         <th>بررسی</th>
                     </tr>
                     </thead>
@@ -19,6 +20,7 @@
                     <tr v-for="(customer, index) in customers">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
+                        <td class="pointer-cursor" @click="showCmtDialog(customer,index)">{{customer.end_charge_comment}}</td>
                         <td>
                             <button @click="check(index,customer.id)" class="btn btn-success" :disabled="sending">بررسی شد
                                 <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -27,6 +29,31 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div>
+            <div class="modal fade" id="cmt-modal" tabindex="-1" role="dialog" aria-labelledby="myMessage" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span style="font-size: 4vh;" aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" id="exampleModalLabel">ویرایش</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <textarea class="form-control" v-model="cmtData.text"></textarea>
+                            </div>
+                            <br />
+                            <div class="form-row">
+                                <button @click="submitCmt(cmtData)" class="btn btn-success" :disabled="sendingCmt">ثبت
+                                    <span v-if="sendingCmt" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -43,6 +70,12 @@
                 loading: true,
                 loadFailed:false,
                 sending:false,
+                sendingCmt:false,
+                cmtData:{
+                    id:null,
+                    text:null,
+                    index:null
+                },
                 customers:[]
             }
         },
@@ -62,10 +95,39 @@
                     .then(res => {
                         this.customers = res.data;
                         this.loading = false;
-
                     })
                     .catch(err => {
                         this.err(err)
+                    })
+                ;
+            },
+            showCmtDialog(customer,index){
+                this.cmtData.text = customer.end_charge_comment;
+                this.cmtData.id = customer.id;
+                this.cmtData.index = index;
+                $('#cmt-modal').modal('show');
+            },
+            submitCmt(cmtData){
+                this.sendingCmt = true;
+                axios.post('/api/cmt',cmtData)
+                    .then((res) => {
+                        this.customers[cmtData.index].end_charge_comment = res.data.end_charge_comment;
+                        $('#cmt-modal').modal('hide');
+                        this.cmtData = {
+                            id:null,
+                            text:null,
+                            index:null
+                        };
+                        this.sendingCmt = false;
+                    })
+                    .catch(() => {
+                        $('#cmt-modal').modal('hide');
+                        this.cmtData = {
+                            id:null,
+                            text:null,
+                            index:null
+                        };
+                        this.sendingCmt = true;
                     })
                 ;
             },
@@ -79,7 +141,7 @@
                         this.getCustomers();
                     })
                     .catch(() => {
-
+                        this.sending = false;
                     })
             }
         },
