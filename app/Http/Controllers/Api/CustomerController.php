@@ -144,8 +144,8 @@ class CustomerController extends Controller
             'name' => ['required','string','max:100'],
             'nation_code' => ['required','string','max:20'],
             'birth_date' => ['required','string','max:20'],
-            'province_id' => ['required','exists:provinces,id'],
-            'city_id' => ['required','exists:cities,id'],
+            'province_id' => ['required','exists:manage.provinces,id'],
+            'city_id' => ['required','exists:manage.cities,id'],
             'address' => ['required','string','max:255'],
             'phone_number' => ['required','string','max:20'],
             'numbers' => ['nullable','array'],
@@ -154,15 +154,15 @@ class CustomerController extends Controller
         $distinctMessages = [];
         foreach ((array)$numbers as $i=>$number) {
             $rules += [
-                "numbers.$i.phone_number_type_id" => ['required','exists:phone_number_types,id'],
+                "numbers.$i.phone_number_type_id" => ['required','exists:manage.phone_number_types,id'],
                 "numbers.$i.phone_number" => ['required','string','max:20'],
-                "numbers.$i.charge_type_id" => ['required','exists:charge_types,id'],
+                "numbers.$i.charge_type_id" => ['required','exists:manage.charge_types,id'],
                 "numbers.$i.is_active" => ['required','boolean'],
             ];
             if ($isUpdate){
-                $rules["numbers.$i.phone_number"] = ['required','string','max:20',Rule::unique('numbers','phone_number')->whereNot('phone_number',$lastNumbers)->whereNull('deleted_at'),];
+                $rules["numbers.$i.phone_number"] = ['required','string','max:20',Rule::unique('service.numbers','phone_number')->whereNot('phone_number',$lastNumbers)->whereNull('deleted_at'),];
             }else{
-                $rules["numbers.$i.phone_number"] = ['required','string','max:20',Rule::unique('numbers','phone_number')->whereNull('deleted_at')];
+                $rules["numbers.$i.phone_number"] = ['required','string','max:20',Rule::unique('service.numbers','phone_number')->whereNull('deleted_at')];
             }
             $messages += [
                 "numbers.$i.phone_number_type_id.required" => "فیلد عنوان شماره تلفن ردیف " . ($i+1) . " الزامی است",

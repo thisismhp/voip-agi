@@ -13,13 +13,13 @@ class CMTController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function __invoke(Request $request)
     {
         $request->validate([
-            'id' => ['required',Rule::exists('customers','id')->whereNull('deleted_at')]
+            'id' => ['required',Rule::exists('service.customers','id')->whereNull('deleted_at')]
         ]);
         $customer = Customer::find($request->input('id'));
         $customer->update(['end_charge_comment' => $request->input('text')]);
