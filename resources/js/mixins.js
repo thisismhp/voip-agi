@@ -40,6 +40,13 @@ export const mixins = {
             });
         });
         return exp;
+    },
+    extractId : function (data) {
+        let exp = [];
+        data.forEach((item) => {
+            exp.push(item.id);
+        });
+        return exp;
     }
 };
 
