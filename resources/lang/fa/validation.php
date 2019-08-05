@@ -139,7 +139,9 @@ return [
         "city_id" => 'شهر',
         "phone_number" => 'شماره تماس',
         "destination_type" => 'نوع مقصد (کاربر)',
-        "state" => "وضعیت"
+        "state" => "وضعیت",
+        "value" => "مقدار",
+        "charge_type_id" => "نوع اعتبار"
     ],
 
 ];
