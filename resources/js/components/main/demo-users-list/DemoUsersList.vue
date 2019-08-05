@@ -12,6 +12,8 @@
                     <tr>
                         <th>ردیف</th>
                         <th>شماره</th>
+                        <th>اعتبار تعدادی</th>
+                        <th>اعتبار بازه ای</th>
                         <th>افزایش اعتبار</th>
                     </tr>
                     </thead>
@@ -19,6 +21,8 @@
                     <tr v-for="(demoUser, index) in demoUsers">
                         <td>{{index + 1}}</td>
                         <td>{{demoUser.phone_number}}</td>
+                        <td>{{demoUser.time_charge}}</td>
+                        <td>{{demoUser.date_charge}}</td>
                         <td><router-link class="btn btn-secondary" :to="`/charge-one-demo-user?id=${demoUser.id}`" >افزایش اعتبار</router-link></td>
                     </tr>
                     </tbody>
