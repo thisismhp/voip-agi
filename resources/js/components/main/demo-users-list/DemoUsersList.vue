@@ -12,12 +12,14 @@
                     <tr>
                         <th>ردیف</th>
                         <th>شماره</th>
+                        <th>افزایش اعتبار</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(demoUser, index) in demoUsers">
                         <td>{{index + 1}}</td>
                         <td>{{demoUser.phone_number}}</td>
+                        <td><router-link class="btn btn-secondary" :to="`/charge-one-demo-user?id=${demoUser.id}`" >افزایش اعتبار</router-link></td>
                     </tr>
                     </tbody>
                 </table>

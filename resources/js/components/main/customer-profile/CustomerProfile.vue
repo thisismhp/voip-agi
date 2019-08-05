@@ -8,6 +8,28 @@
         <NotFound not-found-title="مشتری" v-else-if="notFound" />
         <div v-else-if="!loading" id="customer-profile">
             <h3 class="border-bottom">پرونده مشتری</h3>
+            <br />
+            <h5 class="border-bottom">اعتبار</h5>
+            <div>
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <span class="profile-title">اعتبار تعدادی</span>
+                        <span> : </span>
+                        <span class="profile-value">{{customerData.time_charge}}</span>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <span class="profile-title">اعتبار بازه ای تا</span>
+                        <span> : </span>
+                        <span class="profile-value">{{customerData.date_charge}}</span>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <router-link class="btn btn-secondary" :to="`/charge-one-customer?id=${customerData.id}`" >افزایش اعتبار</router-link>
+                    </div>
+
+                </div>
+            </div>
+            <br />
+            <h5 class="border-bottom">اطلاعات مشتری</h5>
             <div>
                 <div class="form-row">
                     <div class="form-group col-md-6">

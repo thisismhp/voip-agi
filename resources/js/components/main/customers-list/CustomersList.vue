@@ -12,14 +12,14 @@
                     <tr>
                         <th>ردیف</th>
                         <th>نام</th>
-                        <th>شهر</th>
+                        <th>افزایش اعتبار</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(customer, index) in customers">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                        <td>{{customer.city.name}}</td>
+                        <td><router-link class="btn btn-secondary" :to="`/charge-one-customer?id=${customer.id}`" >افزایش اعتبار</router-link></td>
                     </tr>
                     </tbody>
                 </table>
