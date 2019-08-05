@@ -7,6 +7,7 @@ if (request()->expectsJson()) {
         Route::apiResource('customer', 'CustomerController');
         Route::post('charge', 'ChargeController');
         Route::post('check_charge', 'CheckChargeController');
+        Route::post('cmt', 'CMTController');
         Route::get('province', 'ProvinceController');
         Route::get('city', 'CityController');
         Route::get('phone_number_type', 'PhoneNumberTypeController');
