@@ -15,9 +15,22 @@
   font-size: 14px;
 }
 
+body {
+    margin: 0;
+    background-color: $body-bg;
+}
+
 //Custom Classes
 .tiny-margin-b{
   margin-bottom: 2px;
+}
+
+textarea {
+    resize: none;
+}
+
+.pointer-cursor{
+    cursor: pointer;
 }
 
 .center-align{
@@ -34,11 +47,6 @@
 
 .not-found{
   padding: 10px;
-}
-
-body {
-  margin: 0;
-  background-color: $body-bg;
 }
 
 //Sidebar And Content
