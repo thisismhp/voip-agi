@@ -52,8 +52,8 @@ export const mixins = {
         let exp = '';
         if(date !== null){
             let jalaali = require('jalaali-js');
-            const udate = date.split(as);
-            const sDate = udate[0].split(ds);
+            const uDate = date.split(as);
+            const sDate = uDate[0].split(ds);
             const cDate = jalaali.toJalaali(parseInt(sDate[0]), parseInt(sDate[1]), parseInt(sDate[2]));
             exp = `${cDate.jy}/${cDate.jm}/${cDate.jd}`;
         }
