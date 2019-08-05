@@ -16,6 +16,8 @@ class CreateDemoUsersTable extends Migration
         Schema::create('demo_users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->char('phone_number',20);
+            $table->integer('time_charge')->nullable();
+            $table->dateTime('date_charge')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
