@@ -20,7 +20,7 @@
                     <tr v-for="(customer, index) in customers">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                        <td class="pointer-cursor" @click="showCmtDialog(customer,index)">{{customer.end_charge_comment}}</td>
+                        <td class="pointer-cursor" @click="showCmtDialog(customer,index)">{{(customer.end_charge_comment !== null)?customer.end_charge_comment:'اضافه کنید'}}</td>
                         <td>
                             <button @click="check(index,customer.id)" class="btn btn-success" :disabled="sending">بررسی شد
                                 <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
