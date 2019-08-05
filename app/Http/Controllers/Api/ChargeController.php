@@ -21,17 +21,16 @@ class ChargeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $request->validate(['destination_type' => ['required',Rule::in([1,2])],]);
         $export = [];
         $destinationType = $request->input('destination_type');
+        $chargeTypeId = $request->input('charge_type_id');
+        $value = (int)$request->input('value');
         $this->validateRequest($request, $destinationType);
         $items = $request->input('items');
         foreach ((array)$items as $item) {
             $destination = null;
             $chargeRecord = null;
-            $chargeTypeId = $item['charge_type_id'];
-            $destinationId = $item['destination_id'];
-            $value = (int)$item['value'];
+            $destinationId = $item;
             if($destinationType == 1) {
                 $destination = Customer::find($destinationId);
                 $chargeRecord = new CustomerCharge();
@@ -66,33 +65,28 @@ class ChargeController extends Controller
 
     public function validateRequest(Request $request, $destinationType)
     {
+        $request->validate([
+            'destination_type' => ['required',Rule::in([1,2])],
+            'charge_type_id' => ['required',Rule::exists('charge_types','id')],
+            'value' => ['required','integer','min:1'],
+            'items' => ['required','array','min:1']
+            ]);
         $items = $request->input('items');
-        $rules = ['items' => ['required','array']];
+        $rules = [];
         $messages = [
             'items.required' => 'لیست افزایش اعتبار الزامی است',
             'items.array' => 'لیست افزایش اعتبار اشتباه است',
         ];
         foreach ((array)$items as $i=>$item) {
-            $rules["items.$i.charge_type_id"] = ['required',Rule::exists('charge_types','id')];
-            $rules["items.$i.value"] = ['required','integer','min:1'];
-            $messages += [
-                "items.$i.charge_type_id.required" => "فیلد نوع اعتبار ردیف " . ($i+1) . " الزامی است",
-                "items.$i.charge_type_id.exists" => "نوع اعتبار ردیف " . ($i+1) . "معتبر نیست",
-                "items.$i.value.required" => "فیلد مقدار ردیف " . ($i+1) . " الزامی است",
-                "items.$i.value.integer" => "نوع اعتبار ردیف " . ($i+1) . "معتبر نیست",
-                "items.$i.value.min" => "نوع اعتبار ردیف " . ($i+1) . "معتبر نیست",
-            ];
             if($destinationType == 1){
-                $rules += ["items.$i.destination_id" => ['required',Rule::exists('customers', 'id')->whereNull('deleted_at')],];
+                $rules += ["items.$i" => [Rule::exists('customers', 'id')->whereNull('deleted_at')],];
                 $messages += [
-                    "items.$i.destination_id.required" => "فیلد مشتری ردیف " . ($i+1) . " الزامی است",
-                    "items.$i.destination_id.exists" => "فیلد مشتری ردیف " . ($i+1) . "معتبر نیست",
+                    "items.$i.exists" => "فیلد مشتری ردیف " . ($i+1) . "معتبر نیست",
                 ];
             }elseif($destinationType == 2){
-                $rules += ["items.$i.destination_id" => ['required',Rule::exists('demo_users', 'id')->whereNull('deleted_at')],];
+                $rules += ["items.$i" => [Rule::exists('demo_users', 'id')->whereNull('deleted_at')],];
                 $messages += [
-                    "items.$i.destination_id.required" => "فیلد کاربر دمو ردیف " . ($i+1) . " الزامی است",
-                    "items.$i.destination_id.exists" => "فیلد کاربر دمو ردیف " . ($i+1) . "معتبر نیست",
+                    "items.$i.exists" => "فیلد کاربر دمو ردیف " . ($i+1) . "معتبر نیست",
                 ];
             }
         }
