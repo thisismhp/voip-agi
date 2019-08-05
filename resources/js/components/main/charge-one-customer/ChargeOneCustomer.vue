@@ -100,6 +100,10 @@
                             .then(res => {
                                 this.cds = res.data;
                                 this.mapCds = mixins.mapSearchSelect(this.cds, 'name');
+                                let id = this.$route.query.id;
+                                if(id !== null){
+                                    this.chargeData.items[0] = parseInt(id);
+                                }
                                 this.loading = false;
                             })
                             .catch(err => {
