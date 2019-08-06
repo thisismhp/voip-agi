@@ -5,7 +5,7 @@
         </h1>
         <h1 class="center-align">
             {{notFoundTitle}}
-            مورد نظر شما وجود ندارد.
+            {{$t("messages.notFound")}}
         </h1>
     </div>
 </template>

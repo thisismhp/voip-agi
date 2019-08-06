@@ -2,7 +2,7 @@
     <div id="app">
         <Loading v-if="loading" />
         <div class="failed center-align" v-else-if="loadFailed">
-            <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
+            <button @click="reload" class="btn btn-warning">{{$t("words.retry")}}</button>
         </div>
         <Auth v-else-if="!authCheck"/>
         <Layout v-else-if="authCheck"/>
