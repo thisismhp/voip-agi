@@ -32,6 +32,7 @@
                     .then(() => {
                         this.loading = false;
                         this.loadFailed = false;
+                        this.$store.state.authCheck = true;
                     })
                     .catch((err) => {
                         this.loading = false;
