@@ -78,6 +78,9 @@
             err(err){
                 this.loadFailed = true;
                 this.loading = false;
+                if(err.response.status === 401){
+                    this.$store.state.authCheck = false;
+                }
                 return err;
             },
             reload(){
@@ -120,6 +123,8 @@
                 if(err.response){
                     if(err.response.status === 422){
                         this.showDialog(true, "ثبت ناموفق",mixins.parseValidation(err.response),'danger',0);
+                    }else if(err.response.status === 401){
+                        this.$store.state.authCheck = false;
                     }else{
                         this.showDialog(true, "خطای سرور",'مشکلی در سرور به وجود آمده است','danger',0);
                     }
