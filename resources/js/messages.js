@@ -18,9 +18,11 @@ export const messages = {
             servicesList:'لیست سرویس ها',
             addServiceGroup:'افزودن گروه های سرویس',
             symbolsList:'لیست نمادها',
+            retry:'تلاش مجدد',
+            page:'صفحه'
         },
         messages:{
-
+            notFound:'مورد نظر شما وجود ندارد.'
         }
     },
 };
