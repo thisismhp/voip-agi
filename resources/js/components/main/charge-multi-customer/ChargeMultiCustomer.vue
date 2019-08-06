@@ -90,8 +90,10 @@
             err(err){
                 this.loadFailed = true;
                 this.loading = false;
-                if(err.response.status === 401){
-                    this.$store.state.authCheck = false;
+                if(err.response) {
+                    if (err.response.status === 401) {
+                        this.$store.state.authCheck = false;
+                    }
                 }
                 return err;
             },
