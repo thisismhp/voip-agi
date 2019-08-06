@@ -1,14 +1,19 @@
 <template>
     <div id="app">
-        <Layout />
+        <Layout v-if="authCheck"/>
+        <Auth v-else/>
     </div>
 </template>
 
 <script>
     import Layout from "./layout/Layout";
+    import Auth from "./layout/auth/Auth";
     export default {
         name: "App",
-        components: {Layout}
+        components: {Auth, Layout},
+        computed:{
+            authCheck(){return this.$store.state.authCheck}
+        }
     }
 </script>
 
