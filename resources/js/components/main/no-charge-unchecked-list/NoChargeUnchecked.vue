@@ -144,7 +144,7 @@
                         };
                         this.sendingCmt = false;
                     })
-                    .catch(() => {
+                    .catch((err) => {
                         $('#cmt-modal').modal('hide');
                         this.cmtData = {
                             id:null,
@@ -179,7 +179,7 @@
                         this.sending = false;
                         this.getCustomers();
                     })
-                    .catch(() => {
+                    .catch((err) => {
                         this.sending = false;
                         this.errorHandling(err);
                     })
