@@ -1,6 +1,9 @@
 <template>
     <div id="menu">
         <div class="sidebar">
+            <button @click="logout" style="margin:5px" class="btn btn-secondary" :disabled="sending">خروج
+                <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
             <div id="customer-mng-links">
                 <router-link to="/" active-class="active" exact>صفحه اصلی</router-link>
                 <div class="menu-title">مدیریت مشتریان</div>
@@ -26,8 +29,29 @@
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
-        name: "Menu"
+        name: "Menu",
+        data(){
+            return{
+                sending: false,
+            }
+        },
+        methods:{
+            logout(){
+                this.sending = true;
+                axios.patch('/api/logout')
+                    .then(() => {
+                        this.$store.state.authCheck = false;
+                        window.axios.defaults.headers.common['Authorization'] = null;
+                        this.sending = false;
+                    })
+                    .catch(() => {
+                        this.sending = false;
+                    })
+                ;
+            }
+        }
     }
 </script>
 
