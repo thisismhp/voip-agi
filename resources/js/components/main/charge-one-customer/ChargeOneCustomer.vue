@@ -20,7 +20,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="value">مقدار</label>
-                        <input type="text" v-model="chargeData.value" id="value" class="form-control" @keypress="isNumber($event)" />
+                        <input @keyup.enter="save" type="text" v-model="chargeData.value" id="value" class="form-control" @keypress="isNumber($event)" />
                     </div>
                 </div>
                 <div class="form-row">

@@ -39,7 +39,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-row">
-                                <textarea class="form-control" v-model="cmtData.text"></textarea>
+                                <textarea @keyup.ctrl.enter="submitCmt(cmtData)" class="form-control" v-model="cmtData.text"></textarea>
                             </div>
                             <br />
                             <div class="form-row">

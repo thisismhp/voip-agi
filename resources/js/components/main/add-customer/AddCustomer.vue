@@ -11,17 +11,17 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="i-customer-name">نام و نام خانوادگی</label>
-                        <input type="text" v-model="customerData.name" id="i-customer-name" class="form-control" />
+                        <input @keyup.enter="save" type="text" v-model="customerData.name" id="i-customer-name" class="form-control" />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="i-customer-code">کد مشتری</label>
-                        <input type="text" v-model="customerData.id" id="i-customer-code" class="form-control" disabled/>
+                        <input @keyup.enter="save" type="text" v-model="customerData.id" id="i-customer-code" class="form-control" disabled/>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="i-customer-nation-code">کد ملی</label>
-                        <input type="text" v-model="customerData.nation_code" id="i-customer-nation-code" class="form-control" @keypress="isNumber($event)"/>
+                        <input @keyup.enter="save" type="text" v-model="customerData.nation_code" id="i-customer-nation-code" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="i-customer-birth-day">تاریخ تولد</label>
@@ -52,11 +52,11 @@
                 <div class="form-row border-bottom">
                     <div class="form-group col-md-9">
                         <label for="i-customer-address">آدرس</label>
-                        <input type="text" v-model="customerData.address" id="i-customer-address" class="form-control" />
+                        <input @keyup.enter="save" type="text" v-model="customerData.address" id="i-customer-address" class="form-control" />
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-number">شماره تماس</label>
-                        <input type="text" v-model="customerData.phone_number" id="i-customer-phone-number" class="form-control" @keypress="isNumber($event)"/>
+                        <input @keyup.enter="save" type="text" v-model="customerData.phone_number" id="i-customer-phone-number" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                 </div>
                 <div id="customer-form-numbers" class="customer-form-numbers">
@@ -76,7 +76,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label :for="`${index}-customer-phone-phone-number`">شماره تلفن</label>
-                            <input type="text" v-model="number.phone_number" :id="`${index}-customer-phone-phone-number`" class="form-control" @keypress="isNumber($event)"/>
+                            <input @keyup.enter="save" type="text" v-model="number.phone_number" :id="`${index}-customer-phone-phone-number`" class="form-control" @keypress="isNumber($event)"/>
                         </div>
                         <div class="form-group col-md-3">
                             <label :for="`${index}-customer-phone-charge-type`">نوع اعتبار</label>
