@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
@@ -11,11 +10,10 @@ class CheckAccessController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param Request $request
      * @return Response
      */
-    public function __invoke(Request $request)
+    public function __invoke()
     {
-        return new Response($request);
+        return new Response(auth()->user());
     }
 }
