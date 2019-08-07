@@ -1,9 +1,6 @@
 <template>
     <div id="menu">
-        <div class="sidebar">
-            <button @click="logout" style="margin:5px" class="btn btn-secondary" :disabled="sending">{{$t("words.logout")}}
-                <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            </button>
+        <nav id="sidebar" class="sidebar">
             <div id="customer-mng-links">
                 <router-link to="/" active-class="active" exact>{{$t("words.dashboard")}}</router-link>
                 <div class="menu-title">{{$t("words.customersManage")}}</div>
@@ -24,34 +21,13 @@
                 <router-link to="/add-service-groups" active-class="active">{{$t("words.addServiceGroup")}}</router-link>
                 <router-link to="/symbols-list" active-class="active">{{$t("words.symbolsList")}}</router-link>
             </div>
-        </div>
+        </nav>
     </div>
 </template>
 
 <script>
-    import axios from 'axios';
     export default {
         name: "Menu",
-        data(){
-            return{
-                sending: false,
-            }
-        },
-        methods:{
-            logout(){
-                this.sending = true;
-                axios.patch('/api/logout')
-                    .then(() => {
-                        this.$store.state.authCheck = false;
-                        window.axios.defaults.headers.common['Authorization'] = null;
-                        this.sending = false;
-                    })
-                    .catch(() => {
-                        this.sending = false;
-                    })
-                ;
-            }
-        }
     }
 </script>
 
