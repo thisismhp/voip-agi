@@ -1,6 +1,11 @@
 <template>
     <div id="menu">
         <nav id="sidebar" class="sidebar">
+            <div class="tiny-margin d-block d-sm-none d-none d-sm-block d-md-none">
+                <button type="button" @click="showSide" class="btn btn-secondary">
+                    <img class="menu-icon" src="../../../../icon/menu.png"  alt="Menu" />
+                </button>
+            </div>
             <div id="customer-mng-links">
                 <router-link to="/" active-class="active" exact>{{$t("words.dashboard")}}</router-link>
                 <div class="menu-title">{{$t("words.customersManage")}}</div>
@@ -26,8 +31,13 @@
 </template>
 
 <script>
+    import {mixins} from "../../../mixins";
+
     export default {
         name: "Menu",
+        methods:{
+            showSide : mixins.showSide,
+        }
     }
 </script>
 
