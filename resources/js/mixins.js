@@ -58,6 +58,15 @@ export const mixins = {
             exp = `${cDate.jy}/${cDate.jm}/${cDate.jd}`;
         }
         return exp;
+    },
+    showSide : function () {
+        window.$('#sidebar').toggleClass('active');
+        window.$('#content').toggleClass('active');
+        window.$('.overlay').toggleClass('active');
+    },
+    hideSide : function () {
+        window.$('#sidebar').removeClass('active');
+        window.$('.overlay').removeClass('active');
     }
 };
 
