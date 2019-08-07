@@ -4,9 +4,12 @@
             <button type="button" @click="showSide" class="btn btn-info">
                 <img class="menu-icon" src="../../../../icon/menu.png"  alt="Menu" />
             </button>
-            <button @click="logout" style="margin:5px" class="btn btn-secondary" :disabled="sending">{{$t("words.logout")}}
-                <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            </button>
+            <div>
+                <span>{{username}}</span>
+                <button @click="logout" style="margin:5px" class="btn btn-secondary" :disabled="sending">{{$t("words.logout")}}
+                    <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
         </div>
     </nav>
 </template>
@@ -19,6 +22,7 @@
         data(){
             return{
                 sending: false,
+                username: null
             }
         },
         methods:{
@@ -35,7 +39,24 @@
                         this.sending = false;
                     })
                 ;
+            },
+            getUser(){
+                axios.get('/api/access')
+                    .then((res) => {
+                        this.username = res.data.name;
+                    })
+                    .catch((err) => {
+                        if(err.response) {
+                            if (err.response.status === 401) {
+                                this.$store.state.authCheck = false;
+                            }
+                        }
+                    })
+                ;
             }
+        },
+        created() {
+            this.getUser();
         }
     }
 </script>
