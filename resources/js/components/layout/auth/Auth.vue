@@ -1,24 +1,22 @@
 <template>
     <div class="login">
         <DialogMessage :show="dialogVars.show" :title="dialogVars.title" :content="dialogVars.content" :mode="dialogVars.mode" :show-time="dialogVars.showTime" @show="dialogVars.show = false"/>
-        <div class="row">
-            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-signin my-5">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">ورود</h5>
-                        <div class="form-label-group">
-                            <label for="inputUsername">نام کاربری</label>
-                            <input @keyup.enter="login" v-model="loginData.username" type="text" id="inputUsername" class="form-control" autofocus />
-                        </div>
-
-                        <div class="form-label-group tiny-margin-t">
-                            <label for="inputPassword">رمزعبور</label>
-                            <input @keyup.enter="login" v-model="loginData.password" type="password" id="inputPassword" class="form-control" />
-                        </div>
-                        <button @click="login" class="btn btn-lg btn-primary btn-block tiny-margin-t" type="submit" :disabled="sending">ورود
-                            <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        </button>
+        <div class="login-box col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin">
+                <div class="card-body">
+                    <h5 class="card-title text-center">ورود</h5>
+                    <div class="form-label-group">
+                        <label for="inputUsername">نام کاربری</label>
+                        <input @keyup.enter="login" v-model="loginData.username" type="text" id="inputUsername" class="form-control" autofocus />
                     </div>
+
+                    <div class="form-label-group tiny-margin-t">
+                        <label for="inputPassword">رمزعبور</label>
+                        <input @keyup.enter="login" v-model="loginData.password" type="password" id="inputPassword" class="form-control" />
+                    </div>
+                    <button @click="login" class="btn btn-lg btn-primary btn-block tiny-margin-t" type="submit" :disabled="sending">ورود
+                        <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </div>
