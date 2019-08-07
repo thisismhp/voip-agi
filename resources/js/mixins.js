@@ -65,8 +65,9 @@ export const mixins = {
         window.$('.overlay').toggleClass('active');
     },
     hideSide : function () {
-        window.$('#sidebar').removeClass('active');
-        window.$('.overlay').removeClass('active');
+        window.$('#sidebar').toggleClass('active');
+        window.$('.overlay').toggleClass('active');
+        window.$('#content').toggleClass('active');
     }
 };
 
