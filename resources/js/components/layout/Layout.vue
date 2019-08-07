@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" id="">
+    <div class="wrapper" id="layout">
         <Menu />
         <Content />
         <div @click="hideSide" class="overlay active"></div>
