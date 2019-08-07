@@ -1,8 +1,8 @@
 <template>
-    <div class="wrapper" id="layout">
+    <div class="wrapper" id="">
         <Menu />
         <Content />
-        <div @click="hideSide" class="overlay"></div>
+        <div @click="hideSide" class="overlay active"></div>
     </div>
 </template>
 

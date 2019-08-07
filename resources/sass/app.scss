@@ -135,7 +135,7 @@ div.content {
     align-items: stretch;
 }
 
-#sidebar {
+#sidebar.active {
     width: 300px;
     height: 100vh;
     position: fixed;
@@ -146,16 +146,16 @@ div.content {
     transition: all 0.3s ease-in-out;
 }
 
-#sidebar.active {
+#sidebar {
     margin-right: -300px;
     transition: all 0.3s ease-in-out;
 }
 
-#content.active{
+#content{
     margin-right: 0;
     transition: all 0.3s ease-in-out;
 }
-#content{
+#content.active {
     margin-right: 300px;
     transition: all 0.3s ease-in-out;
 }
@@ -169,7 +169,7 @@ div.content {
 }
 
 @media (max-width: 768px) {
-    #sidebar {
+    #sidebar.active {
         min-width: 300px;
         max-width: 300px;
         min-height: 100vh;
@@ -180,19 +180,19 @@ div.content {
         margin-right: 0;
         transition: all 0.3s ease-in-out;
     }
-    #sidebar.active {
+    #sidebar {
         margin-right: -300px;
-        transition: all 0.3s ease-in-out;
-    }
-    #content {
-        margin-right: 0;
         transition: all 0.3s ease-in-out;
     }
     #content.active {
         margin-right: 0;
         transition: all 0.3s ease-in-out;
     }
-    .overlay.active {
+    #content {
+        margin-right: 0;
+        transition: all 0.3s ease-in-out;
+    }
+    .overlay {
         display: none;
         position: fixed;
         width: 100vw;
@@ -203,7 +203,7 @@ div.content {
         transition: all 0.3s ease-in-out;
     }
     /* display .overlay when it has the .active class */
-    .overlay {
+    .overlay.active {
         display: block;
         opacity: 1;
         transition: all 0.3s ease-in-out;
