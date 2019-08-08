@@ -113,6 +113,15 @@ div.content {
     margin-top:10px;
 }
 
+.dashboard-box{
+    height: 35vh;
+    overflow: auto;
+    padding: 10px;
+    margin: 10px;
+    border: solid $sideInActiveBg 1px;
+    border-radius: 5px;
+}
+
 //Login
 .login{
     width: 100%;
