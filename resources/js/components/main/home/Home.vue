@@ -1,10 +1,166 @@
 <template>
-    <p>صفحه اصلی</p>
+    <div>
+        <Loading v-if="loading" />
+        <div class="failed center-align" v-else-if="loadFailed">
+            <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
+        </div>
+        <div v-else-if="!loading" id="dashboard">
+            <div class="row">
+                <div class="col-md-5 dashboard-box">
+                    <h3>لیست مشتریان</h3>
+                    <div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>نام</th>
+                                <th>اعتبار تعدادی</th>
+                                <th>اعتبار بازه ای</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(customer) in customers">
+                                <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
+                                <td>{{customer.time_charge}}</td>
+                                <td>{{toJalaali(customer.date_charge,' ','-')}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-5 dashboard-box">
+                    <h3>لیست کاربران دمو</h3>
+                    <div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>شماره</th>
+                                <th>اعتبار تعدادی</th>
+                                <th>اعتبار بازه ای</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(demoUser) in demoUsers">
+                                <td>{{demoUser.phone_number}}</td>
+                                <td>{{demoUser.time_charge}}</td>
+                                <td>{{toJalaali(demoUser.date_charge,' ','-')}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 dashboard-box">
+                    <h3>لیست اتمام اعتبار ( چک شده)</h3>
+                    <div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>نام</th>
+                                <th>توضیحات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(customer) in ncc">
+                                <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
+                                <td class="pointer-cursor">{{customer.end_charge_comment}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-5 dashboard-box">
+                    <h3>لیست اتمام اعتبار ( چک نشده)</h3>
+                    <div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>نام</th>
+                                <th>توضیحات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(customer) in ncu">
+                                <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
+                                <td class="pointer-cursor">{{customer.end_charge_comment}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+    import Loading from "../../layout/element/Loading";
+    import {mixins} from "../../../mixins";
     export default {
-        name: "Home"
+        name: "Home",
+        components: {Loading},
+        data(){
+            return {
+                loading: true,
+                loadFailed:false,
+                customers:[],
+                demoUsers:[],
+                ncc:[],
+                ncu:[]
+            }
+        },
+        methods:{
+            toJalaali: mixins.toJalaaliJustDate,
+            err(err){
+                this.loadFailed = true;
+                this.loading = false;
+                if(err.response) {
+                    if (err.response.status === 401) {
+                        this.$store.state.authCheck = false;
+                    }
+                }
+                return err;
+            },
+            init(){
+                axios.get('api/no_charge?state=2')
+                    .then(res => {
+                        this.ncu = res.data;
+                        axios.get('api/no_charge?state=3')
+                            .then(res => {
+                                this.ncc = res.data;
+                                axios.get('api/demo_user')
+                                    .then(res => {
+                                        this.demoUsers = res.data;
+                                        axios.get('api/customer')
+                                            .then(res => {
+                                                this.customers = res.data;
+                                                this.loading = false;
+
+                                            })
+                                            .catch(err => {
+                                                this.err(err)
+                                            })
+                                        ;
+                                    })
+                                    .catch(err => {
+                                        this.err(err)
+                                    })
+                                ;
+                            })
+                            .catch(err => {
+                                this.err(err)
+                            })
+                        ;
+                    })
+                    .catch(err => {
+                        this.err(err)
+                    })
+                ;
+            }
+        },
+        created() {
+            this.init();
+        }
     }
 </script>
 
