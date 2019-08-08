@@ -38,7 +38,6 @@
         methods:{
             hideSide : mixins.hideSide,
             menuSlideHide () {
-                console.log(window.innerWidth);
                 if(window.innerWidth < 768){
                     this.hideSide();
                 }
