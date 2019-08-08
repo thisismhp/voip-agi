@@ -3,7 +3,7 @@
         <nav id="sidebar" class="sidebar active">
             <div class="tiny-margin d-block d-sm-none d-none d-sm-block d-md-none">
                 <button type="button" @click="showSide" class="btn btn-secondary">
-                    <img class="menu-icon" src="../../../../icon/menu.png"  alt="Menu" />
+                    <img class="menu-icon" src="../../../../image/menu.png" alt="Menu" />
                 </button>
             </div>
             <div id="customer-mng-links">

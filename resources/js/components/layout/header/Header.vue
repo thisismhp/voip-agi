@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <button type="button" @click="showSide" class="btn btn-info">
-                <img class="menu-icon" src="../../../../icon/menu.png"  alt="Menu" />
+                <img class="menu-icon" src="../../../../image/menu.png" alt="Menu" />
             </button>
             <div>
                 <span>{{username}}</span>
