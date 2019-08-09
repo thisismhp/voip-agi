@@ -1,11 +1,9 @@
 <template>
     <div id="menu">
         <nav id="sidebar" class="sidebar active">
-            <div class="tiny-margin d-block d-sm-none d-none d-sm-block d-md-none">
-                <button type="button" @click="hideSide" class="btn btn-secondary">
-                    <img class="menu-icon" src="../../../../image/menu.png" alt="Menu" />
-                </button>
-            </div>
+            <button v-if="windowWidth < 769" type="button" @click="hideSide" class="btn btn-secondary menu-slide-btn">
+                <img class="menu-icon" src="../../../../image/menu.png" alt="Menu" />
+            </button>
             <div id="customer-mng-links">
                 <router-link @click.native="menuSlideHide" to="/" active-class="active" exact>{{$t("words.dashboard")}}</router-link>
                 <div class="menu-title">{{$t("words.customersManage")}}</div>
@@ -35,14 +33,26 @@
 
     export default {
         name: "Menu",
+        data(){
+            return{
+                windowWidth: window.innerWidth,
+            }
+        },
         methods:{
             hideSide : mixins.hideSide,
             menuSlideHide () {
-                if(window.innerWidth < 768){
+                if(window.innerWidth < 769){
                     this.hideSide();
                 }
-            }
-        }
+            },
+        },
+        mounted() {
+            this.$nextTick(() => {
+                window.addEventListener('resize', () => {
+                    this.windowWidth = window.innerWidth;
+                });
+            })
+        },
     }
 </script>
 
