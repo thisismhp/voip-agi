@@ -6,86 +6,98 @@
         </div>
         <div v-else-if="!loading" id="dashboard">
             <div class="row">
-                <div class="col-md-5 dashboard-box">
-                    <h3>لیست مشتریان</h3>
-                    <div>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>نام</th>
-                                <th>اعتبار تعدادی</th>
-                                <th>اعتبار بازه ای</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(customer) in customers">
-                                <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                                <td>{{customer.time_charge}}</td>
-                                <td>{{toJalaali(customer.date_charge,' ','-')}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="col-md-6">
+                    <div class="col-md-11 dashboard-box">
+                        <h3>لیست مشتریان</h3>
+                        <div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>نام</th>
+                                    <th>اعتبار تعدادی</th>
+                                    <th>اعتبار بازه ای</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(customer) in customers">
+                                    <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
+                                    <td>{{customer.time_charge}}</td>
+                                    <td>{{toJalaali(customer.date_charge,' ','-')}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    <div class="col-md-1"></div>
                 </div>
-                <div class="col-md-5 dashboard-box">
-                    <h3>لیست کاربران دمو</h3>
-                    <div>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>شماره</th>
-                                <th>اعتبار تعدادی</th>
-                                <th>اعتبار بازه ای</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(demoUser) in demoUsers">
-                                <td>{{demoUser.phone_number}}</td>
-                                <td>{{demoUser.time_charge}}</td>
-                                <td>{{toJalaali(demoUser.date_charge,' ','-')}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="col-md-6">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-11 dashboard-box">
+                        <h3>لیست کاربران دمو</h3>
+                        <div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>شماره</th>
+                                    <th>اعتبار تعدادی</th>
+                                    <th>اعتبار بازه ای</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(demoUser) in demoUsers">
+                                    <td>{{demoUser.phone_number}}</td>
+                                    <td>{{demoUser.time_charge}}</td>
+                                    <td>{{toJalaali(demoUser.date_charge,' ','-')}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-5 dashboard-box">
-                    <h3>لیست اتمام اعتبار ( چک شده)</h3>
-                    <div>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>نام</th>
-                                <th>توضیحات</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(customer) in ncc">
-                                <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                                <td class="pointer-cursor">{{customer.end_charge_comment}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="col-md-6">
+                    <div class="col-md-11 dashboard-box">
+                        <h3>لیست اتمام اعتبار ( چک شده)</h3>
+                        <div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>نام</th>
+                                    <th>توضیحات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(customer) in ncc">
+                                    <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
+                                    <td class="pointer-cursor">{{customer.end_charge_comment}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    <div class="col-md-1"></div>
                 </div>
-                <div class="col-md-5 dashboard-box">
-                    <h3>لیست اتمام اعتبار ( چک نشده)</h3>
-                    <div>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>نام</th>
-                                <th>توضیحات</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(customer) in ncu">
-                                <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                                <td class="pointer-cursor">{{customer.end_charge_comment}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="col-md-6">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-11 dashboard-box">
+                        <h3>لیست اتمام اعتبار ( چک نشده)</h3>
+                        <div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>نام</th>
+                                    <th>توضیحات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(customer) in ncu">
+                                    <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
+                                    <td class="pointer-cursor">{{customer.end_charge_comment}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,6 +107,7 @@
 
 <script>
     import Loading from "../../layout/element/Loading";
+    import axios from 'axios';
     import {mixins} from "../../../mixins";
     export default {
         name: "Home",

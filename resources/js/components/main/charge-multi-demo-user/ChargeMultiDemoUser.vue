@@ -9,7 +9,7 @@
             <h3 class="border-bottom">افزایش اعتبار گروهی کاربران دمو</h3>
             <div>
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="phone-charge-type">نوع اعتبار</label>
                         <select v-model="chargeData.charge_type_id" id="phone-charge-type" class="form-control">
                             <option value="null" disabled selected>انتخاب کنید</option>
@@ -18,7 +18,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="value">مقدار</label>
                         <input  @keyup.enter="save" type="text" v-model="chargeData.value" id="value" class="form-control" @keypress="isNumber($event)" />
                     </div>
