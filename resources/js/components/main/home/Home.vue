@@ -5,8 +5,9 @@
             <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
         </div>
         <div v-else-if="!loading" id="dashboard">
+            <h3>داشبورد</h3>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 dashboard-col">
                     <div class="col-md-11 dashboard-box">
                         <h3>لیست مشتریان</h3>
                         <div>
@@ -30,7 +31,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 dashboard-col">
                     <div class="col-md-1"></div>
                     <div class="col-md-11 dashboard-box">
                         <h3>لیست کاربران دمو</h3>
@@ -56,7 +57,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 dashboard-col">
                     <div class="col-md-11 dashboard-box">
                         <h3>لیست اتمام اعتبار ( چک شده)</h3>
                         <div>
@@ -78,7 +79,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 dashboard-col">
                     <div class="col-md-1"></div>
                     <div class="col-md-11 dashboard-box">
                         <h3>لیست اتمام اعتبار ( چک نشده)</h3>
