@@ -51,6 +51,9 @@
                 window.addEventListener('resize', () => {
                     this.windowWidth = window.innerWidth;
                 });
+                if(this.windowWidth < 769){
+                    this.hideSide();
+                }
             })
         },
     }
