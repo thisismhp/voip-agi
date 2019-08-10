@@ -19,8 +19,8 @@
             </div>
             <div id="customer-serv-links">
                 <div class="menu-title">{{$t("words.servicesManage")}}</div>
-                <router-link @click.native="menuSlideHide" to="/add-service" active-class="active" exact>{{$t("words.addService")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/services-list" active-class="active">{{$t("words.servicesList")}}</router-link>
+                <router-link v-if="isAdmin" @click.native="menuSlideHide" to="/add-service" active-class="active" exact>{{$t("words.addService")}}</router-link>
+                <router-link v-if="isAdmin" @click.native="menuSlideHide" to="/services-list" active-class="active">{{$t("words.servicesList")}}</router-link>
                 <router-link @click.native="menuSlideHide" to="/add-service-groups" active-class="active">{{$t("words.addServiceGroup")}}</router-link>
                 <router-link @click.native="menuSlideHide" to="/symbols-list" active-class="active">{{$t("words.symbolsList")}}</router-link>
             </div>
@@ -55,6 +55,11 @@
                     this.hideSide();
                 }
             })
+        },
+        computed: {
+            isAdmin () {
+                return this.$store.state.isAdmin;
+            }
         },
     }
 </script>

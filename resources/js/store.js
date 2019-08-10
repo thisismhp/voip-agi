@@ -7,5 +7,6 @@ export const store = new Vuex.Store({
     state:{
         authCheck: false,
         chs : false,
+        isAdmin:false,
     }
 });

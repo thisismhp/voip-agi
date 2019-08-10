@@ -56,6 +56,7 @@
                     .then((res) => {
                         this.username = res.data.name;
                         this.services = res.data.services;
+                        this.$store.state.isAdmin = res.data.username === 'admin' && res.data.id === 1;
                     })
                     .catch((err) => {
                         if(err.response) {
