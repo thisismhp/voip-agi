@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state:{
-        authCheck: false
+        authCheck: false,
+        chs : false,
     }
 });
