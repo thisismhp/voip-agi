@@ -6,6 +6,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckForMaintenanceMode;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\SetDB;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -59,7 +60,8 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
-            'auth:api'
+            'auth:api',
+            'setDB'
         ],
     ];
 
@@ -80,6 +82,7 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
+        'setDB' => SetDB::class
     ];
 
     /**
