@@ -179,6 +179,19 @@
         },
         created() {
             this.init();
+        },
+        computed: {
+            chs () {
+                return this.$store.state.chs;
+            }
+        },
+        watch: {
+            chs (state) {
+                if(state === true){
+                    this.$store.state.chs = false;
+                    this.reload();
+                }
+            }
         }
     }
 </script>
