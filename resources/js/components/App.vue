@@ -29,7 +29,11 @@
         methods:{
             init(){
                 axios.get('/api/access')
-                    .then(() => {
+                    .then((res) => {
+                        let services = res.data.services;
+                        if(services[0] !== null){
+                            window.axios.defaults.headers.common['serviceid'] = services[0].id;
+                        }
                         this.loading = false;
                         this.loadFailed = false;
                         this.$store.state.authCheck = true;
