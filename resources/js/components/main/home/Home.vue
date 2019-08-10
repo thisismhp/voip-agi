@@ -170,7 +170,12 @@
                         this.err(err)
                     })
                 ;
-            }
+            },
+            reload(){
+                this.loading = true;
+                this.loadFailed = false;
+                this.init();
+            },
         },
         created() {
             this.init();
