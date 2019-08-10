@@ -14,6 +14,8 @@ class CheckAccessController extends Controller
      */
     public function __invoke()
     {
-        return new Response(auth()->user());
+        $user = auth()->user();
+        $user->services;
+        return new Response($user);
     }
 }
