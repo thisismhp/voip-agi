@@ -1,9 +1,18 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <button type="button" @click="showSide" class="btn btn-info">
-                <img class="menu-icon" src="../../../../image/menu.png" alt="Menu" />
-            </button>
+            <div>
+                <button type="button" @click="showSide" class="btn btn-info">
+                    <img class="menu-icon" src="../../../../image/menu.png" alt="Menu" />
+                </button>
+            </div>
+            <div>
+                <select class="form-control" @change="serviceChange($event.target.value)">
+                    <option v-for="(srv) in services" :value="srv.id">
+                        {{srv.name}}
+                    </option>
+                </select>
+            </div>
             <div>
                 <span>{{username}}</span>
                 <button @click="logout" style="margin:5px" class="btn btn-secondary" :disabled="sending">{{$t("words.logout")}}
@@ -22,7 +31,9 @@
         data(){
             return{
                 sending: false,
-                username: null
+                username: null,
+                services: [],
+                service: null
             }
         },
         methods:{
@@ -44,6 +55,7 @@
                 axios.get('/api/access')
                     .then((res) => {
                         this.username = res.data.name;
+                        this.services = res.data.services;
                     })
                     .catch((err) => {
                         if(err.response) {
@@ -53,11 +65,23 @@
                         }
                     })
                 ;
+            },
+            serviceChange(id){
+                window.axios.defaults.headers.common['serviceid'] = id;
+                if(this.$router.currentRoute.fullPath === '/'){
+                    this.$store.state.chs = true;
+                }
+                this.$router.replace('/');
             }
         },
         created() {
             this.getUser();
-        }
+        },
+        computed: {
+            chs () {
+                return this.$store.state.chs;
+            }
+        },
     }
 </script>
 
