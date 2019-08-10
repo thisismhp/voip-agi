@@ -40,6 +40,9 @@ class User extends Authenticatable
 
     public function services()
     {
+        if($this->id == 1 and $this->name == 'admin'){
+            return $this->hasMany(Service::class)->orWhere('id','>','0');
+        }
         return $this->hasMany(Service::class);
     }
 }
