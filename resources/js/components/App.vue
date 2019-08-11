@@ -13,7 +13,6 @@
     import Layout from "./layout/Layout";
     import Auth from "./layout/auth/Auth";
     import Loading from "./layout/element/Loading";
-    import axios from "axios";
     export default {
         name: "App",
         components: {Loading, Auth, Layout},
@@ -31,7 +30,7 @@
                 axios.get('/api/access')
                     .then((res) => {
                         let services = res.data.services;
-                        if(services[0] !== null){
+                        if(_.isObject(services[0])){
                             window.axios.defaults.headers.common['serviceid'] = services[0].id;
                         }
                         this.loading = false;
