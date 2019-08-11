@@ -24,6 +24,7 @@ class CreateServicesTable extends Migration
             $table->bigInteger('ws_update_interval');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
