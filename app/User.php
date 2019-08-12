@@ -11,6 +11,7 @@ use Laravel\Passport\HasApiTokens;
  * @property mixed username
  * @property string name
  * @property string password
+ * @property mixed id
  */
 class User extends Authenticatable
 {
@@ -47,5 +48,15 @@ class User extends Authenticatable
             return $this->hasMany(Service::class)->orWhere('id','>','0');
         }
         return $this->hasMany(Service::class);
+    }
+
+    public function isAdmin()
+    {
+        ($this->id == 1 and $this->username == 'admin');
+    }
+
+    public function serviceOwner(Service $service)
+    {
+        return $this->isAdmin() or  $service->user_id == $this->id;
     }
 }
