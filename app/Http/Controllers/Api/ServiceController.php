@@ -10,13 +10,22 @@ use Illuminate\Http\Response;
 class ServiceController extends Controller
 {
     /**
+     * ServiceController constructor.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Service::class);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
      */
     public function index()
     {
-        return new Response(Service::all());
+        $services = $this->user()->services;
+        return new Response($services);
     }
 
     /**
