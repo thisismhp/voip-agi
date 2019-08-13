@@ -18,6 +18,7 @@ class CreateServicesTable extends Migration
             $table->string('name',250);
             $table->char('m_line',50);
             $table->char('w_line',50);
+            $table->tinyInteger('is_active');
             $table->string('ws_address',250);
             $table->string('ws_username',250);
             $table->string('ws_password',250);
