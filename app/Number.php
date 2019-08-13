@@ -20,7 +20,7 @@ class Number extends Model
 
     protected $fillable = ['phone_number_type_id','phone_number','charge_type_id','is_active'];
 
-    public function setNumberAttribute($value)
+    public function setIsActiveAttribute($value)
     {
         if($value == 'true'){
             return 1;
