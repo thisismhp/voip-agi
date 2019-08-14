@@ -8,6 +8,7 @@ if (request()->expectsJson()) {
         Route::patch('logout', 'LogoutController');
         Route::apiResource('customer', 'CustomerController');
         Route::apiResource('service', 'ServiceController');
+        Route::apiResource('user', 'UserController');
         Route::post('charge', 'ChargeController');
         Route::post('check_charge', 'CheckChargeController');
         Route::post('cmt', 'CMTController');
