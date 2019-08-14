@@ -27,13 +27,4 @@ class Service extends Model
         'f_customer_welcome','f_customer_menu_start','f_customer_no_charge','f_customer_inactive','f_demo_welcome','f_demo_menu_start',
         'f_demo_no_charge','f_inactive','f_numbers'
     ];
-
-    public function setIsActiveAttribute($value)
-    {
-        if($value == 'true'){
-            return 1;
-        }else{
-            return 0;
-        }
-    }
 }
