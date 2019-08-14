@@ -170,6 +170,7 @@
                             ws_update_interval:null,
                             user_id:null,
                         };
+                        this.$store.state.crs = true;
                         this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
                     })
                     .catch(err => {

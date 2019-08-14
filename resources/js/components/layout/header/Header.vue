@@ -57,6 +57,9 @@
                         this.username = res.data.name;
                         this.services = res.data.services;
                         this.$store.state.isAdmin = res.data.username === 'admin' && res.data.id === 1;
+                        if(_.isObject(this.services[0])){
+                            window.axios.defaults.headers.common['serviceid'] = this.services[0].id;
+                        }
                     })
                     .catch((err) => {
                         if(err.response) {
@@ -81,8 +84,19 @@
         computed: {
             chs () {
                 return this.$store.state.chs;
+            },
+            crs (){
+                return this.$store.state.crs;
             }
         },
+        watch: {
+            crs (state) {
+                if(state === true){
+                    this.$store.state.chs = false;
+                    this.getUser();
+                }
+            }
+        }
     }
 </script>
 
