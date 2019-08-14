@@ -53,7 +53,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        ($this->id == 1 and $this->username == 'admin');
+        return ($this->id == 1 and $this->username == 'admin');
     }
 
     public function serviceOwner(Service $service)
