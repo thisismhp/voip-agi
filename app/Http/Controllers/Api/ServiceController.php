@@ -50,12 +50,8 @@ class ServiceController extends Controller
         $service->ws_password = $request->input('ws_password');
         $service->ws_update_interval = $request->input('ws_update_interval');
         $service->user_id = $request->input('user_id');
-//        $service->name = $request->input('name');
-//        $service->name = $request->input('name');
-//        $service->name = $request->input('name');
-//        $service->name = $request->input('name');
-//        $service->name = $request->input('name');
-        $service->save();
+//        $service->save();
+        $request->file('f_customer_welcome')->storeAs("/services/1","f_customer_welcome.".$request->file('f_customer_welcome')->getClientOriginalExtension());
         return new Response($service);
     }
 
@@ -97,6 +93,13 @@ class ServiceController extends Controller
         return new Response(['message' => 'deleted']);
     }
 
+    /**
+     * Validate request
+     *
+     * @param Request $request
+     * @param bool $isUpdate
+     * @throws ValidationException
+     */
     private function validateRequest(Request $request, $isUpdate = false)
     {
         $rules = [
@@ -109,15 +112,15 @@ class ServiceController extends Controller
             'ws_password' => ['required','string','max:250'],
             'ws_update_interval' => ['required','integer','max:1000000'],
             'user_id' => ['required',Rule::exists('users','id')->whereNull('deleted_at')],
-            'f_customer_welcome' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
-            'f_customer_menu_start' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
-            'f_customer_no_charge' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
-            'f_customer_inactive' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
-            'f_demo_welcome' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
-            'f_demo_menu_start' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
-            'f_demo_no_charge' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
-            'f_inactive' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
-            'f_numbers' => [($isUpdate)?'nullable':'required','mimes:zip']
+            'f_customer_welcome' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
+//            'f_customer_menu_start' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
+//            'f_customer_no_charge' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
+//            'f_customer_inactive' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
+//            'f_demo_welcome' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
+//            'f_demo_menu_start' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
+//            'f_demo_no_charge' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
+//            'f_inactive' => [($isUpdate)?'nullable':'required','mimes:mp3,wav'],
+//            'f_numbers' => [($isUpdate)?'nullable':'required','mimes:zip']
 
         ];
         $request->validate($rules);
