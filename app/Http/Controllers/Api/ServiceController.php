@@ -6,8 +6,10 @@ use App\Service;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use mysqli;
 
 class ServiceController extends Controller
 {
@@ -51,11 +53,21 @@ class ServiceController extends Controller
         $service->ws_update_interval = $request->input('ws_update_interval');
         $service->user_id = $request->input('user_id');
         $service->save();
+        $conn = new mysqli(config("database.connections.service.host"), config("database.connections.service.username"), config("database.connections.service.password"));
+        if ($conn->connect_error) {
+            abort(500);
+        }
+        $conn->set_charset("utf8");
+        $dbname = "`service-1`";
+        $sql = "CREATE DATABASE $dbname CHARACTER SET utf8 COLLATE utf8_general_ci";
+        if ($conn->query($sql) === TRUE) {
+            Artisan::call('init',['db' => 'service-1']);
+        }
 //        $dPath = "/services/$service->id";
 //        $this->storeFiles($request, $dPath, [
 //            'f_customer_welcome','f_customer_menu_start','f_customer_no_charge','f_customer_inactive',
 //            'f_demo_welcome','f_demo_menu_start', 'f_demo_no_charge','f_inactive']);
-        return new Response($service);
+        return new Response(1);
     }
 
     /**
