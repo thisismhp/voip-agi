@@ -58,10 +58,10 @@ class ServiceController extends Controller
             abort(500);
         }
         $conn->set_charset("utf8");
-        $dbname = "`service-1`";
-        $sql = "CREATE DATABASE $dbname CHARACTER SET utf8 COLLATE utf8_general_ci";
+        $dbname = "service-$service->id";
+        $sql = "CREATE DATABASE `$dbname` CHARACTER SET utf8 COLLATE utf8_general_ci";
         if ($conn->query($sql) === TRUE) {
-            Artisan::call('init',['db' => 'service-1']);
+            Artisan::call('init',['db' => $dbname]);
         }
 //        $dPath = "/services/$service->id";
 //        $this->storeFiles($request, $dPath, [
