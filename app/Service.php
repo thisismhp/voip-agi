@@ -29,9 +29,14 @@ class Service extends Model
         'f_demo_no_charge','f_inactive','f_numbers'
     ];
 
+    /**
+     * Return current service
+     *
+     * @return mixed
+     */
     public static function currentService()
     {
-        $serviceID = (int)explode('-', config('database.connections.service.database'))[1];
+        $serviceID = request()->header('serviceid');
         return self::find($serviceID);
     }
 }
