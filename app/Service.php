@@ -28,4 +28,10 @@ class Service extends Model
         'f_customer_welcome','f_customer_menu_start','f_customer_no_charge','f_customer_inactive','f_demo_welcome','f_demo_menu_start',
         'f_demo_no_charge','f_inactive','f_numbers'
     ];
+
+    public static function currentService()
+    {
+        $serviceID = (int)explode('-', config('database.connections.service.database'))[1];
+        return self::find($serviceID);
+    }
 }
