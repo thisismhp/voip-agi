@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use SoapClient;
+use SoapFault;
 
 class Symbol extends Model
 {
@@ -17,8 +19,29 @@ class Symbol extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    public static function storeSym($symbols)
+    /**
+     * Store or update symbols of a service
+     *
+     * @param Service|null $serv
+     * @throws SoapFault
+     *
+     * @return void
+     */
+    public static function storeSym(Service $serv = null)
     {
+        if($serv != null){
+            $service = $serv;
+            config()->set(['database.connections.service.database' => "service-$service->id"]);
+        }else{
+            $service = Service::currentService();
+        }
+        try{
+            $soapClient = new SoapClient($service->ws_address);
+            $rowData = $soapClient->GEtData(['userName' => $service->ws_username,'passWord' => $service->ws_password]);
+            $symbols = json_decode($rowData->getDataResult);
+        }catch (SoapFault $e){
+            throw $e;
+        }
         foreach ((array)$symbols as $symbol) {
             $item = ((array)$symbol);
             if($item['symbolId'] != 0){
@@ -47,5 +70,6 @@ class Symbol extends Model
                 }
             }
         }
+        $service->update(['ws_update_at' => now()]);
     }
 }
