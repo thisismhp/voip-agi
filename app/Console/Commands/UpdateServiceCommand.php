@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Service;
+use App\Symbol;
 use Illuminate\Console\Command;
+use SoapFault;
 
 class UpdateServiceCommand extends Command
 {
@@ -11,7 +14,7 @@ class UpdateServiceCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'update';
 
     /**
      * The console command description.
@@ -34,9 +37,15 @@ class UpdateServiceCommand extends Command
      * Execute the console command.
      *
      * @return mixed
+     * @throws SoapFault
      */
     public function handle()
     {
-        //
+        $services = Service::all();
+        foreach ($services as $service) {
+            Symbol::storeSym($service);
+        }
+        $this->info('Everything is update!');
+        return true;
     }
 }
