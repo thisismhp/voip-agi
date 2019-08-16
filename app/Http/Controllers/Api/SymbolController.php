@@ -61,18 +61,6 @@ class SymbolController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        $symbol = Symbol::findOrFail($id);
-        return new Response($symbol);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param Request $request
