@@ -23,11 +23,7 @@ class Service extends Model
 
     protected $connection = "manage";
 
-    protected $fillable = [
-        'name','m_line','w_line','is_active','ws_username','ws_username','ws_password','ws_update_interval','user_id',
-        'f_customer_welcome','f_customer_menu_start','f_customer_no_charge','f_customer_inactive','f_demo_welcome','f_demo_menu_start',
-        'f_demo_no_charge','f_inactive','f_numbers'
-    ];
+    protected $fillable = ['name','m_line','w_line','is_active','ws_username','ws_username','ws_password','ws_update_interval','ws_update_at','user_id'];
 
     /**
      * Return current service
