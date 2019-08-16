@@ -38,25 +38,8 @@ class SymbolController extends Controller
         }catch (SoapFault $e){
             throw $e;
         }
-        foreach ((array)$symbols as $symbol) {
-             $item = ((array)$symbol);
-            if($item['symbolId'] != 0 and Symbol::where('symbolId',$item['symbolId'])->count() == 0){
-                $newSymbol = new Symbol();
-                $newSymbol->symbolId = $item['symbolId'];
-                $newSymbol->fName = $item['fName'];
-                $newSymbol->eName = $item['eName'];
-                $newSymbol->buyPriceFormatted = $item['buyPriceFormatted'];
-                $newSymbol->sellPriceFormatted = $item['sellPriceFormatted'];
-                $newSymbol->transPriceFormatted = $item['transPriceFormatted'];
-                $newSymbol->buysellDiff = $item['buysellDiff'];
-                $newSymbol->vol = $item['vol'];
-                $newSymbol->volTick = $item['volTick'];
-                $newSymbol->direction = $item['direction'];
-                $newSymbol->transType = $item['transType'];
-                $newSymbol->dsabt = $item['dsabt'];
-                $newSymbol->save($item);
-            }
-        }
+        Symbol::storeSym($symbols);
+        $service->update(['ws_update_at' => now()]);
         return new Response(Symbol::all());
     }
 
