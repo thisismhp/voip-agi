@@ -23,17 +23,9 @@ class CreateServicesTable extends Migration
             $table->string('ws_username',250);
             $table->string('ws_password',250);
             $table->bigInteger('ws_update_interval');
+            $table->dateTime('ws_update_at')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-//            $table->longText('f_customer_welcome');
-//            $table->longText('f_customer_menu_start');
-//            $table->longText('f_customer_no_charge');
-//            $table->longText('f_customer_inactive');
-//            $table->longText('f_demo_welcome');
-//            $table->longText('f_demo_menu_start');
-//            $table->longText('f_demo_no_charge');
-//            $table->longText('f_inactive');
-//            $table->longText('f_numbers');
             $table->softDeletes();
             $table->timestamps();
         });
