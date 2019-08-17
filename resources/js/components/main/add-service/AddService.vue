@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="i-service-ws_password">رمز عبور وب سرویس</label>
-                        <input @keyup.enter="save" type="text" v-model="serviceData.ws_password" id="i-service-ws_password" class="form-control" />
+                        <input @keyup.enter="save" type="password" v-model="serviceData.ws_password" id="i-service-ws_password" class="form-control" />
                     </div>
                 </div>
                 <div class="form-row">
