@@ -9,5 +9,6 @@ export const store = new Vuex.Store({
         chs : false,
         crs : false,
         isAdmin:false,
+        hasService:false
     }
 });
