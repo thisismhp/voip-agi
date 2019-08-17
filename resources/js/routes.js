@@ -14,10 +14,12 @@ import AddService from './components/main/add-service/AddService'
 import ServicesList from './components/main/services-list/ServicesList'
 import AddServiceGroups from './components/main/add-service-groups/AddServiceGroups'
 import SymbolsList from './components/main/symbols-list/SymbolsList'
+import UserProfile from "./components/main/user-profile/UserProfile";
 
 export const routes = [
     {path:'*', component:NotFound},
     {path:'/', component:Home},
+    {path:'/my', component:UserProfile},
     // Customer
     {path:'/add-customer', component:AddCustomer},
     {path:'/customer-list', component:CustomersList},
