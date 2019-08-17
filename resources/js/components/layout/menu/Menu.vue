@@ -5,24 +5,24 @@
                 <img class="menu-icon" src="../../../../image/menu.png" alt="Menu" />
             </button>
             <div id="customer-mng-links">
-                <router-link @click.native="menuSlideHide" to="/" active-class="active" exact>{{$t("words.dashboard")}}</router-link>
-                <div class="menu-title">{{$t("words.customersManage")}}</div>
-                <router-link @click.native="menuSlideHide" to="/add-customer" active-class="active">{{$t("words.addCustomer")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/customer-list" active-class="active">{{$t("words.customersList")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/demo-users-list" active-class="active">{{$t("words.demoUsersList")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/charge-one-customer" active-class="active">{{$t("words.ioc")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/charge-one-demo-user" active-class="active">{{$t("words.iod")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/charge-multi-customer" active-class="active">{{$t("words.imc")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/charge-multi-demo-user" active-class="active">{{$t("words.imd")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/no-charge-checked-list" active-class="active">{{$t("words.cNoChargeList")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/no-charge-unchecked-list" active-class="active">{{$t("words.ucNoChargeList")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/" active-class="active" exact>{{$t("words.dashboard")}}</router-link>
+                <div v-if="hasService" class="menu-title">{{$t("words.customersManage")}}</div>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/add-customer" active-class="active">{{$t("words.addCustomer")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/customer-list" active-class="active">{{$t("words.customersList")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/demo-users-list" active-class="active">{{$t("words.demoUsersList")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/charge-one-customer" active-class="active">{{$t("words.ioc")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/charge-one-demo-user" active-class="active">{{$t("words.iod")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/charge-multi-customer" active-class="active">{{$t("words.imc")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/charge-multi-demo-user" active-class="active">{{$t("words.imd")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/no-charge-checked-list" active-class="active">{{$t("words.cNoChargeList")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/no-charge-unchecked-list" active-class="active">{{$t("words.ucNoChargeList")}}</router-link>
             </div>
             <div id="customer-serv-links">
-                <div class="menu-title">{{$t("words.servicesManage")}}</div>
+                <div v-if="hasService || isAdmin" class="menu-title">{{$t("words.servicesManage")}}</div>
                 <router-link v-if="isAdmin" @click.native="menuSlideHide" to="/add-service" active-class="active" exact>{{$t("words.addService")}}</router-link>
                 <router-link v-if="isAdmin" @click.native="menuSlideHide" to="/services-list" active-class="active">{{$t("words.servicesList")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/add-service-groups" active-class="active">{{$t("words.addServiceGroup")}}</router-link>
-                <router-link @click.native="menuSlideHide" to="/symbols-list" active-class="active">{{$t("words.symbolsList")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/add-service-groups" active-class="active">{{$t("words.addServiceGroup")}}</router-link>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/symbols-list" active-class="active">{{$t("words.symbolsList")}}</router-link>
             </div>
         </nav>
     </div>
@@ -59,6 +59,9 @@
         computed: {
             isAdmin () {
                 return this.$store.state.isAdmin;
+            },
+            hasService () {
+                return this.$store.state.hasService;
             }
         },
     }
