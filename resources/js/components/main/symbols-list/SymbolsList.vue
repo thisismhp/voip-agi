@@ -1,5 +1,6 @@
 <template>
     <div>
+        <DialogMessage :show="dialogVars.show" :title="dialogVars.title" :content="dialogVars.content" :mode="dialogVars.mode" :show-time="dialogVars.showTime" @show="dialogVars.show = false"/>
         <Loading v-if="loading" />
         <div class="failed center-align" v-else-if="loadFailed">
             <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
@@ -21,23 +22,48 @@
                         <th>فایل(مرد)</th>
                         <th>فایل(زن)</th>
                         <th>واحد</th>
-                        <th>قیمت فروش</th>
-                        <th>قیمت خرید</th>
+                        <th>وضعیت</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(symbol, index) in symbols">
                         <td>{{index + 1}}</td>
-                        <td>{{symbol.fName}}</td>
+                        <td class="pointer-cursor" @click="showSymDialog(symbol,index)">{{symbol.fName}}</td>
                         <td>{{symbol.symbolId}}</td>
                         <td>{{(symbol.m_file !== null)?symbol.m_file:'ندارد'}}</td>
                         <td>{{(symbol.w_file !== null)?symbol.w_file:'ندارد'}}</td>
                         <td>{{(symbol.unit !== null)?symbol.unit.name:'ندارد'}}</td>
-                        <td>{{symbol.sellPriceFormatted}}</td>
-                        <td>{{symbol.buyPriceFormatted}}</td>
+                        <td>{{(symbol.is_active)?'فعال':'غیرفعال'}}</td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div>
+            <div class="modal fade" id="cmt-modal" tabindex="-1" role="dialog" aria-labelledby="myMessage" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span style="font-size: 4vh;" aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" id="exampleModalLabel">ویرایش</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div>
+
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-row">
+                                <button @click="" class="btn btn-success" :disabled="sendingSym">ثبت
+                                    <span v-if="sendingSym" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -45,14 +71,17 @@
 
 <script>
     import Loading from "../../layout/element/Loading";
+    import DialogMessage from "../../layout/element/DialogMessage";
+    import {mixins} from "../../../mixins";
     export default {
         name: "SymbolsList",
-        components: {Loading},
+        components: {DialogMessage, Loading},
         data(){
             return {
                 loading: true,
                 sending: false,
                 loadFailed:false,
+                sendingSym:false,
                 symbols:[],
                 dialogVars:{
                     title:'',
@@ -60,7 +89,13 @@
                     mode:'',
                     show:false,
                     showTime:2000
-
+                },
+                symbolData:{
+                    id:null,
+                    index:null,
+                    m_file:null,
+                    w_file:null,
+                    is_active:null,
                 },
             }
         },
@@ -98,6 +133,14 @@
                 this.loading = true;
                 this.loadFailed = false;
                 this.getSymbols();
+            },
+            showSymDialog(symbol,index){
+                this.symbolData.id = symbol.id;
+                this.symbolData.m_file = symbol.m_file;
+                this.symbolData.w_file = symbol.w_file;
+                this.symbolData.is_active = symbol.is_active;
+                this.symbolData.index = index;
+                $('#cmt-modal').modal('show');
             },
             getSymbols(){
                 axios.get('api/symbol')
