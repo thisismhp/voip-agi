@@ -7,14 +7,14 @@
                 </button>
             </div>
             <div>
-                <select class="form-control" @change="serviceChange($event.target.value)">
+                <select v-if="hasService" class="form-control" @change="serviceChange($event.target.value)">
                     <option v-for="(srv) in services" :value="srv.id">
                         {{srv.name}}
                     </option>
                 </select>
             </div>
             <div>
-                <span>{{username}}</span>
+                <router-link to="/my"><span>{{username}}</span></router-link>
                 <button @click="logout" style="margin:5px" class="btn btn-secondary" :disabled="sending">{{$t("words.logout")}}
                     <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </button>
@@ -43,6 +43,10 @@
                 axios.patch('/api/logout')
                     .then(() => {
                         this.$store.state.authCheck = false;
+                        this.$store.state.chs = false;
+                        this.$store.state.crs = false;
+                        this.$store.state.isAdmin = false;
+                        this.$store.state.hasService = false;
                         window.axios.defaults.headers.common['Authorization'] = null;
                         this.sending = false;
                     })
@@ -59,6 +63,13 @@
                         this.$store.state.isAdmin = res.data.username === 'admin' && res.data.id === 1;
                         if(_.isObject(this.services[0])){
                             window.axios.defaults.headers.common['serviceid'] = this.services[0].id;
+                            this.$store.state.hasService = true;
+                        }else {
+                            if(this.isAdmin){
+                                this.$router.replace('/add-service');
+                            }else {
+                                this.$router.replace('/my');
+                            }
                         }
                     })
                     .catch((err) => {
@@ -87,6 +98,12 @@
             },
             crs (){
                 return this.$store.state.crs;
+            },
+            hasService (){
+                return this.$store.state.hasService;
+            },
+            isAdmin () {
+                return this.$store.state.isAdmin;
             }
         },
         watch: {
