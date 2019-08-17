@@ -6,6 +6,11 @@
         </div>
         <div v-else-if="!loading" id="symbol-list">
             <h3>لیست نماد ها</h3>
+            <div class="form-row tiny-margin-b">
+                <button @click="update" class="btn btn-success" :disabled="sending">به روزرسانی نماد ها
+                    <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
             <div>
                 <table class="table table-striped">
                     <thead>
@@ -46,33 +51,18 @@
         data(){
             return {
                 loading: true,
+                sending: false,
                 loadFailed:false,
-                symbols:[]
+                symbols:[],
+                dialogVars:{
+                    title:'',
+                    content:'',
+                    mode:'',
+                    show:false,
+                    showTime:2000
+
+                },
             }
-        },
-        err(err){
-            this.loadFailed = true;
-            this.loading = false;
-            if(err.response.status === 401){
-                this.$store.state.authCheck = false;
-            }
-            return err;
-        },
-        reload(){
-            this.loading = true;
-            this.loadFailed = false;
-            this.getCustomers();
-        },
-        getCustomers(){
-            axios.get('api/customer')
-                .then(res => {
-                    this.customers = res.data;
-                    this.loading = false;
-                })
-                .catch(err => {
-                    this.err(err)
-                })
-            ;
         },
         methods:{
             err(err){
@@ -83,10 +73,31 @@
                 }
                 return err;
             },
+            errorHandling(err){
+                if(err.response){
+                    if(err.response.status === 422){
+                        this.showDialog(true, "ثبت ناموفق",mixins.parseValidation(err.response),'danger',0);
+                    }else if(err.response.status === 401){
+                        this.$store.state.authCheck = false;
+                    }
+                    else{
+                        this.showDialog(true, "خطای سرور",'مشکلی در سرور به وجود آمده است','danger',0);
+                    }
+                }else {
+                    this.showDialog(true, "خطای ارتباط با سرور","ارتباط با سرور انجام نشد",'danger',0);
+                }
+            },
+            showDialog(show, title, content, mode, showTime){
+                this.dialogVars.show=show;
+                this.dialogVars.title=title;
+                this.dialogVars.content=content;
+                this.dialogVars.mode=mode;
+                this.dialogVars.showTime=showTime;
+            },
             reload(){
                 this.loading = true;
                 this.loadFailed = false;
-                this.getCustomers();
+                this.getSymbols();
             },
             getSymbols(){
                 axios.get('api/symbol')
@@ -97,6 +108,20 @@
                     })
                     .catch(err => {
                         this.err(err)
+                    })
+                ;
+            },
+            update() {
+                this.sending = true;
+                axios.post('api/symbol')
+                    .then(res => {
+                        this.symbols = res.data;
+                        this.sending = false;
+
+                    })
+                    .catch(() => {
+                        this.sending = false;
+                        this.showDialog(true, "خطای ارتباط با سرور","ارتباط با سرور انجام نشد",'danger',0);
                     })
                 ;
             }
