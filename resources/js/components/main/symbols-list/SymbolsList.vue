@@ -26,9 +26,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(symbol, index) in symbols">
+                    <tr v-for="(symbol, index) in symbols" @click="showSymDialog(symbol,index)" class="pointer-cursor">
                         <td>{{index + 1}}</td>
-                        <td class="pointer-cursor" @click="showSymDialog(symbol,index)">{{symbol.fName}}</td>
+                        <td>{{symbol.fName}}</td>
                         <td>{{symbol.symbolId}}</td>
                         <td>{{(symbol.m_file !== null)?symbol.m_file:'ندارد'}}</td>
                         <td>{{(symbol.w_file !== null)?symbol.w_file:'ندارد'}}</td>
@@ -51,8 +51,15 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-row">
-                                <div>
-
+                                <div class="form-group col-md-1">
+                                    <label for="i-sym-ia">فعال</label>
+                                    <input type="checkbox" v-model="symbolData.is_active" id="i-sym-ia" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="i-sym-fm">فایل العان (مرد)</label>
+                                    <input type="file" accept=".mp3"  id="i-sym-fm" />
                                 </div>
                             </div>
                             <br />
@@ -136,8 +143,8 @@
             },
             showSymDialog(symbol,index){
                 this.symbolData.id = symbol.id;
-                this.symbolData.m_file = symbol.m_file;
-                this.symbolData.w_file = symbol.w_file;
+                this.symbolData.m_file = null;
+                this.symbolData.w_file = null;
                 this.symbolData.is_active = symbol.is_active;
                 this.symbolData.index = index;
                 $('#cmt-modal').modal('show');
