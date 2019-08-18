@@ -17,8 +17,8 @@ class CreateSymbolsTable extends Migration
             $table->bigIncrements('id');
             $table->text('symbolId')->nullable();
             $table->tinyInteger('is_active')->default(1);
-            $table->longText('m_file')->nullable();
-            $table->longText('w_file')->nullable();
+            $table->tinyInteger('m_file')->default(0);
+            $table->tinyInteger('w_file')->default(0);
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->foreign('unit_id')->references('id')->on(config('database.connections.manage.database').'.units');
             $table->text('fName')->nullable();
