@@ -63,10 +63,18 @@ class ServiceController extends Controller
         if ($conn->query($sql) === TRUE) {
             Artisan::call('init',['db' => $dbname]);
         }
-//        $dPath = "/services/$service->id";
-//        $this->storeFiles($request, $dPath, [
-//            'f_customer_welcome','f_customer_menu_start','f_customer_no_charge','f_customer_inactive',
-//            'f_demo_welcome','f_demo_menu_start', 'f_demo_no_charge','f_inactive']);
+        $dPath = "/services/$service->id";
+        $this->storeFiles($request, $dPath, [
+            'm_customer_welcome','w_customer_welcome',
+            'm_customer_menu_start','w_customer_menu_start',
+            'm_customer_no_charge','w_customer_no_charge',
+            'm_customer_inactive','w_customer_inactive',
+            'm_demo_welcome','w_demo_welcome',
+            'm_demo_menu_start','w_demo_menu_start',
+            'm_demo_no_charge','w_demo_no_charge',
+            'm_inactive','w_inactive',
+            'm_numbers','w_numbers',
+        ]);
         return new Response(1);
     }
 
