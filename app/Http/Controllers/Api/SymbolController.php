@@ -43,8 +43,8 @@ class SymbolController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'is_active' => 'required|boolean',
-            'unit_id' => 'required|exists:manage.units,id',
+            'is_active' => 'nullable|boolean',
+            'unit_id' => 'nullable|exists:manage.units,id',
             'm_file' => 'nullable|mimetypes:audio/mpeg',
             'w_file' => 'nullable|mimetypes:audio/mpeg'
         ]);
