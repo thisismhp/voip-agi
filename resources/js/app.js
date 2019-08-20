@@ -5,10 +5,12 @@ import {routes} from "./routes";
 import {store} from "./store";
 import VueI18n from 'vue-i18n';
 import {messages} from "./messages";
+import BootstrapVue from "bootstrap-vue";
 
 require('./bootstrap');
 
 window.Vue = require('vue');
+Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 Vue.use(Vuex);
