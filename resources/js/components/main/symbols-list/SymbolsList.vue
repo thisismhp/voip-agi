@@ -30,9 +30,9 @@
                         <td>{{index + 1}}</td>
                         <td>{{symbol.fName}}</td>
                         <td>{{symbol.symbolId}}</td>
-                        <td>{{(symbol.m_file !== null)?symbol.m_file:'ندارد'}}</td>
-                        <td>{{(symbol.w_file !== null)?symbol.w_file:'ندارد'}}</td>
-                        <td>{{(symbol.unit !== null)?symbol.unit.name:'ندارد'}}</td>
+                        <td>{{(symbol.m_file !== 0)?'ثبت شده':'ثبت نشده'}}</td>
+                        <td>{{(symbol.w_file !== 0)?'ثبت شده':'ثبت نشده'}}</td>
+                        <td>{{(symbol.unit !== null)?symbol.unit.name:'ثبت نشده'}}</td>
                         <td>{{(symbol.is_active)?'فعال':'غیرفعال'}}</td>
                     </tr>
                     </tbody>
@@ -59,12 +59,29 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="i-sym-fm">فایل العان (مرد)</label>
-                                    <input type="file" accept=".mp3"  id="i-sym-fm" />
+                                    <b-form-file v-model="symbolData.m_file" id="i-sym-fm" accept=".mp3" plain/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="i-sym-wm">فایل العان (زن)</label>
+                                    <b-form-file v-model="symbolData.w_file" id="i-sym-wm" accept=".mp3" plain/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="i-sym-unit">واحد</label>
+                                    <select v-model="symbolData.unit_id" id="i-sym-unit" class="form-control" >
+                                        <option value="null" disabled selected>انتخاب کنید</option>
+                                        <option v-for="unit in units" v-bind:value="unit.id">
+                                            {{unit.name}}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                             <br />
                             <div class="form-row">
-                                <button @click="" class="btn btn-success" :disabled="sendingSym">ثبت
+                                <button @click="updateSym" class="btn btn-success" :disabled="sendingSym">ثبت
                                     <span v-if="sendingSym" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </button>
                             </div>
@@ -80,6 +97,7 @@
     import Loading from "../../layout/element/Loading";
     import DialogMessage from "../../layout/element/DialogMessage";
     import {mixins} from "../../../mixins";
+    import axios from 'axios';
     export default {
         name: "SymbolsList",
         components: {DialogMessage, Loading},
@@ -90,6 +108,7 @@
                 loadFailed:false,
                 sendingSym:false,
                 symbols:[],
+                units:[],
                 dialogVars:{
                     title:'',
                     content:'',
@@ -103,6 +122,7 @@
                     m_file:null,
                     w_file:null,
                     is_active:null,
+                    unit_id:null
                 },
             }
         },
@@ -146,6 +166,7 @@
                 this.symbolData.m_file = null;
                 this.symbolData.w_file = null;
                 this.symbolData.is_active = symbol.is_active;
+                this.symbolData.unit_id = (symbol.unit !== null)?symbol.unit.id:null;
                 this.symbolData.index = index;
                 $('#cmt-modal').modal('show');
             },
@@ -153,8 +174,15 @@
                 axios.get('api/symbol')
                     .then(res => {
                         this.symbols = res.data;
-                        this.loading = false;
-
+                        axios.get('api/unit')
+                            .then((res) => {
+                                this.units = res.data;
+                                this.loading = false;
+                            })
+                            .catch(() => {
+                                this.err(err)
+                            })
+                        ;
                     })
                     .catch(err => {
                         this.err(err)
@@ -172,6 +200,19 @@
                     .catch(() => {
                         this.sending = false;
                         this.showDialog(true, "خطای ارتباط با سرور","ارتباط با سرور انجام نشد",'danger',0);
+                    })
+                ;
+            },
+            updateSym(){
+                this.sendingSym = true;
+                axios.patch(`api/symbol/${this.symbolData.id}`, this.symbolData)
+                    .then(() => {
+                        this.getSymbols();
+                        $('#cmt-modal').modal('hide');
+                        this.sendingSym = false;
+                    })
+                    .catch(() => {
+                        this.sendingSym = false;
                     })
                 ;
             }
