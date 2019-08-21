@@ -30,10 +30,14 @@
                         <td>{{index + 1}}</td>
                         <td>{{symbol.fName}}</td>
                         <td>{{symbol.symbolId}}</td>
-                        <td>{{(symbol.m_file !== 0)?'ثبت شده':'ثبت نشده'}}</td>
-                        <td>{{(symbol.w_file !== 0)?'ثبت شده':'ثبت نشده'}}</td>
-                        <td>{{(symbol.unit !== null)?symbol.unit.name:'ثبت نشده'}}</td>
-                        <td>{{(symbol.is_active)?'فعال':'غیرفعال'}}</td>
+                        <td v-if="symbol.m_file === 0 || symbol.m_file === null" class="text-danger">ثبت نشده</td>
+                        <td v-else class="text-success">ثبت شده</td>
+                        <td v-if="symbol.w_file === 0 || symbol.w_file === null" class="text-danger">ثبت نشده</td>
+                        <td v-else class="text-success">ثبت شده</td>
+                        <td v-if="symbol.unit !== null" class="text-success">{{symbol.unit.name}}</td>
+                        <td v-else class="text-danger">ثبت شده</td>
+                        <td v-if="symbol.is_active" class="text-success">فعال</td>
+                        <td v-else class="text-danger">غیرفعال</td>
                     </tr>
                     </tbody>
                 </table>
@@ -205,14 +209,30 @@
             },
             updateSym(){
                 this.sendingSym = true;
-                axios.patch(`api/symbol/${this.symbolData.id}`, this.symbolData)
+                const raw = this.symbolData;
+                let formData = new FormData();
+                formData.append('_method', 'PATCH');
+                formData.append('is_active',(raw.is_active === 1 || raw.is_active === true)?1:0);
+                formData.append('unit_id',raw.unit_id);
+                if(raw.m_file !== null){
+                    formData.append('m_file',raw.m_file);
+                }
+                if(raw.w_file !== null){
+                    formData.append('w_file',raw.w_file);
+                }
+                axios.post(`api/symbol/${this.symbolData.id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                     .then(() => {
                         this.getSymbols();
                         $('#cmt-modal').modal('hide');
                         this.sendingSym = false;
                     })
-                    .catch(() => {
+                    .catch((err) => {
                         this.sendingSym = false;
+                        this.errorHandling(err);
                     })
                 ;
             }
