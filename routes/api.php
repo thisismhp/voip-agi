@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 if (request()->expectsJson()) {
     Route::namespace('Api')->group(function () {
+        Route::post('my', 'ChangePasswordController');
         Route::get('access', 'CheckAccessController');
         Route::patch('logout', 'LogoutController');
         Route::apiResource('customer', 'CustomerController');
