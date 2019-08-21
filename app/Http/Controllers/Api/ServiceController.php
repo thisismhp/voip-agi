@@ -63,18 +63,6 @@ class ServiceController extends Controller
         if ($conn->query($sql) === TRUE) {
             Artisan::call('init',['db' => $dbname]);
         }
-        $dPath = "/services/$service->id";
-        $this->storeFiles($request, $dPath, [
-            'm_customer_welcome','w_customer_welcome',
-            'm_customer_menu_start','w_customer_menu_start',
-            'm_customer_no_charge','w_customer_no_charge',
-            'm_customer_inactive','w_customer_inactive',
-            'm_demo_welcome','w_demo_welcome',
-            'm_demo_menu_start','w_demo_menu_start',
-            'm_demo_no_charge','w_demo_no_charge',
-            'm_inactive','w_inactive',
-            'm_numbers','w_numbers',
-        ]);
         return new Response(1);
     }
 
@@ -100,6 +88,7 @@ class ServiceController extends Controller
     public function update(Request $request, $id)
     {
         $service = Service::findOrFail($id);
+        $dPath = "/services/$service->id";
         return new Response([$service,$request]);
     }
 
@@ -135,26 +124,29 @@ class ServiceController extends Controller
             'ws_password' => ['required','string','max:250'],
             'ws_update_interval' => ['required','integer','max:1000000'],
             'user_id' => ['required',Rule::exists('users','id')->whereNull('deleted_at')],
-            'm_customer_welcome' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'w_customer_welcome' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'm_customer_menu_start' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'w_customer_menu_start' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'm_customer_no_charge' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'w_customer_no_charge' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'm_customer_inactive' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'w_customer_inactive' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'm_demo_welcome' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'w_demo_welcome' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'm_demo_menu_start' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'w_demo_menu_start' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'm_demo_no_charge' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'w_demo_no_charge' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'm_inactive' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'w_inactive' => [($isUpdate)?'nullable':'required','mimetypes:audio/mpeg'],
-            'm_numbers' => [($isUpdate)?'nullable':'required','mimes:zip'],
-            'w_numbers' => [($isUpdate)?'nullable':'required','mimes:zip']
-
         ];
+        if($isUpdate){
+            $rules += [
+                'm_customer_welcome' => ['nullable','required','mimetypes:audio/mpeg'],
+                'w_customer_welcome' => ['nullable','required','mimetypes:audio/mpeg'],
+                'm_customer_menu_start' => ['nullable','required','mimetypes:audio/mpeg'],
+                'w_customer_menu_start' => ['nullable','required','mimetypes:audio/mpeg'],
+                'm_customer_no_charge' => ['nullable','required','mimetypes:audio/mpeg'],
+                'w_customer_no_charge' => ['nullable','required','mimetypes:audio/mpeg'],
+                'm_customer_inactive' => ['nullable','required','mimetypes:audio/mpeg'],
+                'w_customer_inactive' => ['nullable','required','mimetypes:audio/mpeg'],
+                'm_demo_welcome' => ['nullable','required','mimetypes:audio/mpeg'],
+                'w_demo_welcome' => ['nullable','required','mimetypes:audio/mpeg'],
+                'm_demo_menu_start' => ['nullable','required','mimetypes:audio/mpeg'],
+                'w_demo_menu_start' => ['nullable','required','mimetypes:audio/mpeg'],
+                'm_demo_no_charge' => ['nullable','required','mimetypes:audio/mpeg'],
+                'w_demo_no_charge' => ['nullable','required','mimetypes:audio/mpeg'],
+                'm_inactive' => ['nullable','required','mimetypes:audio/mpeg'],
+                'w_inactive' => ['nullable','required','mimetypes:audio/mpeg'],
+                'm_numbers' => ['nullable','required','mimes:zip'],
+                'w_numbers' => ['nullable','required','mimes:zip']
+            ];
+        }
         $request->validate($rules);
         try {
             $this->validate($request, $rules);
