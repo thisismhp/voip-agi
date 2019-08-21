@@ -17,7 +17,7 @@
                     <tbody>
                     <tr v-for="(service, index) in services">
                         <td>{{index + 1}}</td>
-                        <td>{{service.name}}</td>
+                        <td><router-link :to="`/service/${service.id}`">{{service.name}}</router-link></td>
 <!--                        <td><router-link :to="'/customer/'+ service.id">{{service.name}}</router-link></td>-->
                     </tr>
                     </tbody>
