@@ -12,6 +12,7 @@ import NoChargeChecked from './components/main/no-charge-checked-list/NoChargeCh
 import NoChargeUnchecked from './components/main/no-charge-unchecked-list/NoChargeUnchecked'
 import AddService from './components/main/add-service/AddService'
 import ServicesList from './components/main/services-list/ServicesList'
+import ServiceProfile from "./components/main/service-profile/ServiceProfile";
 import AddServiceGroups from './components/main/add-service-groups/AddServiceGroups'
 import SymbolsList from './components/main/symbols-list/SymbolsList'
 import UserProfile from "./components/main/user-profile/UserProfile";
@@ -33,6 +34,7 @@ export const routes = [
     {path:'/no-charge-unchecked-list', component:NoChargeUnchecked},
     {path:'/add-service', component:AddService},
     {path:'/services-list', component:ServicesList},
+    {path:'/service/:id', component:ServiceProfile},
     {path:'/add-service-groups', component:AddServiceGroups},
     {path:'/symbols-list', component:SymbolsList},
 ];
