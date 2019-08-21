@@ -48,8 +48,8 @@ class SymbolController extends Controller
             'm_file' => 'nullable|mimetypes:audio/mpeg',
             'w_file' => 'nullable|mimetypes:audio/mpeg'
         ]);
-        $path = "services/symbols/" . Service::currentService()->id;
         $symbol = Symbol::findOrFail($id);
+        $path = "services/".Service::currentService()->id."/symbols/".$symbol->id;
         if($request->file('m_file') != null){
             $this->storeFiles($request, $path, ['m_file']);
             $symbol->update(['m_file' => 1]);
