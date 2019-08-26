@@ -14,20 +14,15 @@ use mysqli;
 class ServiceController extends Controller
 {
     /**
-     * ServiceController constructor.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(Service::class);
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return Response
      */
     public function index()
     {
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
         $services = $this->user()->services;
         return new Response($services);
     }
@@ -41,6 +36,9 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
         $this->validateRequest($request);
         $service = new Service();
         $service->name = $request->input('name');
@@ -63,7 +61,7 @@ class ServiceController extends Controller
         if ($conn->query($sql) === TRUE) {
             Artisan::call('init',['db' => $dbname]);
         }
-        return new Response(1);
+        return new Response($service);
     }
 
     /**
@@ -75,6 +73,9 @@ class ServiceController extends Controller
     public function show($id)
     {
         $service = Service::findOrFail($id);
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
         return new Response($service);
     }
 
@@ -82,14 +83,25 @@ class ServiceController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $id
+     * @param int $id
      * @return Response
+     * @throws ValidationException
      */
     public function update(Request $request, $id)
     {
         $service = Service::findOrFail($id);
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
+        $this->validateRequest($request, true);
+        $service->update($request->only(['name','m_line','w_line','is_active','ws_address','ws_username','ws_password','ws_update_interval','user_id']));
         $dPath = "/services/$service->id";
-        return new Response([$service,$request]);
+        $files = [];
+        foreach (Service::$FILES as $FILE) {
+            $files += ["m_$FILE","w_$FILE"];
+        }
+        $this->storeFiles($request, $dPath, $files, $service);
+        return new Response($service);
     }
 
     /**
@@ -101,6 +113,9 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
+        if(!$this->user()->isAdmin($service)){
+            abort(403);
+        }
         $service->delete();
         return new Response(['message' => 'deleted']);
     }
@@ -127,25 +142,15 @@ class ServiceController extends Controller
         ];
         if($isUpdate){
             $rules += [
-                'm_customer_welcome' => ['nullable','required','mimetypes:audio/mpeg'],
-                'w_customer_welcome' => ['nullable','required','mimetypes:audio/mpeg'],
-                'm_customer_menu_start' => ['nullable','required','mimetypes:audio/mpeg'],
-                'w_customer_menu_start' => ['nullable','required','mimetypes:audio/mpeg'],
-                'm_customer_no_charge' => ['nullable','required','mimetypes:audio/mpeg'],
-                'w_customer_no_charge' => ['nullable','required','mimetypes:audio/mpeg'],
-                'm_customer_inactive' => ['nullable','required','mimetypes:audio/mpeg'],
-                'w_customer_inactive' => ['nullable','required','mimetypes:audio/mpeg'],
-                'm_demo_welcome' => ['nullable','required','mimetypes:audio/mpeg'],
-                'w_demo_welcome' => ['nullable','required','mimetypes:audio/mpeg'],
-                'm_demo_menu_start' => ['nullable','required','mimetypes:audio/mpeg'],
-                'w_demo_menu_start' => ['nullable','required','mimetypes:audio/mpeg'],
-                'm_demo_no_charge' => ['nullable','required','mimetypes:audio/mpeg'],
-                'w_demo_no_charge' => ['nullable','required','mimetypes:audio/mpeg'],
-                'm_inactive' => ['nullable','required','mimetypes:audio/mpeg'],
-                'w_inactive' => ['nullable','required','mimetypes:audio/mpeg'],
-                'm_numbers' => ['nullable','required','mimes:zip'],
-                'w_numbers' => ['nullable','required','mimes:zip']
+                'm_numbers' => ['nullable','mimes:application/zip'],
+                'w_numbers' => ['nullable','mimes:application/zip']
             ];
+            foreach (Service::$FILES as $FILE) {
+                $rules += [
+                    "m_$FILE" => ['nullable','mimetypes:audio/mpeg'],
+                    "w_$FILE" => ['nullable','mimetypes:audio/mpeg'],
+                ];
+            }
         }
         $request->validate($rules);
         try {
