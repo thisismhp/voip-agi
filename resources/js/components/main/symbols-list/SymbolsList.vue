@@ -63,13 +63,13 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="i-sym-fm">فایل العان (مرد)</label>
-                                    <b-form-file v-model="symbolData.m_file" id="i-sym-fm" accept=".mp3" :placeholder="(symbolData.m_file === 1)?'ثبت شده':'ثبت نشده'"/>
+                                    <b-form-file v-model="symbolData.m_file" id="i-sym-fm" accept=".mp3" :placeholder="(symbolData.m_fileFlag === 1)?'ثبت شده':'ثبت نشده'"/>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="i-sym-wm">فایل العان (زن)</label>
-                                    <b-form-file v-model="symbolData.w_file" id="i-sym-wm" accept=".mp3" :placeholder="(symbolData.w_file === 1)?'ثبت شده':'ثبت نشده'"/>
+                                    <b-form-file v-model="symbolData.w_file" id="i-sym-wm" accept=".mp3" :placeholder="(symbolData.w_fileFlag === 1)?'ثبت شده':'ثبت نشده'"/>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -167,8 +167,10 @@
             },
             showSymDialog(symbol,index){
                 this.symbolData.id = symbol.id;
-                this.symbolData.m_file = symbol.m_file;
-                this.symbolData.w_file = symbol.w_file;
+                this.symbolData.m_file = null;
+                this.symbolData.m_fileFlag = symbol.m_file;
+                this.symbolData.w_file = null;
+                this.symbolData.w_fileFlag = symbol.w_file;
                 this.symbolData.is_active = symbol.is_active;
                 this.symbolData.unit_id = (symbol.unit !== null)?symbol.unit.id:null;
                 this.symbolData.index = index;
