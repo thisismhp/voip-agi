@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Str;
 
 class Controller extends BaseController
 {
@@ -48,8 +49,9 @@ class Controller extends BaseController
     {
         foreach ($files as $file) {
             if($request->file("$file") != null){
-                config(['filesystems.default' => 'local']);
-                $request->file("$file")->storeAs($path,$file.".".$request->file("$file")->getClientOriginalExtension());
+                config(['filesystems.default' => 'public']);
+                $fName = Str::random(25).".".$request->file("$file")->getClientOriginalExtension();
+                $request->file("$file")->storeAs('',$fName);
                 config(['filesystems.default' => env('FILESYSTEM_DRIVER', 'local')]);
                 //TODO extract and move to pbx server
                 if($model != null){
