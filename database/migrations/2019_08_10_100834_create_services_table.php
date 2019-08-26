@@ -1,5 +1,6 @@
 <?php
 
+use App\Service;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -26,26 +27,10 @@ class CreateServicesTable extends Migration
             $table->dateTime('ws_update_at')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->tinyInteger('m_customer_welcome')->nullable();
-            $table->tinyInteger('w_customer_welcome')->nullable();
-            $table->tinyInteger('m_customer_menu_start')->nullable();
-            $table->tinyInteger('w_customer_menu_start')->nullable();
-            $table->tinyInteger('m_customer_no_charge')->nullable();
-            $table->tinyInteger('w_customer_no_charge')->nullable();
-            $table->tinyInteger('m_customer_inactive')->nullable();
-            $table->tinyInteger('w_customer_inactive')->nullable();
-            $table->tinyInteger('m_demo_welcome')->nullable();
-            $table->tinyInteger('w_demo_welcome')->nullable();
-            $table->tinyInteger('m_demo_menu_start')->nullable();
-            $table->tinyInteger('w_demo_menu_start')->nullable();
-            $table->tinyInteger('m_demo_no_charge')->nullable();
-            $table->tinyInteger('w_demo_no_charge')->nullable();
-            $table->tinyInteger('m_inactive')->nullable();
-            $table->tinyInteger('w_inactive')->nullable();
-            $table->tinyInteger('m_sell')->nullable();
-            $table->tinyInteger('w_sell')->nullable();
-            $table->tinyInteger('m_buy')->nullable();
-            $table->tinyInteger('w_buy')->nullable();
+            foreach (Service::$FILES as $FILE){
+                $table->tinyInteger("m_$FILE")->nullable();
+                $table->tinyInteger("w_$FILE")->nullable();
+            }
             $table->tinyInteger('m_numbers')->nullable();
             $table->tinyInteger('w_numbers')->nullable();
             $table->softDeletes();
