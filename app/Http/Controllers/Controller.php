@@ -43,4 +43,19 @@ class Controller extends BaseController
             }
         }
     }
+
+    protected function storeZipFiles(Request $request, $path, $files, Model $model = null)
+    {
+        foreach ($files as $file) {
+            if($request->file("$file") != null){
+                config(['filesystems.default' => 'local']);
+                $request->file("$file")->storeAs($path,$file.".".$request->file("$file")->getClientOriginalExtension());
+                config(['filesystems.default' => env('FILESYSTEM_DRIVER', 'local')]);
+                //TODO extract and move to pbx server
+                if($model != null){
+                    $model->update(["$file" => 1]);
+                }
+            }
+        }
+    }
 }
