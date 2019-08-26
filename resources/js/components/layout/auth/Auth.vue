@@ -6,13 +6,13 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">ورود</h5>
                     <div class="form-label-group">
-                        <label for="inputUsername">نام کاربری</label>
-                        <input @keyup.enter="login" v-model="loginData.username" type="text" id="inputUsername" class="form-control" autofocus />
+                        <label for="username">نام کاربری</label>
+                        <input @keyup.enter="login" v-model="loginData.username" type="text" id="username" name="username" class="form-control inputUsername" autofocus />
                     </div>
 
                     <div class="form-label-group tiny-margin-t">
-                        <label for="inputPassword">رمزعبور</label>
-                        <input @keyup.enter="login" v-model="loginData.password" type="password" id="inputPassword" class="form-control" />
+                        <label for="password">رمزعبور</label>
+                        <input @keyup.enter="login" v-model="loginData.password" type="password" id="password" name="password" class="form-control inputPassword" />
                     </div>
                     <button @click="login" class="btn btn-lg btn-primary btn-block tiny-margin-t" type="submit" :disabled="sending">ورود
                         <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
