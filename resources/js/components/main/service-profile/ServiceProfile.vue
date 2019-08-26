@@ -159,11 +159,11 @@
                         <td class="border-right">اعداد : </td>
                         <td>
                             <span>مرد : </span>
-                            <b-form-file class="serv-form"  accept=".mp3" :placeholder="(serviceData.m_numbers === 1)?'ثبت شده':'ثبت نشده'"/>
+                            <b-form-file class="serv-form" v-model="m_numbers" accept=".zip" :placeholder="(serviceData.m_numbers === 1)?'ثبت شده':'ثبت نشده'"/>
                         </td>
                         <td>
                             <span>زن : </span>
-                            <b-form-file class="serv-form"  accept=".mp3" :placeholder="(serviceData.w_numbers === 1)?'ثبت شده':'ثبت نشده'"/>
+                            <b-form-file class="serv-form" v-model="w_numbers" accept=".zip" :placeholder="(serviceData.w_numbers === 1)?'ثبت شده':'ثبت نشده'"/>
                         </td>
                     </tr>
                 </table>
@@ -228,6 +228,8 @@
                     w_sb : null,
                     m_sb : null,
                 },
+                m_numbers : null,
+                w_numbers : null,
                 users:[]
             }
         },
@@ -298,7 +300,37 @@
             },
             update(id){
                 this.sending = true;
-                axios.patch(`/api/service/${id}`,this.serviceData)
+                const raw = this.serviceData;
+                const files = this.filesData;
+                let formData = new FormData();
+                formData.append('_method', 'PATCH');
+                formData.append('name', raw.name);
+                formData.append('m_line', raw.m_line);
+                formData.append('w_line', raw.w_line);
+                formData.append('is_active',(raw.is_active === 1 || raw.is_active === true)?1:0);
+                formData.append('ws_address', raw.ws_address);
+                formData.append('ws_username', raw.ws_username);
+                formData.append('ws_password', raw.ws_password);
+                formData.append('ws_update_interval', raw.ws_update_interval);
+                formData.append('user_id', raw.user_id);
+                for(let item in files){
+                    if (!files.hasOwnProperty(item)) continue;
+                    let data = files[item];
+                    if(data !== null){
+                        formData.append(item,data);
+                    }
+                }
+                if(this.m_numbers !== null){
+                    formData.append('m_numbers',this.m_numbers);
+                }
+                if(this.w_numbers !== null){
+                    formData.append('w_numbers',this.w_numbers);
+                }
+                axios.post(`/api/service/${id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                     .then((res) => {
                         this.serviceData = res.data;
                         this.sending = false;
@@ -307,7 +339,6 @@
                     .catch(err => {
                         this.sending = false;
                         this.errorHandling(err);
-                        console.log(err.response)
                     })
                 ;
             },
