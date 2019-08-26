@@ -25,6 +25,8 @@ class Service extends Model
 
     protected $guarded = ['id','deleted_at','created_at','updated_at'];
 
+    public static $FILES = ['customer_welcome','customer_menu_start','customer_no_charge','customer_inactive', 'demo_welcome','demo_menu_start','demo_no_charge','inactive','sell', 'buy'];
+
     /**
      * Return current service
      *
