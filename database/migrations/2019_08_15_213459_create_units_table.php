@@ -17,6 +17,9 @@ class CreateUnitsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
         });
+        DB::unprepared("INSERT INTO `units` (`id`, `name`) VALUES
+        (1, 'ریال'),
+        (2, 'دلار');");
     }
 
     /**
