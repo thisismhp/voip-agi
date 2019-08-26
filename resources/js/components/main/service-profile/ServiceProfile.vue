@@ -334,6 +334,28 @@
                     .then((res) => {
                         this.serviceData = res.data;
                         this.sending = false;
+                        this.filesData = {
+                            w_customer_welcome : null,
+                                m_customer_welcome : null,
+                                w_customer_menu_start : null,
+                                m_customer_menu_start : null,
+                                w_customer_no_charge : null,
+                                m_customer_no_charge : null,
+                                w_customer_inactive : null,
+                                m_customer_inactive : null,
+                                w_demo_welcome : null,
+                                m_demo_welcome : null,
+                                w_demo_menu_start : null,
+                                m_demo_menu_start : null,
+                                w_demo_no_charge : null,
+                                m_demo_no_charge : null,
+                                w_inactive : null,
+                                m_inactive : null,
+                                w_sb : null,
+                                m_sb : null,
+                        };
+                        this.m_numbers = null;
+                        this.w_numbers = null;
                         this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
                     })
                     .catch(err => {
