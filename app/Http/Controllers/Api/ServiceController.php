@@ -98,7 +98,8 @@ class ServiceController extends Controller
         $dPath = "/services/$service->id";
         $files = [];
         foreach (Service::$FILES as $FILE) {
-            $files += ["m_$FILE","w_$FILE"];
+            $files[] = "m_$FILE";
+            $files[] = "w_$FILE";
         }
         $this->storeFiles($request, $dPath, $files, $service);
         return new Response($service);
