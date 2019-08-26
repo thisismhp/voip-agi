@@ -143,8 +143,8 @@ class ServiceController extends Controller
         ];
         if($isUpdate){
             $rules += [
-                'm_numbers' => ['nullable','mimes:application/zip'],
-                'w_numbers' => ['nullable','mimes:application/zip']
+                'm_numbers' => ['nullable','mimes:zip'],
+                'w_numbers' => ['nullable','mimes:zip']
             ];
             foreach (Service::$FILES as $FILE) {
                 $rules += [
