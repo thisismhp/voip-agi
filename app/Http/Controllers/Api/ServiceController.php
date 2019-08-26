@@ -102,6 +102,7 @@ class ServiceController extends Controller
             $files[] = "w_$FILE";
         }
         $this->storeFiles($request, $dPath, $files, $service);
+        $this->storeZipFiles($request, $dPath, Service::$ZIP_FILES, $service);
         return new Response($service);
     }
 
