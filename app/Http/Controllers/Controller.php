@@ -33,7 +33,9 @@ class Controller extends BaseController
     protected function storeFiles(Request $request, $path, $files)
     {
         foreach ($files as $file) {
-            $request->file("$file")->storeAs($path,$file.".".$request->file("$file")->getClientOriginalExtension());
+            if($request->file("$file") != null){
+                $request->file("$file")->storeAs($path,$file.".".$request->file("$file")->getClientOriginalExtension());
+            }
         }
     }
 }
