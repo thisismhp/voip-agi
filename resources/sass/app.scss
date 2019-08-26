@@ -61,10 +61,15 @@ textarea {
 #i-service-ws_address,
 #i-service-ws_username,
 #i-service-ws_password,
+.custom-file-label,
 .inputUsername,
 .inputPassword {
     text-align: left;
     direction: ltr;
+}
+
+.serv-form{
+    width: 150px;
 }
 
 .menu-icon{
