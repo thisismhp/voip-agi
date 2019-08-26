@@ -213,7 +213,9 @@
                 let formData = new FormData();
                 formData.append('_method', 'PATCH');
                 formData.append('is_active',(raw.is_active === 1 || raw.is_active === true)?1:0);
-                formData.append('unit_id',raw.unit_id);
+                if(raw.unit_id !== null){
+                    formData.append('unit_id',raw.unit_id);
+                }
                 if(raw.m_file !== null){
                     formData.append('m_file',raw.m_file);
                 }
