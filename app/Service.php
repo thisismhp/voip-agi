@@ -27,6 +27,8 @@ class Service extends Model
 
     public static $FILES = ['customer_welcome','customer_menu_start','customer_no_charge','customer_inactive', 'demo_welcome','demo_menu_start','demo_no_charge','inactive','sb'];
 
+    public static $ZIP_FILES = ['m_numbers','w_numbers'];
+
     /**
      * Return current service
      *
