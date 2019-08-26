@@ -51,12 +51,10 @@ class SymbolController extends Controller
         $symbol = Symbol::findOrFail($id);
         $path = "services/".Service::currentService()->id."/symbols/".$symbol->id;
         if($request->file('m_file') != null){
-            $this->storeFiles($request, $path, ['m_file']);
-            $symbol->update(['m_file' => 1]);
+            $this->storeFiles($request, $path, ['m_file'], $symbol);
         }
         if($request->file('w_file') != null){
-            $this->storeFiles($request, $path, ['w_file']);
-            $symbol->update(['w_file' => 1]);
+            $this->storeFiles($request, $path, ['w_file'], $symbol);
         }
         $symbol->update($request->only(['is_active','unit_id']));
         return new Response($symbol);
