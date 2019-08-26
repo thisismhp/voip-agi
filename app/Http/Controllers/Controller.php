@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -28,13 +29,17 @@ class Controller extends BaseController
      * @param Request $request
      * @param $path string
      * @param $files array
+     * @param Model $model
      * @return void
      */
-    protected function storeFiles(Request $request, $path, $files)
+    protected function storeFiles(Request $request, $path, $files, Model $model = null)
     {
         foreach ($files as $file) {
             if($request->file("$file") != null){
                 $request->file("$file")->storeAs($path,$file.".".$request->file("$file")->getClientOriginalExtension());
+                if($model != null){
+                    $model->update(["$file" => 1]);
+                }
             }
         }
     }
