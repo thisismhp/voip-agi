@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckForMaintenanceMode;
 use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\IsActive;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SetDB;
 use App\Http\Middleware\TrimStrings;
@@ -61,7 +62,8 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
             'auth:api',
-            'setDB'
+            'setDB',
+            'isActive'
         ],
     ];
 
@@ -82,7 +84,8 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
-        'setDB' => SetDB::class
+        'setDB' => SetDB::class,
+        'isActive' => IsActive::class
     ];
 
     /**
