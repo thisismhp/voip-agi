@@ -28,6 +28,7 @@ class CreateCustomersTable extends Migration
             $table->dateTime('date_charge')->nullable();
             $table->tinyInteger('end_charge_checked')->default(1);
             $table->longText('end_charge_comment')->nullable();
+            $table->tinyInteger('is_active')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
