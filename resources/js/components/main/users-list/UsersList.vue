@@ -18,7 +18,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="(user, index) in users">
-                        <td>{{index + 1}}</td>
+                        <td>{{index}}</td>
                         <td><router-link :to="'/user/'+ user.id">{{user.username}}</router-link></td>
                         <td>{{user.name}}</td>
                         <td>{{user.services_count}}</td>
