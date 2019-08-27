@@ -26,6 +26,12 @@
                 </div>
             </div>
             <div class="form-row">
+                <div class="form-group col-md-1">
+                    <label for="i-is_active">فعال</label>
+                    <input type="checkbox" v-model="userData.is_active" id="i-is_active" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-row">
                 <button @click="save" class="btn btn-success" :disabled="sending">ثبت
                     <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </button>
@@ -58,6 +64,7 @@
                     username:null,
                     user:null,
                     password:null,
+                    is_active: true,
                 }
             }
         },
@@ -100,6 +107,7 @@
                             username:null,
                             user:null,
                             password:null,
+                            is_active: true,
                         };
                         this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
                     })

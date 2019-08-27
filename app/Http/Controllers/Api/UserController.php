@@ -41,6 +41,7 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->username = $request->input('username');
         $user->password = bcrypt($request->input('password'));
+        $user->is_active = $request->input('is_active');
         $user->save();
         return new Response($user);
     }
@@ -80,6 +81,7 @@ class UserController extends Controller
             if($request->input('password')){
                 $user->password = bcrypt($request->input('password'));
             }
+            $user->is_active = $request->input('is_active');
             $user->update();
         }
         return new Response($user);
@@ -91,6 +93,7 @@ class UserController extends Controller
             'username' => ['required','string','max:60',($user != null)?(Rule::unique('manage.users','username')->whereNull('deleted_at')->ignore($user->id)):(Rule::unique('manage.users','username')->whereNull('deleted_at'))],
             'name' => ['required','string','max:60'],
             'password' => [($user != null)?'nullable':'required','string','min:8','max:60'],
+            'is_active' => ['required','boolean'],
         ]);
     }
 }

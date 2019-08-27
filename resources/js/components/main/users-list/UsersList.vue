@@ -14,6 +14,7 @@
                         <th>نام کاربری</th>
                         <th>نام</th>
                         <th>تعداد سرویس های تحت مدیریت</th>
+                        <th>وضعیت</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -22,6 +23,8 @@
                         <td><router-link :to="'/user/'+ user.id">{{user.username}}</router-link></td>
                         <td>{{user.name}}</td>
                         <td>{{user.services_count}}</td>
+                        <td v-if="user.is_active" class="text-success">فعال</td>
+                        <td v-else class="text-danger">غیرفعال</td>
                     </tr>
                     </tbody>
                 </table>

@@ -27,6 +27,12 @@
                 </div>
             </div>
             <div class="form-row">
+                <div class="form-group col-md-1">
+                    <label for="i-is_active">فعال</label>
+                    <input type="checkbox" v-model="userData.is_active" id="i-is_active" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-row">
                 <button @click="update(id)" class="btn btn-success" :disabled="sending">ثبت
                     <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </button>
