@@ -16,6 +16,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
         return new Response(User::all());
     }
 
@@ -27,6 +30,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
         return new Response($request);
     }
 
@@ -38,6 +44,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
         $user = User::findOrFail($id);
         return new Response($user);
     }
@@ -51,6 +60,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
         $user = User::findOrFail($id);
         return new Response([$user,$request]);
     }
@@ -63,6 +75,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if(!$this->user()->isAdmin()){
+            abort(403);
+        }
         $user = User::findOrFail($id);
         $user->delete();
         return new Response(["message" => "deleted"]);
