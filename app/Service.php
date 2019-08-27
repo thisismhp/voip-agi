@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property array|string|null ws_username
  * @property array|string|null ws_password
  * @property array|string|null ws_update_interval
+ * @property array|string|null ws_update_at
  * @property mixed id
  */
 class Service extends Model
