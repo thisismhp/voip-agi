@@ -43,9 +43,11 @@ class UpdateServiceCommand extends Command
     {
         $services = Service::all();
         foreach ($services as $service) {
-            Symbol::storeSym($service);
+            if(strtotime(now()) - strtotime($service->ws_update_at) > (int)$service->ws_update_interval){
+                Symbol::storeSym($service);
+                $this->info("Service $service->id Updated!");
+            }
         }
-        $this->info('Everything is update!');
         return true;
     }
 }
