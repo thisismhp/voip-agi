@@ -12,39 +12,39 @@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="i-service-name">عنوان سرویس</label>
-                        <input @keyup.enter="save" type="text" v-model="serviceData.name" id="i-service-name" class="form-control" />
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.name" id="i-service-name" class="form-control" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="i-service-m_line">شماره سر خط (مرد)</label>
-                        <input @keyup.enter="save" type="text" v-model="serviceData.m_line" id="i-service-m_line" class="form-control" @keypress="isNumber($event)"/>
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.m_line" id="i-service-m_line" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="i-service-w_line">شماره سر خط (زن)</label>
-                        <input @keyup.enter="save" type="text" v-model="serviceData.w_line" id="i-service-w_line" class="form-control" @keypress="isNumber($event)"/>
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.w_line" id="i-service-w_line" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="i-service-ws_address">آدرس وب سرویس</label>
-                        <input @keyup.enter="save" type="text" v-model="serviceData.ws_address" id="i-service-ws_address" class="form-control" />
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.ws_address" id="i-service-ws_address" class="form-control" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="i-service-ws_username">نام کاربری وب سرویس</label>
-                        <input @keyup.enter="save" type="text" v-model="serviceData.ws_username" id="i-service-ws_username" class="form-control" />
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.ws_username" id="i-service-ws_username" class="form-control" />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="i-service-ws_password">رمز عبور وب سرویس</label>
-                        <input @keyup.enter="save" type="password" v-model="serviceData.ws_password" id="i-service-ws_password" class="form-control" />
+                        <input @keyup.enter="update(id)" type="password" v-model="serviceData.ws_password" id="i-service-ws_password" class="form-control" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="i-service-ws_update_interval">فاصله زمانی به روزرسانی وب سرویس (ثانیه)</label>
-                        <input @keyup.enter="save" type="text" v-model="serviceData.ws_update_interval" id="i-service-ws_update_interval" class="form-control" @keypress="isNumber($event)"/>
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.ws_update_interval" id="i-service-ws_update_interval" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="i-service-user_id">کاربر اپراتور</label>
@@ -59,10 +59,42 @@
                 <div class="form-row">
                     <div class="form-group col-md-1">
                         <label for="i-service-is_active">فعال</label>
-                        <input @keyup.enter="save" type="checkbox" v-model="serviceData.is_active" id="i-service-is_active" class="form-control" @keypress="isNumber($event)"/>
+                        <input @keyup.enter="update(id)" type="checkbox" v-model="serviceData.is_active" id="i-service-is_active" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                 </div>
             </div>
+            <br /><br /><br />
+            <h5 class="border-bottom">نماد های پیش فرض</h5>
+            <div>
+                <div class="form-row tiny-margin-b">
+                    <button @click="addDS" class="btn btn-info">افزودن نماد</button>
+                </div>
+                <div v-for="(symbol, index) in serviceData.defaultSymbols" class="form-row">
+                    <div class="form-group col-md-6">
+                        <label :for="`${index}-dsp`">ترتیب پخش</label>
+                        <select type="text" v-model="symbol.symbol_id" :id="`${index}-dsp`" class="form-control">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="symbolItem in symbols" v-bind:value="symbolItem.id">
+                                {{symbolItem.fName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label :for="`${index}-dsp`">ترتیب پخش</label>
+                        <select type="text" v-model="symbol.priority" :id="`${index}-dsp`" class="form-control">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="priorityItem in priorities" v-bind:value="priorityItem">
+                                {{priorityItem}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div class="d-none d-md-block"><br /></div>
+                        <button @click="removeDS(index)" class="btn btn-danger">حذف</button>
+                    </div>
+                </div>
+            </div>
+            <br /><br /><br />
             <h5>پیام های صوتی سرویس</h5>
             <div>
                 <table class="table table-striped border-bottom">
@@ -173,6 +205,7 @@
                     <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </button>
             </div>
+            <br />
         </div>
     </div>
 </template>
@@ -207,6 +240,7 @@
                     ws_password:null,
                     ws_update_interval:null,
                     user_id:null,
+                    defaultSymbols:[]
                 },
                 filesData : {
                     w_customer_welcome : null,
@@ -230,6 +264,8 @@
                 },
                 m_numbers : null,
                 w_numbers : null,
+                priorities : [],
+                symbols : [],
                 users:[]
             }
         },
@@ -277,13 +313,22 @@
                         axios.get('/api/user')
                             .then(res => {
                                 this.users = res.data;
-                                this.loading = false;
+                                axios.get('api/symbol')
+                                    .then((res) => {
+                                        this.symbols = res.data;
+                                        this.loading = false;
+                                    })
+                                    .catch((err) => {
+                                        this.err(err);
+                                    })
+                                ;
                             })
                             .catch(err => {
                                 this.err(err);
                             })
                         ;
                         this.serviceData = res.data;
+                        this.initPriorities(this.serviceData.defaultSymbols.length);
                     })
                     .catch(err => {
                         const res = err.response;
@@ -313,6 +358,11 @@
                 formData.append('ws_password', raw.ws_password);
                 formData.append('ws_update_interval', raw.ws_update_interval);
                 formData.append('user_id', raw.user_id);
+                for(let item in raw.defaultSymbols){
+                    if (!raw.defaultSymbols.hasOwnProperty(item)) continue;
+                    formData.append(`default_symbols[${item}][symbol_id]`, JSON.stringify(raw.defaultSymbols[item].symbol_id));
+                    formData.append(`default_symbols[${item}][priority]`, JSON.stringify(raw.defaultSymbols[item].priority));
+                }
                 for(let item in files){
                     if (!files.hasOwnProperty(item)) continue;
                     let data = files[item];
@@ -356,6 +406,7 @@
                         };
                         this.m_numbers = null;
                         this.w_numbers = null;
+                        this.initPriorities(this.serviceData.defaultSymbols.length);
                         this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
                     })
                     .catch(err => {
@@ -364,6 +415,20 @@
                     })
                 ;
             },
+            addDS(){
+                this.serviceData.defaultSymbols.push({symbol_id: null, priority: null});
+                this.initPriorities(this.serviceData.defaultSymbols.length);
+            },
+            removeDS(index){
+                this.serviceData.defaultSymbols.splice(index, 1);
+                this.initPriorities(this.serviceData.defaultSymbols.length);
+            },
+            initPriorities(count){
+                this.priorities = [];
+                for(let i = 1;i <= count;i++){
+                    this.priorities.push(i);
+                }
+            }
         },
         created() {
             this.id = this.$route.params.id;

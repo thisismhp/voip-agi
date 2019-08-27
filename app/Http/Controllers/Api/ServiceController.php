@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DefaultSymbols;
 use App\Service;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -76,6 +77,8 @@ class ServiceController extends Controller
         if(!$this->user()->isAdmin()){
             abort(403);
         }
+        $defaultSymbols = DefaultSymbols::all();
+        $service->setAttribute('defaultSymbols',$defaultSymbols);
         return new Response($service);
     }
 
@@ -95,6 +98,14 @@ class ServiceController extends Controller
         }
         $this->validateRequest($request, true);
         $service->update($request->only(['name','m_line','w_line','is_active','ws_address','ws_username','ws_password','ws_update_interval','user_id']));
+        DefaultSymbols::truncate();
+        $dss = $request->input('default_symbols');
+        foreach ((array)$dss as $ds) {
+            $dsm = new DefaultSymbols();
+            $dsm->symbol_id = $ds['symbol_id'];
+            $dsm->priority = $ds['priority'];
+            $dsm->save();
+        }
         $dPath = "/services/$service->id";
         $files = [];
         foreach (Service::$FILES as $FILE) {
@@ -103,6 +114,8 @@ class ServiceController extends Controller
         }
         $this->storeFiles($request, $dPath, $files, $service);
         $this->storeZipFiles($request, $dPath, Service::$ZIP_FILES, $service);
+        $defaultSymbols = DefaultSymbols::all();
+        $service->setAttribute('defaultSymbols',$defaultSymbols);
         return new Response($service);
     }
 
@@ -141,6 +154,10 @@ class ServiceController extends Controller
             'ws_password' => ['required','string','max:250'],
             'ws_update_interval' => ['required','integer','max:1000000'],
             'user_id' => ['required',Rule::exists('users','id')->whereNull('deleted_at')],
+        ];
+        $rules += [
+            'default_symbols.*.symbol_id' => ['required','exists:service.symbols,id','distinct'],
+            'default_symbols.*.priority' => ['required','integer','distinct']
         ];
         if($isUpdate){
             $rules += [
