@@ -18,7 +18,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(user, index) in users">
+                    <tr v-for="(user, index) in users" v-if="user.id !== 1">
                         <td>{{index}}</td>
                         <td><router-link :to="'/user/'+ user.id">{{user.username}}</router-link></td>
                         <td>{{user.name}}</td>
