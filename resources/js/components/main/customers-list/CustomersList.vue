@@ -21,8 +21,8 @@
                     <tr v-for="(customer, index) in customers">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                        <td>{{customer.time_charge}}</td>
-                        <td>{{toJalaali(customer.date_charge,' ','-')}}</td>
+                        <td>{{(customer.time_charge !== null)?customer.time_charge:'ندارد'}}</td>
+                        <td>{{(customer.date_charge !== null)?toJalaali(customer.date_charge,' ','-'):'ندارد'}}</td>
                         <td><router-link class="btn btn-secondary" :to="`/charge-one-customer?id=${customer.id}`" >افزایش اعتبار</router-link></td>
                     </tr>
                     </tbody>

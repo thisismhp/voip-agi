@@ -15,12 +15,12 @@
                     <div class="form-group col-md-5">
                         <span class="profile-title">اعتبار تعدادی</span>
                         <span> : </span>
-                        <span class="profile-value">{{customerData.time_charge}}</span>
+                        <span class="profile-value">{{(customerData.time_charge !== null)?customerData.time_charge:'ندارد'}}</span>
                     </div>
                     <div class="form-group col-md-5">
                         <span class="profile-title">اعتبار بازه ای تا</span>
                         <span> : </span>
-                        <span class="profile-value">{{toJalaali(customerData.date_charge,' ','-')}}</span>
+                        <span class="profile-value">{{(customerData.date_charge !== null)?toJalaali(customerData.date_charge,' ','-'):'ندارد'}}</span>
                     </div>
                     <div class="form-group col-md-2">
                         <router-link class="btn btn-secondary" :to="`/charge-one-customer?id=${customerData.id}`" >افزایش اعتبار</router-link>
