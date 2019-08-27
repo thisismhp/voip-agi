@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -19,7 +20,9 @@ class UserController extends Controller
         if(!$this->user()->isAdmin()){
             abort(403);
         }
-        return new Response(User::all());
+        $users = User::all();
+        unset($users[0]);
+        return new Response($users);
     }
 
     /**
@@ -33,7 +36,13 @@ class UserController extends Controller
         if(!$this->user()->isAdmin()){
             abort(403);
         }
-        return new Response($request);
+        $this->validateRequest($request);
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->username = $request->input('username');
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+        return new Response($user);
     }
 
     /**
@@ -64,22 +73,24 @@ class UserController extends Controller
             abort(403);
         }
         $user = User::findOrFail($id);
-        return new Response([$user,$request]);
+        $this->validateRequest($request, $user);
+        if(!$user->isAdmin()){
+            $user->name = $request->input('name');
+            $user->username = $request->input('username');
+            if($request->input('password')){
+                $user->password = bcrypt($request->input('password'));
+            }
+            $user->update();
+        }
+        return new Response($user);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
+    private function validateRequest(Request $request,User $user = null)
     {
-        if(!$this->user()->isAdmin()){
-            abort(403);
-        }
-        $user = User::findOrFail($id);
-        $user->delete();
-        return new Response(["message" => "deleted"]);
+        $request->validate([
+            'username' => ['required','string','max:60',($user != null)?(Rule::unique('manage.users','username')->whereNull('deleted_at')->ignore($user->id)):(Rule::unique('manage.users','username')->whereNull('deleted_at'))],
+            'name' => ['required','string','max:60'],
+            'password' => [($user != null)?'nullable':'required','string','min:8','max:60'],
+        ]);
     }
 }
