@@ -21,7 +21,6 @@ class UserController extends Controller
             abort(403);
         }
         $users = User::all();
-        unset($users[0]);
         return new Response($users);
     }
 
