@@ -15,12 +15,15 @@ import ServicesList from './components/main/services-list/ServicesList'
 import ServiceProfile from "./components/main/service-profile/ServiceProfile";
 import AddServiceGroups from './components/main/add-service-groups/AddServiceGroups'
 import SymbolsList from './components/main/symbols-list/SymbolsList'
+import My from "./components/main/user-profile/My";
+import AddUser from "./components/main/add-user/AddUser";
+import UsersList from "./components/main/users-list/UsersList";
 import UserProfile from "./components/main/user-profile/UserProfile";
 
 export const routes = [
     {path:'*', component:NotFound},
     {path:'/', component:Home},
-    {path:'/my', component:UserProfile},
+    {path:'/my', component:My},
     // Customer
     {path:'/add-customer', component:AddCustomer},
     {path:'/customer-list', component:CustomersList},
@@ -37,4 +40,7 @@ export const routes = [
     {path:'/service/:id', component:ServiceProfile},
     {path:'/add-service-groups', component:AddServiceGroups},
     {path:'/symbols-list', component:SymbolsList},
+    {path:'/add-user', component:AddUser},
+    {path:'/users-list', component:UsersList},
+    {path:'/user/:id', component:UserProfile},
 ];
