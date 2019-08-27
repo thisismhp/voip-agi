@@ -20,6 +20,8 @@ class User extends Authenticatable
 
     protected $connection = "manage";
 
+    protected $withCount = ['services'];
+
     public function findForPassport($username)
     {
         return $this->where('username', $username)->first();
