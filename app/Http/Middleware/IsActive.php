@@ -18,6 +18,7 @@ class IsActive
     {
         $user = Auth::user();
         if(!($user->isAdmin() or $user->is_active == 1)){
+            $user->token()->delete();
             abort(401);
         }
         return $next($request);
