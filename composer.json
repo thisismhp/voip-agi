@@ -12,6 +12,7 @@
         "laravel/passport": "^7.3",
         "laravel/tinker": "^1.0",
         "league/flysystem-sftp": "^1.0",
+        "chumper/zipper": "^1.0",
         "pusher/pusher-php-server": "~4.0"
     },
     "require-dev": {
