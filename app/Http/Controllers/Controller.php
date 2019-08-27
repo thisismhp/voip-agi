@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -9,7 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use ZipArchive;
 
 class Controller extends BaseController
 {
@@ -45,6 +48,16 @@ class Controller extends BaseController
         }
     }
 
+    /**
+     * Store zip files
+     *
+     * @param Request $request
+     * @param $path
+     * @param $files
+     * @param Model|null $model
+     *
+     * @return void
+     */
     protected function storeZipFiles(Request $request, $path, $files, Model $model = null)
     {
         foreach ($files as $file) {
@@ -52,11 +65,29 @@ class Controller extends BaseController
                 config(['filesystems.default' => 'public']);
                 $fName = Str::random(25).".".$request->file("$file")->getClientOriginalExtension();
                 $request->file("$file")->storeAs('',$fName);
-                config(['filesystems.default' => env('FILESYSTEM_DRIVER', 'local')]);
-                //TODO extract and move to pbx server
-                if($model != null){
-                    $model->update(["$file" => 1]);
+                $fPath = Str::random(25);
+                try{
+                    $zip = new ZipArchive();
+                    $res = $zip->open("storage/$fName");
+                    if($res == TRUE) {
+                        $zip->extractTo("storage/$fPath");
+                        $zip->close();
+                        if ($model != null) {
+                            $model->update(["$file" => 1]);
+                        }
+                        $allFiles = Storage::disk()->files($fPath);
+                        foreach ($allFiles as $fileItem) {
+                            $savePathArray = explode("/",$fileItem);
+                            $savePath = $savePathArray[sizeof($savePathArray) - 1];
+                            Storage::disk(env('FILESYSTEM_DRIVER', 'local'))->put("$path/$file/$savePath",Storage::disk()->get($fileItem));
+                        }
+                        Storage::disk()->deleteDirectory($fPath);
+                    }
+                    Storage::disk()->delete($fName);
+                }catch (Exception $e){
+                    Storage::disk()->delete($fName);
                 }
+                config(['filesystems.default' => env('FILESYSTEM_DRIVER', 'local')]);
             }
         }
     }
