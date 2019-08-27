@@ -22,8 +22,10 @@
                                 <tbody>
                                 <tr v-for="(customer) in customers">
                                     <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                                    <td>{{customer.time_charge}}</td>
-                                    <td>{{toJalaali(customer.date_charge,' ','-')}}</td>
+                                    <td class="text-success" v-if="customer.time_charge != null">{{customer.time_charge}}</td>
+                                    <td class="text-danger" v-else>ندارد</td>
+                                    <td class="text-success" v-if="customer.date_charge != null">{{toJalaali(customer.date_charge,' ','-')}}</td>
+                                    <td class="text-danger" v-else>ندارد</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -47,8 +49,10 @@
                                 <tbody>
                                 <tr v-for="(demoUser) in demoUsers">
                                     <td>{{demoUser.phone_number}}</td>
-                                    <td>{{demoUser.time_charge}}</td>
-                                    <td>{{toJalaali(demoUser.date_charge,' ','-')}}</td>
+                                    <td class="text-success" v-if="demoUser.time_charge != null">{{demoUser.time_charge}}</td>
+                                    <td class="text-danger" v-else>ندارد</td>
+                                    <td class="text-success" v-if="demoUser.date_charge != null">{{toJalaali(demoUser.date_charge,' ','-')}}</td>
+                                    <td class="text-danger" v-else>ندارد</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -71,7 +75,8 @@
                                 <tbody>
                                 <tr v-for="(customer) in ncc">
                                     <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                                    <td class="pointer-cursor">{{customer.end_charge_comment}}</td>
+                                    <td v-if="customer.end_charge_comment != null">{{customer.end_charge_comment}}</td>
+                                    <td v-else>ندارد</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -94,7 +99,8 @@
                                 <tbody>
                                 <tr v-for="(customer) in ncu">
                                     <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                                    <td class="pointer-cursor">{{customer.end_charge_comment}}</td>
+                                    <td v-if="customer.end_charge_comment != null">{{customer.end_charge_comment}}</td>
+                                    <td v-else>ندارد</td>
                                 </tr>
                                 </tbody>
                             </table>
