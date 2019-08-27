@@ -42,18 +42,22 @@
                 this.sending = true;
                 axios.patch('/api/logout')
                     .then(() => {
-                        this.$store.state.authCheck = false;
-                        this.$store.state.chs = false;
-                        this.$store.state.crs = false;
-                        this.$store.state.isAdmin = false;
-                        this.$store.state.hasService = false;
-                        window.axios.defaults.headers.common['Authorization'] = null;
-                        this.sending = false;
+                        this.resetSession();
                     })
                     .catch(() => {
                         this.sending = false;
                     })
                 ;
+            },
+            resetSession(){
+                this.$store.state.authCheck = false;
+                this.$store.state.chs = false;
+                this.$store.state.crs = false;
+                this.$store.state.isAdmin = false;
+                this.$store.state.hasService = false;
+                window.axios.defaults.headers.common['Authorization'] = null;
+                this.sending = false;
+                this.$router.replace('/');
             },
             getUser(){
                 axios.get('/api/access')
@@ -104,6 +108,9 @@
             },
             isAdmin () {
                 return this.$store.state.isAdmin;
+            },
+            authCheck () {
+                return this.$store.state.authCheck;
             }
         },
         watch: {
@@ -112,7 +119,12 @@
                     this.$store.state.chs = false;
                     this.getUser();
                 }
-            }
+            },
+            authCheck (state) {
+                if(state === false){
+                    this.resetSession();
+                }
+            },
         }
     }
 </script>
