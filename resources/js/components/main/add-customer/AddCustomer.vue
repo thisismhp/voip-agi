@@ -50,13 +50,18 @@
                     </div>
                 </div>
                 <div class="form-row border-bottom">
-                    <div class="form-group col-md-9">
+                    <div class="form-group col-md-8">
                         <label for="i-customer-address">آدرس</label>
                         <input @keyup.enter="save" type="text" v-model="customerData.address" id="i-customer-address" class="form-control" />
                     </div>
                     <div class="form-group col-md-3">
                         <label for="i-customer-phone-number">شماره تماس</label>
                         <input @keyup.enter="save" type="text" v-model="customerData.phone_number" id="i-customer-phone-number" class="form-control" @keypress="isNumber($event)"/>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="i-customer-is-active">فعال</label>
+                        <br />
+                        <input type="checkbox" v-model="customerData.is_active" id="i-customer-is-active"/>
                     </div>
                 </div>
                 <div id="customer-form-numbers" class="customer-form-numbers">
@@ -144,6 +149,7 @@
                     city_id:null,
                     address:null,
                     phone_number:null,
+                    is_active:true,
                     numbers:[]
                 },
                 provinces:[],
@@ -236,14 +242,15 @@
                         this.sending = false;
                         this.customerData = {
                             name:null,
-                                id:null,
-                                nation_code:null,
-                                birth_date:null,
-                                province_id:null,
-                                city_id:null,
-                                address:null,
-                                phone_number:null,
-                                numbers:[]
+                            id:null,
+                            nation_code:null,
+                            birth_date:null,
+                            province_id:null,
+                            city_id:null,
+                            address:null,
+                            phone_number:null,
+                            is_active:true,
+                            numbers:[]
                         };
                         this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
                     })

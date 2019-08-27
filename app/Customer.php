@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property array|string|null city_id
  * @property array|string|null address
  * @property array|string|null phone_number
+ * @property array|string|null is_active
  * @property mixed id
  * @method static findOrFail(int $id)
  */

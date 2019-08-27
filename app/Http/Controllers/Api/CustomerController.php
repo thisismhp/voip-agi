@@ -38,16 +38,11 @@ class CustomerController extends Controller
         $customer->city_id = $request->input('city_id');
         $customer->address = $request->input('address');
         $customer->phone_number = $request->input('phone_number');
+        $customer->is_active = $request->input('is_active');
         $customer->save();
         $numbers = $request->input('numbers');
         foreach ($numbers as $num) {
-            $number = new Number();
-            $number->customer_id = $customer->id;
-            $number->phone_number_type_id = $num['phone_number_type_id'];
-            $number->phone_number = $num['phone_number'];
-            $number->charge_type_id = $num['charge_type_id'];
-            $number->is_active = $num['is_active'];
-            $number->save();
+            $this->saveNumber($customer, $num);
         }
         return new Response($customer);
     }
@@ -98,13 +93,7 @@ class CustomerController extends Controller
         }
         foreach ($reqNumbers as $num) {
             if(!array_key_exists('id',$num) and !Number::all()->contains('phone_number',$num['phone_number'])){
-                $number = new Number();
-                $number->customer_id = $customer->id;
-                $number->phone_number_type_id = $num['phone_number_type_id'];
-                $number->phone_number = $num['phone_number'];
-                $number->charge_type_id = $num['charge_type_id'];
-                $number->is_active = $num['is_active'];
-                $number->save();
+                $this->saveNumber($customer, $num);
             }
         }
         $customer = Customer::findOrFail($id);
@@ -123,6 +112,17 @@ class CustomerController extends Controller
         $customer = Customer::findOrFail($id);
         $customer->delete();
         return new Response(["message" => "deleted"]);
+    }
+
+    private function saveNumber($customer, $num)
+    {
+        $number = new Number();
+        $number->customer_id = $customer->id;
+        $number->phone_number_type_id = $num['phone_number_type_id'];
+        $number->phone_number = $num['phone_number'];
+        $number->charge_type_id = $num['charge_type_id'];
+        $number->is_active = $num['is_active'];
+        $number->save();
     }
 
     /**
@@ -149,6 +149,7 @@ class CustomerController extends Controller
             'address' => ['required','string','max:255'],
             'phone_number' => ['required','string','max:20'],
             'numbers' => ['nullable','array'],
+            'is_active' => ['required','boolean'],
         ];
         $messages = [];
         $distinctMessages = [];
