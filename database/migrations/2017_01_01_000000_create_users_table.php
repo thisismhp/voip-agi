@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
         });
         $admin = new User();
         $admin->username = 'admin';
-        $admin->name = 'admin';
+        $admin->name = 'مدیر';
         $admin->password = bcrypt('12345678');
         $admin->save();
         $now = now();
