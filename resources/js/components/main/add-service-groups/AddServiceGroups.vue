@@ -33,7 +33,7 @@
             </div>
             <h4>نماد ها</h4>
             <div class="form-row tiny-margin-b">
-                <button @click="addS" class="btn btn-info">افزودن شماره تلفن</button>
+                <button @click="addS" class="btn btn-info">افزودن نماد</button>
             </div>
             <div v-for="(symbol, index) in sgData.symbols" class="form-row">
                 <div class="col-md-5">
