@@ -66,6 +66,7 @@ class ServiceGroupController extends Controller
         $serviceGroup->symbols()->sync($this->symbolsArray($request->input('symbols')));
         $dPath = "services/".Service::currentService()->id."/service-groups/$serviceGroup->id";
         $this->storeFiles($request, $dPath, ServiceGroup::$FILES, $serviceGroup);
+        $serviceGroup = ServiceGroup::findOrFail($id);
         return new Response($serviceGroup);
     }
 

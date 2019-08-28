@@ -116,6 +116,7 @@ class ServiceController extends Controller
         $this->storeZipFiles($request, $dPath, Service::$ZIP_FILES, $service);
         $defaultSymbols = DefaultSymbols::all();
         $service->setAttribute('defaultSymbols',$defaultSymbols);
+        $service = Service::findOrFail($id);
         return new Response($service);
     }
 

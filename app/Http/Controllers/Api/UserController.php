@@ -83,6 +83,7 @@ class UserController extends Controller
             $user->is_active = $request->input('is_active');
             $user->update();
         }
+        $user = User::findOrFail($id);
         return new Response($user);
     }
 

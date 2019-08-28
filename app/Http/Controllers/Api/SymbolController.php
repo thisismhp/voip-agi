@@ -57,6 +57,7 @@ class SymbolController extends Controller
             $this->storeFiles($request, $path, ['w_file'], $symbol);
         }
         $symbol->update($request->only(['is_active','unit_id']));
+        $symbol = Symbol::findOrFail($id);
         return new Response($symbol);
     }
 }
