@@ -154,6 +154,7 @@ class ServiceController extends Controller
             'ws_password' => ['required','string','max:250'],
             'ws_update_interval' => ['required','integer','max:1000000'],
             'user_id' => ['required',Rule::exists('users','id')->whereNull('deleted_at')],
+            'default_symbols' => ['nullable','array'],
         ];
         $rules += [
             'default_symbols.*.symbol_id' => ['required','exists:service.symbols,id','distinct'],
