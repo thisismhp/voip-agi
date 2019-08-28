@@ -27,6 +27,7 @@ class ServiceGroupController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validateRequest($request);
         $serviceGroup = new ServiceGroup();
         $serviceGroup->name = $request->input('name');
         $serviceGroup->is_active = $request->input('is_active');
@@ -58,6 +59,7 @@ class ServiceGroupController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validateRequest($request);
         $serviceGroup = ServiceGroup::findOrFail($id);
         $serviceGroup->update($request->only(['name','is_active']));
         $serviceGroup->symbols()->sync($this->symbolsArray($request->input('symbols')));
@@ -75,7 +77,6 @@ class ServiceGroupController extends Controller
     public function destroy($id)
     {
         $serviceGroup = ServiceGroup::findOrFail($id);
-        $serviceGroup->symbols()->sync([]);
         $serviceGroup->delete();
         return new Response(['message' => 'deleted']);
     }
@@ -83,9 +84,22 @@ class ServiceGroupController extends Controller
     private function symbolsArray($symbols)
     {
         $exp = array();
-        foreach ($symbols as $symbol) {
+        foreach ((array)$symbols as $symbol) {
             $exp[$symbol['id']] = array('priority' => $symbol['priority']);
         }
         return $exp;
+    }
+
+    private function validateRequest(Request $request)
+    {
+        $request->validate([
+            'name' => ['required','string','max:250'],
+            'm_line' => ['nullable','mimetypes:audio/mpeg'],
+            'w_line' => ['nullable','mimetypes:audio/mpeg'],
+            'is_active' => ['required','boolean'],
+            'symbols' => ['nullable','array'],
+            'symbols.*.id' => ['required','exists:service.symbols,id','distinct'],
+            'symbols.*.priority' => ['required','integer','distinct']
+        ]);
     }
 }
