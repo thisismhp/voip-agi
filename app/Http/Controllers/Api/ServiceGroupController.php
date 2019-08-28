@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Service;
 use App\ServiceGroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,7 +34,7 @@ class ServiceGroupController extends Controller
         $serviceGroup->is_active = $request->input('is_active');
         $serviceGroup->save();
         $serviceGroup->symbols()->sync($this->symbolsArray($request->input('symbols')));
-        $dPath = "/service-groups/$serviceGroup->id";
+        $dPath = "services/".Service::currentService()->id."/service-groups/$serviceGroup->id";
         $this->storeFiles($request, $dPath, ServiceGroup::$FILES, $serviceGroup);
         return new Response($serviceGroup);
     }
@@ -63,7 +64,7 @@ class ServiceGroupController extends Controller
         $serviceGroup = ServiceGroup::findOrFail($id);
         $serviceGroup->update($request->only(['name','is_active']));
         $serviceGroup->symbols()->sync($this->symbolsArray($request->input('symbols')));
-        $dPath = "/service-groups/$serviceGroup->id";
+        $dPath = "services/".Service::currentService()->id."/service-groups/$serviceGroup->id";
         $this->storeFiles($request, $dPath, ServiceGroup::$FILES, $serviceGroup);
         return new Response($serviceGroup);
     }
@@ -94,8 +95,8 @@ class ServiceGroupController extends Controller
     {
         $request->validate([
             'name' => ['required','string','max:250'],
-            'm_line' => ['nullable','mimetypes:audio/mpeg'],
-            'w_line' => ['nullable','mimetypes:audio/mpeg'],
+            'm_file' => ['nullable','mimetypes:audio/mpeg'],
+            'w_file' => ['nullable','mimetypes:audio/mpeg'],
             'is_active' => ['required','boolean'],
             'symbols' => ['nullable','array'],
             'symbols.*.id' => ['required','exists:service.symbols,id','distinct'],
