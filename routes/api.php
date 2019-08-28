@@ -10,8 +10,8 @@ if (request()->expectsJson()) {
         Route::apiResource('customer', 'CustomerController');
         Route::apiResource('service', 'ServiceController');
         Route::apiResource('user', 'UserController')->except(['destroy']);
-        Route::apiResource('symbol', 'SymbolController')->except(['show','delete']);
-        Route::apiResource('service_group', 'ServiceGroupController')->except(['show','delete']);
+        Route::apiResource('symbol', 'SymbolController')->except(['show','destroy']);
+        Route::apiResource('service_group', 'ServiceGroupController');
         Route::post('charge', 'ChargeController');
         Route::post('check_charge', 'CheckChargeController');
         Route::post('cmt', 'CMTController');
