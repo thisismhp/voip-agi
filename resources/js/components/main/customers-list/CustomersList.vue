@@ -14,6 +14,7 @@
                         <th>نام</th>
                         <th>اعتبار تعدادی</th>
                         <th>اعتبار بازه ای</th>
+                        <th>وضعیت</th>
                         <th>افزایش اعتبار</th>
                     </tr>
                     </thead>
@@ -25,6 +26,8 @@
                         <td class="text-danger" v-else>ندارد</td>
                         <td class="text-success" v-if="customer.date_charge != null">{{toJalaali(customer.date_charge,' ','-')}}</td>
                         <td class="text-danger" v-else>ندارد</td>
+                        <td v-if="customer.is_active" class="text-success">فعال</td>
+                        <td v-else class="text-danger">غیرفعال</td>
                         <td><router-link class="btn btn-secondary" :to="`/charge-one-customer?id=${customer.id}`" >افزایش اعتبار</router-link></td>
                     </tr>
                     </tbody>

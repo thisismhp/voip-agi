@@ -12,13 +12,15 @@
                     <tr>
                         <th>ردیف</th>
                         <th>نام</th>
+                        <th>وضعیت</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(service, index) in services">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="`/service/${service.id}`">{{service.name}}</router-link></td>
-<!--                        <td><router-link :to="'/customer/'+ service.id">{{service.name}}</router-link></td>-->
+                        <td v-if="service.is_active" class="text-success">فعال</td>
+                        <td v-else class="text-danger">غیرفعال</td>
                     </tr>
                     </tbody>
                 </table>
