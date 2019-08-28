@@ -19,6 +19,6 @@ class ServiceGroup extends Model
 
     public function symbols()
     {
-        return $this->belongsToMany(Symbol::class);
+        return $this->belongsToMany(Symbol::class)->withPivot('priority');
     }
 }
