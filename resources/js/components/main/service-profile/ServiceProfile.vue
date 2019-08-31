@@ -162,11 +162,11 @@
                         <td>غیر فعال شدن مشتری : </td>
                         <td>
                             <span>مرد : </span>
-                            <b-form-file class="serv-form" v-model="filesData.m_customer_no_charge" accept=".mp3" :placeholder="(serviceData.m_customer_no_charge === 1)?'ثبت شده':'ثبت نشده'"/>
+                            <b-form-file class="serv-form" v-model="filesData.m_customer_inactive" accept=".mp3" :placeholder="(serviceData.m_customer_inactive === 1)?'ثبت شده':'ثبت نشده'"/>
                         </td>
                         <td>
                             <span>زن : </span>
-                            <b-form-file class="serv-form" v-model="filesData.w_customer_no_charge" accept=".mp3" :placeholder="(serviceData.w_customer_no_charge === 1)?'ثبت شده':'ثبت نشده'"/>
+                            <b-form-file class="serv-form" v-model="filesData.w_customer_inactive" accept=".mp3" :placeholder="(serviceData.w_customer_inactive === 1)?'ثبت شده':'ثبت نشده'"/>
                         </td>
                         <td class="border-right">غیر فعال بودن سرویس : </td>
                         <td>
