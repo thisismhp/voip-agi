@@ -20,6 +20,11 @@ class CreateServicesTable extends Migration
             $table->char('m_line',50);
             $table->char('w_line',50);
             $table->tinyInteger('is_active');
+            $table->tinyInteger('customer_is_free')->default(0);
+            $table->tinyInteger('demo_is_free')->default(0);
+            $table->integer('demo_first_charge')->default(1);
+            $table->unsignedBigInteger('demo_charge_type_id');
+            $table->foreign('demo_charge_type_id')->references('id')->on('charge_types');
             $table->string('ws_address',250);
             $table->string('ws_username',250);
             $table->string('ws_password',250);
