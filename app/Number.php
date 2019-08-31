@@ -19,4 +19,9 @@ class Number extends Model
     protected $connection = "service";
 
     protected $fillable = ['phone_number_type_id','phone_number','charge_type_id','is_active'];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }
