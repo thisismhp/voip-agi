@@ -94,14 +94,25 @@ class ServiceGroupController extends Controller
 
     private function validateRequest(Request $request)
     {
+        $messages = [];
+        foreach ((array)$request->input('symbols') as $i => $symbol) {
+            $messages += [
+                "symbols.$i.id.required" => "فیلد نماد شماره تلفن ردیف " . ($i+1) . " الزامی است",
+                "symbols.$i.id.exists" => "فیلد نماد شماره تلفن ردیف " . ($i+1) . " الزامی است",
+                "symbols.$i.id.distinct" => "فیلد نماد شماره تلفن ردیف " . ($i+1) . " تکراری است",
+                "symbols.$i.priority.required" => "فیلد ترتیب پخش شماره تلفن ردیف " . ($i+1) . " الزامی است",
+                "symbols.$i.priority.integer" => "فیلد ترتیب پخش شماره تلفن ردیف " . ($i+1) . " الزامی است",
+                "symbols.$i.priority.distinct" => "فیلد ترتیب پخش شماره تلفن ردیف " . ($i+1) . " تکراری است",
+            ];
+        }
         $request->validate([
-            'name' => ['required','string','max:250'],
+            'name' => ['required'],
             'm_file' => ['nullable','mimetypes:audio/mpeg'],
             'w_file' => ['nullable','mimetypes:audio/mpeg'],
             'is_active' => ['required','boolean'],
             'symbols' => ['nullable','array'],
             'symbols.*.id' => ['required','exists:service.symbols,id','distinct'],
             'symbols.*.priority' => ['required','integer','distinct']
-        ]);
+        ],$messages);
     }
 }

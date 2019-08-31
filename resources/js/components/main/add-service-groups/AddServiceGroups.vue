@@ -168,7 +168,9 @@
                 this.sending = true;
                 const raw = this.sgData;
                 let formData = new FormData();
-                formData.append('name',raw.name);
+                if(raw.name !== null){
+                    formData.append('name',raw.name);
+                }
                 formData.append('is_active',(raw.is_active === 1 || raw.is_active === true)?1:0);
                 for(let item in raw.symbols){
                     if (!raw.symbols.hasOwnProperty(item)) continue;

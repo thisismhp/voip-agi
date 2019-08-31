@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 use mysqli;
 
 class ServiceController extends Controller
@@ -33,7 +32,6 @@ class ServiceController extends Controller
      *
      * @param Request $request
      * @return Response
-     * @throws ValidationException
      */
     public function store(Request $request)
     {
@@ -88,7 +86,6 @@ class ServiceController extends Controller
      * @param Request $request
      * @param int $id
      * @return Response
-     * @throws ValidationException
      */
     public function update(Request $request, $id)
     {
@@ -141,7 +138,6 @@ class ServiceController extends Controller
      *
      * @param Request $request
      * @param bool $isUpdate
-     * @throws ValidationException
      */
     private function validateRequest(Request $request, $isUpdate = false)
     {
@@ -173,11 +169,17 @@ class ServiceController extends Controller
                 ];
             }
         }
-        $request->validate($rules);
-        try {
-            $this->validate($request, $rules);
-        } catch (ValidationException $e) {
-            throw $e;
+        $messages = [];
+        foreach ((array)$request->input('default_symbols') as $i => $symbol) {
+            $messages += [
+                "default_symbols.$i.symbol_id.required" => "فیلد نماد شماره تلفن ردیف " . ($i+1) . " الزامی است",
+                "default_symbols.$i.symbol_id.exists" => "فیلد نماد شماره تلفن ردیف " . ($i+1) . " الزامی است",
+                "default_symbols.$i.symbol_id.distinct" => "فیلد نماد شماره تلفن ردیف " . ($i+1) . " تکراری است",
+                "default_symbols.$i.priority.required" => "فیلد ترتیب پخش شماره تلفن ردیف " . ($i+1) . " الزامی است",
+                "default_symbols.$i.priority.integer" => "فیلد ترتیب پخش شماره تلفن ردیف " . ($i+1) . " الزامی است",
+                "default_symbols.$i.priority.distinct" => "فیلد ترتیب پخش شماره تلفن ردیف " . ($i+1) . " تکراری است",
+            ];
         }
+        $request->validate($rules, $messages);
     }
 }
