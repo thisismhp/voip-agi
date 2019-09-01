@@ -50,7 +50,7 @@ class CheckCustomer extends Command
         $number = Number::where('phone_number',$num)->get()->last();
         if ($number == null){
             if($service->demo_is_free == 1){
-                echo "OK";
+                echo "demo,OK";
                 return;
             }
             $demoUser = DemoUser::where('phone_number',$num)->get()->last();
@@ -68,50 +68,51 @@ class CheckCustomer extends Command
             if($service->demo_charge_type_id == 1){
                 if ($demoUser->time_charge > 0){
                     $demoUser->update(['time_charge' => $demoUser->time_charge - 1]);
-                    echo "OK";
+                    echo "demo,OK";
                     return;
                 }else{
-                    echo "NO";
+                    echo "demo,NO";
                     return;
                 }
             }else{
                 if ($demoUser->date_charge > now()){
-                    echo "OK";
+                    echo "demo,OK";
                     return;
                 }else{
-                    echo "NO";
+                    echo "demo,NO";
                     return;
                 }
             }
         }
         else {
             if($service->customer_is_free == 1){
-                echo "OK";
+                echo "customer,OK";
                 return;
             }
             $customer = $number->customer;
             if ($customer == null or $customer->is_active != 1 or $number->is_active != 1) {
-                echo 'INACTIVE';
+                echo 'customer,INACTIVE';
             }else{
                 if($number->charge_type_id == 1){
                     if ($customer->time_charge > 0){
                         $customer->update(['time_charge' => $customer->time_charge - 1]);
-                        echo "OK";
+                        echo "customer,OK";
                         return;
                     }else{
-                        echo "NO";
+                        echo "customer,NO";
                         return;
                     }
                 }else{
                     if ($customer->date_charge > now()){
-                        echo "OK";
+                        echo "customer,OK";
                         return;
                     }else{
-                        echo "NO";
+                        echo "customer,NO";
                         return;
                     }
                 }
             }
         }
+        return;
     }
 }
