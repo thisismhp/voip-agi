@@ -13,4 +13,9 @@ class DefaultSymbols extends Model
     public const UPDATED_AT = null;
 
     protected $guarded = [];
+
+    public function symbol()
+    {
+        return $this->belongsTo(Symbol::class);
+    }
 }
