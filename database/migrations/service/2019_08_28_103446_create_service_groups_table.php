@@ -16,6 +16,7 @@ class CreateServiceGroupsTable extends Migration
         Schema::create('service_groups', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->char('name',100);
+            $table->integer('priority');
             $table->tinyInteger('m_file')->default(0);
             $table->tinyInteger('w_file')->default(0);
             $table->tinyInteger('is_active')->default(1);

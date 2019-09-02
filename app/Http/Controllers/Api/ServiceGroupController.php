@@ -31,6 +31,7 @@ class ServiceGroupController extends Controller
         $this->validateRequest($request);
         $serviceGroup = new ServiceGroup();
         $serviceGroup->name = $request->input('name');
+        $serviceGroup->priority = $request->input('priority');
         $serviceGroup->is_active = $request->input('is_active');
         $serviceGroup->save();
         $serviceGroup->symbols()->sync($this->symbolsArray($request->input('symbols')));
@@ -62,7 +63,7 @@ class ServiceGroupController extends Controller
     {
         $this->validateRequest($request);
         $serviceGroup = ServiceGroup::findOrFail($id);
-        $serviceGroup->update($request->only(['name','is_active']));
+        $serviceGroup->update($request->only(['name','is_active','priority']));
         $serviceGroup->symbols()->sync($this->symbolsArray($request->input('symbols')));
         $dPath = "services/".Service::currentService()->id."/service-groups/$serviceGroup->id";
         $this->storeFiles($request, $dPath, ServiceGroup::$FILES, $serviceGroup);
@@ -107,6 +108,7 @@ class ServiceGroupController extends Controller
         }
         $request->validate([
             'name' => ['required'],
+            'priority' => ['required','integer'],
             'm_file' => ['nullable','mimetypes:audio/mpeg'],
             'w_file' => ['nullable','mimetypes:audio/mpeg'],
             'is_active' => ['required','boolean'],

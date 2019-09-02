@@ -12,6 +12,7 @@
                     <tr>
                         <th>ردیف</th>
                         <th>نام</th>
+                        <th>اولویت</th>
                         <th>ضعیت</th>
                     </tr>
                     </thead>
@@ -19,6 +20,7 @@
                     <tr v-for="(serviceGroup, index) in serviceGroups">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="`/service-group/${serviceGroup.id}`">{{serviceGroup.name}}</router-link></td>
+                        <td>{{serviceGroup.priority}}</td>
                         <td v-if="serviceGroup.is_active" class="text-success">فعال</td>
                         <td v-else class="text-danger">غیرفعال</td>
                     </tr>

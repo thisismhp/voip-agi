@@ -14,6 +14,17 @@
                 </div>
             </div>
             <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="sgp">اولویت</label>
+                    <select v-model="sgData.priority" id="sgp" class="form-control" >
+                        <option value="null" disabled selected>انتخاب کنید</option>
+                        <option v-for="priority in sgPriorities" v-bind:value="priority">
+                            {{priority}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="i-m_file">فایل (مرد)</label><br />
                     <b-form-file class="serv-form" v-model="m_file" accept=".mp3" id="i-m_file" :placeholder="(sgData.m_file === 1)?'ثبت شده':'ثبت نشده'"/>
@@ -90,6 +101,7 @@
                 },
                 sgData:{
                     name:null,
+                    priority:null,
                     m_file:null,
                     w_file:null,
                     is_active:true,
@@ -98,6 +110,7 @@
                 m_file:null,
                 w_file:null,
                 priorities: [],
+                sgPriorities: [],
                 symbols: []
             }
         },
@@ -140,10 +153,18 @@
                 this.initForm();
             },
             initForm(){
-                axios.get('api/symbol')
-                    .then((res) => {
-                        this.symbols = res.data;
-                        this.loading = false;
+                axios.get('/api/service_group')
+                    .then(res => {
+                        this.initSgPriorities(1 + res.data.length);
+                        axios.get('api/symbol')
+                            .then((res) => {
+                                this.symbols = res.data;
+                                this.loading = false;
+                            })
+                            .catch((err) => {
+                                this.err(err);
+                            })
+                        ;
                     })
                     .catch((err) => {
                         this.err(err);
@@ -164,12 +185,21 @@
                     this.priorities.push(i);
                 }
             },
+            initSgPriorities(count){
+                this.sgPriorities = [];
+                for(let i = 1;i <= count;i++){
+                    this.sgPriorities.push(i);
+                }
+            },
             save(){
                 this.sending = true;
                 const raw = this.sgData;
                 let formData = new FormData();
                 if(raw.name !== null){
                     formData.append('name',raw.name);
+                }
+                if(raw.priority !== null){
+                    formData.append('priority',raw.priority);
                 }
                 formData.append('is_active',(raw.is_active === 1 || raw.is_active === true)?1:0);
                 for(let item in raw.symbols){
@@ -193,6 +223,7 @@
                         this.sending = false;
                         this.sgData = {
                             name:null,
+                            priority:null,
                             m_file:null,
                             w_file:null,
                             is_active:true,
@@ -200,6 +231,7 @@
                         };
                         this.m_file = null;
                         this.w_file = null;
+                        this.initForm();
                         this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
                     })
                     .catch(err => {

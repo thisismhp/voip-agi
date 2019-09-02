@@ -176,6 +176,7 @@ return [
         "demo_is_free" => "رایگان برای دمو",
         "demo_first_charge" => "اعتبار اولیه دمو",
         "demo_charge_type_id" => "نوع اعتبار دمو",
+        "priority" => "اولویت",
     ],
 
 ];
