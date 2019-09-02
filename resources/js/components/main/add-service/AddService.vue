@@ -57,9 +57,32 @@
                     </div>
                 </div>
                 <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="i-service-demo_first_charge">اعتبار اولیه دمو</label>
+                        <input @keyup.enter="save" type="text" v-model="serviceData.demo_first_charge" id="i-service-demo_first_charge" class="form-control" @keypress="isNumber($event)"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="i-service-demo_charge_type_id">نوع اعتبار دمو</label>
+                        <select v-model="serviceData.demo_charge_type_id" id="i-service-demo_charge_type_id" class="form-control">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
+                                {{chargeType.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-1">
                         <label for="i-service-is_active">فعال</label>
-                        <input @keyup.enter="save" type="checkbox" v-model="serviceData.is_active" id="i-service-is_active" class="form-control" @keypress="isNumber($event)"/>
+                        <input type="checkbox" v-model="serviceData.is_active" id="i-service-is_active" class="form-control"/>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="i-service-customer_is_free">رایگان برای مشتری</label>
+                        <input type="checkbox" v-model="serviceData.customer_is_free" id="i-service-customer_is_free" class="form-control"/>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="i-service-demo_is_free">رایگان برای دمو</label>
+                        <input type="checkbox" v-model="serviceData.demo_is_free" id="i-service-demo_is_free" class="form-control"/>
                     </div>
                 </div>
             </div>
@@ -96,12 +119,17 @@
                     m_line:null,
                     w_line:null,
                     is_active:true,
+                    customer_is_free:false,
+                    demo_is_free:false,
+                    demo_first_charge:null,
+                    demo_charge_type_id:null,
                     ws_address:null,
                     ws_username:null,
                     ws_password:null,
                     ws_update_interval:null,
                     user_id:null,
                 },
+                chargeTypes: [],
                 users:[]
             }
         },
@@ -144,10 +172,18 @@
                 this.initForm();
             },
             initForm(){
-                axios.get('/api/user')
+                axios.get('/api/charge_type')
                     .then(res => {
-                        this.users = res.data;
-                        this.loading = false;
+                        this.chargeTypes = res.data;
+                        axios.get('/api/user')
+                            .then(res => {
+                                this.users = res.data;
+                                this.loading = false;
+                            })
+                            .catch(err => {
+                                this.err(err);
+                            })
+                        ;
                     })
                     .catch(err => {
                         this.err(err);
@@ -164,6 +200,10 @@
                             m_line:null,
                             w_line:null,
                             is_active:true,
+                            customer_is_free:false,
+                            demo_is_free:false,
+                            demo_first_charge:null,
+                            demo_charge_type_id:null,
                             ws_address:null,
                             ws_username:null,
                             ws_password:null,
