@@ -7,6 +7,11 @@
         <div v-else-if="!loading" id="customer-list">
             <h3>لیست مشتریان</h3>
             <div>
+                <div class="form-row border-bottom">
+                    <div class="form-group col-md-12">
+                        <input type="text" id="search" class="form-control" placeholder="جست و جو" @input="filterCustomers = filter($event.target.value)"/>
+                    </div>
+                </div>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -19,7 +24,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(customer, index) in customers">
+                    <tr v-for="(customer, index) in filterCustomers">
                         <td>{{index + 1}}</td>
                         <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
                         <td class="text-success" v-if="customer.time_charge != null">{{customer.time_charge}}</td>
@@ -48,7 +53,8 @@
             return {
                 loading: true,
                 loadFailed:false,
-                customers:[]
+                customers:[],
+                filterCustomers:[],
             }
         },
         methods:{
@@ -70,13 +76,28 @@
                 axios.get('api/customer')
                     .then(res => {
                         this.customers = res.data;
+                        this.filterCustomers = this.customers;
                         this.loading = false;
-
                     })
                     .catch(err => {
                         this.err(err)
                     })
                 ;
+            },
+            filter(input){
+                const customers = this.customers;
+                let exp = [];
+                if(input === null || input === ''){
+                    exp = customers;
+                }else {
+                    for(let item in customers){
+                        if (!customers.hasOwnProperty(item)) continue;
+                        if(customers[item].name.search(input) > -1){
+                            exp.push(customers[item]);
+                        }
+                    }
+                }
+                return exp;
             }
         },
         created() {
