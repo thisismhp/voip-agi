@@ -40,9 +40,9 @@ class GetService extends Command
     {
         $lineType = 'm';
         $number =  $this->argument("number");
-        $service = Service::where('m_line',$number)->get()->last();
+        $service = Service::where([['m_line',$number],['is_active',1]])->get()->last();
         if ($service == null){
-            $service = Service::where('w_line',$number)->get()->last();
+            $service = Service::where([['w_line',$number],['is_active',1]])->get()->last();
             if ($service == null){
                 echo "NO";
                 return;
@@ -50,5 +50,6 @@ class GetService extends Command
             $lineType = 'w';
         }
         echo "$service->id,$service->is_active,$lineType";
+        return;
     }
 }

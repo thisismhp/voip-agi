@@ -44,6 +44,7 @@ class GetSymbols extends Command
         $serviceID = $this->argument("serviceID");
         $service = Service::find($serviceID);
         if($service == null){
+            echo "NO";
             return;
         }
         config(['database.connections.service.database'=> "service-$serviceID"]);
@@ -51,14 +52,20 @@ class GetSymbols extends Command
             $symbols = DefaultSymbols::orderBy('priority', 'ASC')->get('symbol_id');
             $exp = '';
             foreach ($symbols as $symbol) {
-                $unit = ($symbol->symbol->unit != null)?":".$symbol->symbol->unit->id:null;
-                $exp .= $symbol->symbol->id.":".$symbol->symbol->buyPriceFormatted.":".$symbol->symbol->sellPriceFormatted.$unit.",";
+                if($symbol->symbol->is_active){
+                    $unit = ($symbol->symbol->unit != null)?":".$symbol->symbol->unit->id:null;
+                    $exp .= $symbol->symbol->id.":".$symbol->symbol->buyPriceFormatted.":".$symbol->symbol->sellPriceFormatted.$unit.",";
+                }
             }
             echo $exp;
             return;
         }
-        $serviceGroup = ServiceGroup::find($g);
-        $symbols = $serviceGroup->symbols()->orderBy('service_group_symbol.priority')->get();
+        $serviceGroup = ServiceGroup::where([['id',$g],['is_active',1]])->get()->last();
+        if($serviceGroup == null){
+            echo "NO";
+            return;
+        }
+        $symbols = $serviceGroup->symbols()->where('symbols.is_active',1)->orderBy('service_group_symbol.priority')->get();
         $exp = '';
         foreach ($symbols as $symbol) {
             $unit = ($symbol->unit != null)?":".$symbol->unit->id:null;
