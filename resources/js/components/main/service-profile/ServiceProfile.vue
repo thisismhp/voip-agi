@@ -32,13 +32,19 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-5">
                         <label for="i-service-ws_username">نام کاربری وب سرویس</label>
                         <input @keyup.enter="update(id)" type="text" v-model="serviceData.ws_username" id="i-service-ws_username" class="form-control" />
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-5">
                         <label for="i-service-ws_password">رمز عبور وب سرویس</label>
                         <input @keyup.enter="update(id)" type="password" v-model="serviceData.ws_password" id="i-service-ws_password" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="i-service-ws_password">تست</label>
+                        <button @click="test" class="btn btn-success form-control" :disabled="sending">تست وب سرویس
+                            <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </button>
                     </div>
                 </div>
                 <div class="form-row">
@@ -376,6 +382,23 @@
                     })
                     .catch(err => {
                         this.err(err);
+                    })
+                ;
+            },
+            test(){
+                this.sending = true;
+                axios.post('api/check_service',this.serviceData)
+                    .then(res => {
+                        if(res.data === 'OK'){
+                            this.showDialog(true, "تست موفق","تست موفقیت آمیز بود!",'success',2000);
+                        }else{
+                            this.showDialog(true, "خطا","وب سرویس در دسترس نیست",'danger',2000);
+                        }
+                        this.sending = false;
+                    })
+                    .catch(()=> {
+                        this.sending = false;
+                        this.showDialog(true, "خطا","وب سرویس در دسترس نیست",'danger',2000);
                     })
                 ;
             },

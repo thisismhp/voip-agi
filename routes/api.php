@@ -22,5 +22,6 @@ if (request()->expectsJson()) {
         Route::get('unit', 'UnitController');
         Route::get('demo_user', 'DemoUserController');
         Route::get('no_charge', 'NoChargeController');
+        Route::post('check_service', 'CheckSoapController');
     });
 }
