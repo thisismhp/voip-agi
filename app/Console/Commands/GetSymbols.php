@@ -60,7 +60,7 @@ class GetSymbols extends Command
             echo $exp;
             return;
         }
-        $serviceGroup = ServiceGroup::where([['id',$g],['is_active',1]])->get()->last();
+        $serviceGroup = ServiceGroup::where([['priorit  y',$g],['is_active',1]])->get()->last();
         if($serviceGroup == null){
             echo "NO";
             return;
