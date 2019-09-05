@@ -19,7 +19,8 @@ if (request()->expectsJson()) {
         Route::get('city', 'CityController');
         Route::get('phone_number_type', 'PhoneNumberTypeController');
         Route::get('charge_type', 'ChargeTypeController');
-        Route::get('unit', 'UnitController');
+        Route::get('unit', 'UnitController@get');
+        Route::post('unit', 'UnitController@setFile');
         Route::get('demo_user', 'DemoUserController');
         Route::get('no_charge', 'NoChargeController');
         Route::post('check_service', 'CheckSoapController');
