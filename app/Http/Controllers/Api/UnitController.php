@@ -15,12 +15,18 @@ class UnitController extends Controller
      *
      * @return Response
      */
-    public function get()
+    public function index()
     {
         return new Response(Unit::all());
     }
 
-    public function setFile(Request $request)
+    public function show($id)
+    {
+        $unit = Unit::findOrFail($id);
+        return new Response($unit);
+    }
+
+    public function store(Request $request)
     {
         $request->validate([
             'unit_id' => 'required|exists:manage.units,id',
@@ -28,7 +34,7 @@ class UnitController extends Controller
             'w_file' => 'nullable|mimetypes:audio/mpeg'
         ]);
         $path = "services/".Service::currentService()->id."/units/".$request->input('unit_id');
-        if($request->file('file') != null){
+        if($request->file('m_file') != null){
             $this->storeFiles($request, $path, ['m_file']);
         }
         if($request->file('w_file') != null){

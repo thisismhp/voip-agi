@@ -21,6 +21,8 @@ import UsersList from "./components/main/users-list/UsersList";
 import UserProfile from "./components/main/user-profile/UserProfile";
 import ServiceGroupsList from "./components/main/service-groups-list/ServiceGroupsList";
 import ServiceGroupProfile from "./components/main/service-group-profile/ServiceGroupProfile";
+import UnitList from "./components/main/units/UnitList";
+import UnitsProfile from "./components/main/units/UnitsProfile";
 
 export const routes = [
     {path:'*', component:NotFound},
@@ -47,4 +49,6 @@ export const routes = [
     {path:'/add-user', component:AddUser},
     {path:'/users-list', component:UsersList},
     {path:'/user/:id', component:UserProfile},
+    {path:'/unit', component:UnitList},
+    {path:'/unit/:id', component:UnitsProfile},
 ];
