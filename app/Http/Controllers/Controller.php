@@ -12,6 +12,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use phpseclib\Net\SSH2;
 use ZipArchive;
 
 class Controller extends BaseController
@@ -46,6 +47,7 @@ class Controller extends BaseController
                 }
             }
         }
+        $this->setPermission();
     }
 
     /**
@@ -90,5 +92,14 @@ class Controller extends BaseController
                 config(['filesystems.default' => env('FILESYSTEM_DRIVER', 'local')]);
             }
         }
+        $this->setPermission();
+    }
+
+    public function setPermission()
+    {
+        $ssh = new SSH2(config('filesystems.disks.pbx.host'),config('filesystems.disks.pbx.port'));
+        $ssh->login(config('filesystems.disks.pbx.username'), config('filesystems.disks.pbx.password'));
+        $ssh->exec('chmod -Rf 777 /var/lib/asterisk/sounds/services');
+        $ssh->exec('chown -Rf asterisk:asterisk /var/lib/asterisk/sounds/services');
     }
 }
