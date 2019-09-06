@@ -63,15 +63,24 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="i-service-demo_first_charge">اعتبار اولیه دمو</label>
                         <input @keyup.enter="save" type="text" v-model="serviceData.demo_first_charge" id="i-service-demo_first_charge" class="form-control" @keypress="isNumber($event)"/>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="i-service-demo_charge_type_id">نوع اعتبار دمو</label>
                         <select v-model="serviceData.demo_charge_type_id" id="i-service-demo_charge_type_id" class="form-control">
                             <option value="null" disabled selected>انتخاب کنید</option>
                             <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
+                                {{chargeType.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="i-service-demo_use_charge_type_id">نوع اعتبارسنجی دمو</label>
+                        <select v-model="serviceData.demo_use_charge_type_id" id="i-service-demo_use_charge_type_id" class="form-control">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="chargeType in useChargeTypes" v-bind:value="chargeType.id">
                                 {{chargeType.name}}
                             </option>
                         </select>
@@ -129,6 +138,7 @@
                     demo_is_free:false,
                     demo_first_charge:null,
                     demo_charge_type_id:null,
+                    demo_use_charge_type_id:null,
                     ws_address:null,
                     ws_username:null,
                     ws_password:null,
@@ -136,6 +146,7 @@
                     user_id:null,
                 },
                 chargeTypes: [],
+                useChargeTypes: [],
                 users:[]
             }
         },
@@ -184,7 +195,15 @@
                         axios.get('/api/user')
                             .then(res => {
                                 this.users = res.data;
-                                this.loading = false;
+                                axios.get('/api/charge_type')
+                                    .then(res => {
+                                        this.useChargeTypes = res.data;
+                                        this.loading = false;
+                                    })
+                                    .catch((err) => {
+                                        this.err(err);
+                                    })
+                                ;
                             })
                             .catch(err => {
                                 this.err(err);
@@ -226,7 +245,7 @@
                             customer_is_free:false,
                             demo_is_free:false,
                             demo_first_charge:null,
-                            demo_charge_type_id:null,
+                            demo_use_charge_type_id:null,
                             ws_address:null,
                             ws_username:null,
                             ws_password:null,

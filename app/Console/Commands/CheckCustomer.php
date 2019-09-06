@@ -74,12 +74,24 @@ class CheckCustomer extends Command
                     echo "demo,NO";
                     return;
                 }
-            }else{
+            }else if($service->demo_charge_type_id == 2){
                 if ($demoUser->date_charge > now()){
                     echo "demo,OK";
                     return;
                 }else{
                     echo "demo,NO";
+                    return;
+                }
+            }
+            else if ($service->demo_charge_type_id == 3){
+                if ($demoUser->date_charge > now()){
+                    echo "customer,OK";
+                    return;
+                }else if ($demoUser->time_charge > 0){
+                    $demoUser->update(['time_charge' => $demoUser->time_charge - 1]);
+                    echo "customer,OK";
+                }else{
+                    echo "customer,NO";
                     return;
                 }
             }
@@ -102,10 +114,21 @@ class CheckCustomer extends Command
                         echo "customer,NO";
                         return;
                     }
-                }else{
+                }else if ($number->charge_type_id == 2){
                     if ($customer->date_charge > now()){
                         echo "customer,OK";
                         return;
+                    }else{
+                        echo "customer,NO";
+                        return;
+                    }
+                }else if ($number->charge_type_id == 3){
+                    if ($customer->date_charge > now()){
+                        echo "customer,OK";
+                        return;
+                    }else if ($customer->time_charge > 0){
+                        $customer->update(['time_charge' => $customer->time_charge - 1]);
+                        echo "customer,OK";
                     }else{
                         echo "customer,NO";
                         return;
