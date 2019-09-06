@@ -20,7 +20,10 @@ class CreateChargeTypesTable extends Migration
         });
         DB::unprepared("INSERT INTO `charge_types` (`id`, `name`) VALUES
         (1, 'تعدادی'),
-        (2, 'بازه ای');");
+        (2, 'بازه ای'),
+        (3, 'هر کدام زودتر');
+        "
+        );
     }
 
     /**

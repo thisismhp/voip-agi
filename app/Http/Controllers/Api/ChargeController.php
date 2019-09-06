@@ -67,7 +67,7 @@ class ChargeController extends Controller
     {
         $request->validate([
             'destination_type' => ['required',Rule::in([1,2])],
-            'charge_type_id' => ['required',Rule::exists('manage.charge_types','id')],
+            'charge_type_id' => ['required',Rule::exists('manage.charge_types','id')->whereNot('id',3)],
             'value' => ['required','integer','min:1'],
             'items' => ['required','array','min:1']
             ]);

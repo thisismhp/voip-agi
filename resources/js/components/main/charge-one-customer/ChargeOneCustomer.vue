@@ -98,7 +98,7 @@
                 this.dialogVars.showTime=showTime;
             },
             initForm() {
-                axios.get('/api/charge_type')
+                axios.get('/api/charge_type?is_charge=1')
                     .then(res => {
                         this.chargeTypes = res.data;
                         axios.get('/api/customer')
