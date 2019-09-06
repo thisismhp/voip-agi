@@ -65,7 +65,7 @@ class CheckCustomer extends Command
                 }
                 $demoUser->save();
             }
-            if($service->demo_charge_type_id == 1){
+            if($service->demo_use_charge_type_id == 1){
                 if ($demoUser->time_charge > 0){
                     $demoUser->update(['time_charge' => $demoUser->time_charge - 1]);
                     echo "demo,OK";
@@ -74,7 +74,7 @@ class CheckCustomer extends Command
                     echo "demo,NO";
                     return;
                 }
-            }else if($service->demo_charge_type_id == 2){
+            }else if($service->demo_use_charge_type_id == 2){
                 if ($demoUser->date_charge > now()){
                     echo "demo,OK";
                     return;
@@ -83,15 +83,15 @@ class CheckCustomer extends Command
                     return;
                 }
             }
-            else if ($service->demo_charge_type_id == 3){
+            else if ($service->demo_use_charge_type_id == 3){
                 if ($demoUser->date_charge > now()){
-                    echo "customer,OK";
+                    echo "demo,OK";
                     return;
                 }else if ($demoUser->time_charge > 0){
                     $demoUser->update(['time_charge' => $demoUser->time_charge - 1]);
-                    echo "customer,OK";
+                    echo "demo,OK";
                 }else{
-                    echo "customer,NO";
+                    echo "demo,NO";
                     return;
                 }
             }
