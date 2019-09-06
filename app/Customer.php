@@ -25,6 +25,8 @@ class Customer extends Model
 
     protected $fillable = ['name','nation_code','birth_date','province_id','city_id','address','phone_number','time_charge','date_charge','end_charge_checked','end_charge_comment','is_active'];
 
+    protected $with = ['numbers'];
+
     public function numbers()
     {
         return $this->hasMany(Number::class);

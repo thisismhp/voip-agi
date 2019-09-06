@@ -23,6 +23,7 @@ import ServiceGroupsList from "./components/main/service-groups-list/ServiceGrou
 import ServiceGroupProfile from "./components/main/service-group-profile/ServiceGroupProfile";
 import UnitList from "./components/main/units/UnitList";
 import UnitsProfile from "./components/main/units/UnitsProfile";
+import NumberSearch from "./components/main/number-search/NumberSearch";
 
 export const routes = [
     {path:'*', component:NotFound},
@@ -51,4 +52,5 @@ export const routes = [
     {path:'/user/:id', component:UserProfile},
     {path:'/unit', component:UnitList},
     {path:'/unit/:id', component:UnitsProfile},
+    {path:'/number_search', component:NumberSearch},
 ];

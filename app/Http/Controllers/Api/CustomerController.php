@@ -56,7 +56,6 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::findOrFail($id);
-        $customer->numbers;
         return new Response($customer);
     }
 
@@ -97,7 +96,6 @@ class CustomerController extends Controller
             }
         }
         $customer = Customer::findOrFail($id);
-        $customer->numbers;
         return new Response($customer);
     }
 

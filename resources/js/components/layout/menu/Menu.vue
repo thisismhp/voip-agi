@@ -7,6 +7,7 @@
             <div id="customer-mng-links">
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/" active-class="active" exact>{{$t("words.dashboard")}}</router-link>
                 <div v-if="hasService" class="menu-title">{{$t("words.customersManage")}}</div>
+                <router-link v-if="hasService" @click.native="menuSlideHide" to="/number_search" active-class="active">جستجو شماره تلفن</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/add-customer" active-class="active">{{$t("words.addCustomer")}}</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/customer-list" active-class="active">{{$t("words.customersList")}}</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/demo-users-list" active-class="active">{{$t("words.demoUsersList")}}</router-link>
