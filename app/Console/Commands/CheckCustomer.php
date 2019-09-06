@@ -47,7 +47,7 @@ class CheckCustomer extends Command
             return;
         }
         config(['database.connections.service.database'=> "service-$serviceID"]);
-        $number = Number::where('phone_number',$num)->get()->last();
+        $number = Number::where('phone_number',$num)->orWhere('phone_number',"0".$num)->get()->last();
         if ($number == null){
             if($service->demo_is_free == 1){
                 echo "demo,OK";
