@@ -19,8 +19,11 @@ class CreateUnitsTable extends Migration
             $table->string('name');
         });
         DB::unprepared("INSERT INTO `units` (`id`, `name`) VALUES
-        (1, 'ریال'),
-        (2, 'دلار');");
+        (1, 'تومن'),
+        (2, 'ریال'),
+        (3, 'دلار'),
+        (4, 'عدد'),
+        (5, 'اعشاری');");
     }
 
     /**
