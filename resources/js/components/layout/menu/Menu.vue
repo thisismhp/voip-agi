@@ -25,7 +25,7 @@
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/add-service-groups" active-class="active">{{$t("words.addServiceGroup")}}</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/service-groups-list" active-class="active">لیست گروه های سرویس</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/symbols-list" active-class="active">{{$t("words.symbolsList")}}</router-link>
-                <router-link v-if="hasService" @click.native="menuSlideHide" to="/unit" active-class="active">لیست واحد ها</router-link>
+<!--                <router-link v-if="hasService" @click.native="menuSlideHide" to="/unit" active-class="active">لیست واحد ها</router-link>-->
             </div>
             <div id="customer-users-links">
                 <div v-if="isAdmin" class="menu-title">مدیریت کاربران</div>

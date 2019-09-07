@@ -50,7 +50,7 @@ export const routes = [
     {path:'/add-user', component:AddUser},
     {path:'/users-list', component:UsersList},
     {path:'/user/:id', component:UserProfile},
-    {path:'/unit', component:UnitList},
-    {path:'/unit/:id', component:UnitsProfile},
+    // {path:'/unit', component:UnitList},
+    // {path:'/unit/:id', component:UnitsProfile},
     {path:'/number_search', component:NumberSearch},
 ];
