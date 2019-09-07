@@ -53,7 +53,7 @@ class GetSymbols extends Command
             $exp = '';
             foreach ($symbols as $symbol) {
                 if($symbol->symbol->is_active){
-                    $unit = ($symbol->symbol->unit != null)?":".$symbol->symbol->unit->id:null;
+                    $unit = ($symbol->symbol->unit != null)?":".$symbol->symbol->unit->id:0;
                     $exp .= $symbol->symbol->id.":".$symbol->symbol->buyPriceFormatted.":".$symbol->symbol->sellPriceFormatted.$unit.",";
                 }
             }
@@ -68,7 +68,7 @@ class GetSymbols extends Command
         $symbols = $serviceGroup->symbols()->where('symbols.is_active',1)->orderBy('service_group_symbol.priority')->get();
         $exp = '';
         foreach ($symbols as $symbol) {
-            $unit = ($symbol->unit != null)?":".$symbol->unit->id:null;
+            $unit = ($symbol->unit != null)?":".$symbol->unit->id:0;
             $exp .= $symbol->id.":".$symbol->buyPriceFormatted.":".$symbol->sellPriceFormatted.$unit.",";
         }
         echo $exp;
