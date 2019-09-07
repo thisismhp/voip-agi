@@ -8,6 +8,7 @@
             <input type="text" placeholder="جست و جو با شماره" class="form-control" @keypress="isNumber($event)" @input="filter($event.target.value)"/>
             <div class="form-row tiny-margin-t">
                 <div class="col-md-6 border-left">
+                    <p>جست و جو در مشتریان</p>
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -24,6 +25,7 @@
                     </table>
                 </div>
                 <div class="col-md-6 border-right">
+                    <p>جست و جو در کاربران دمو</p>
                     <table class="table table-striped">
                         <thead>
                         <tr>
