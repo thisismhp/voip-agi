@@ -48,11 +48,11 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="i-service-ws_update_interval">فاصله زمانی به روزرسانی وب سرویس (ثانیه)</label>
                         <input @keyup.enter="update(id)" type="text" v-model="serviceData.ws_update_interval" id="i-service-ws_update_interval" class="form-control" @keypress="isNumber($event)"/>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="i-service-user_id">کاربر اپراتور</label>
                         <select v-model="serviceData.user_id" id="i-service-user_id" class="form-control">
                             <option value="null" disabled selected>انتخاب کنید</option>
@@ -60,6 +60,10 @@
                                 {{user.name}}
                             </option>
                         </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="i-service-queue_id">شناسه صف تماس</label>
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.queue_id" id="i-service-queue_id" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                 </div>
                 <div class="form-row">
@@ -273,6 +277,7 @@
                     m_line:null,
                     w_line:null,
                     is_active:true,
+                    queue_id:null,
                     customer_is_free:false,
                     demo_is_free:false,
                     demo_first_charge:null,
@@ -430,6 +435,7 @@
                 formData.append('m_line', raw.m_line);
                 formData.append('w_line', raw.w_line);
                 formData.append('is_active',(raw.is_active === 1 || raw.is_active === true)?1:0);
+                formData.append('queue_id', raw.queue_id);
                 formData.append('customer_is_free',(raw.customer_is_free === 1 || raw.customer_is_free === true)?1:0);
                 formData.append('demo_is_free',(raw.demo_is_free === 1 || raw.demo_is_free === true)?1:0);
                 formData.append('demo_first_charge', raw.demo_first_charge);

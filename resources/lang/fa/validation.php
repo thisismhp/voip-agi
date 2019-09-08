@@ -177,6 +177,8 @@ return [
         "demo_first_charge" => "اعتبار اولیه دمو",
         "demo_charge_type_id" => "نوع اعتبار دمو",
         "priority" => "اولویت",
+        "queue_id" => "شناسه صف تماس",
+        "demo_use_charge_type_id" => "اعتبار سنجی دمو",
     ],
 
 ];
