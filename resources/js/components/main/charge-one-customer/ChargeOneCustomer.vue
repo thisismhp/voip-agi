@@ -10,23 +10,12 @@
             <div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="phone-charge-type">نوع اعتبار</label>
-                        <select v-model="chargeData.charge_type_id" id="phone-charge-type" class="form-control">
-                            <option value="null" disabled selected>انتخاب کنید</option>
-                            <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
-                                {{chargeType.name}}
-                            </option>
-                        </select>
+                        <label for="time_value">مقدار تعدادی</label>
+                        <input @keyup.enter="save" type="text" v-model="chargeData.time_value" id="time_value" class="form-control" @keypress="isNumber($event)" />
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="value">مقدار</label>
-                        <input @keyup.enter="save" type="text" v-model="chargeData.value" id="value" class="form-control" @keypress="isNumber($event)" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label for="customer_id">مشتری</label>
-                        <model-select  id="customer_id" placeholder="انتخاب کنید" :options="mapCds" v-model="chargeData.items[0]" />
+                        <label for="date_value">مقدار بازه ای</label>
+                        <input @keyup.enter="save" type="text" v-model="chargeData.date_value" id="date_value" class="form-control" @keypress="isNumber($event)" />
                     </div>
                 </div>
                 <div class="form-row">
@@ -60,16 +49,11 @@
                     show:false,
                     showTime:2000
                 },
-                chargeTypes : [],
-                cds : [],
-                mapCds : [],
                 chargeData : {
                     destination_type:1,
-                    charge_type_id : null,
-                    value : null,
-                    items:{
-                        0:null
-                    }
+                    destination:null,
+                    time_value : 0,
+                    date_value : 0,
                 },
             }
         },
@@ -98,28 +82,11 @@
                 this.dialogVars.showTime=showTime;
             },
             initForm() {
-                axios.get('/api/charge_type?is_charge=1')
-                    .then(res => {
-                        this.chargeTypes = res.data;
-                        axios.get('/api/customer')
-                            .then(res => {
-                                this.cds = res.data;
-                                this.mapCds = mixins.mapSearchSelect(this.cds, 'name');
-                                let id = this.$route.query.id;
-                                if(id !== null){
-                                    this.chargeData.items[0] = parseInt(id);
-                                }
-                                this.loading = false;
-                            })
-                            .catch(err => {
-                                this.err(err);
-                            })
-                        ;
-                    })
-                    .catch(err => {
-                        this.err(err);
-                    })
-                ;
+                this.loading = false;
+                let id = this.$route.query.id;
+                if(id !== null){
+                    this.chargeData.destination = parseInt(id);
+                }
             },
             errorHandling(err){
                 if(err.response){
@@ -139,15 +106,7 @@
                 axios.post('/api/charge',this.chargeData)
                     .then(() => {
                         this.sending = false;
-                        this.chargeData = {
-                            destination_type:1,
-                            charge_type_id : null,
-                            value : null,
-                            items:{
-                                0:null
-                            }
-                        };
-                        this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
+                        this.$router.back();
                     })
                     .catch((err) => {
                         this.sending = false;
