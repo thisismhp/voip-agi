@@ -5,9 +5,18 @@
             <button @click="reload" class="btn btn-warning">تلاش مجدد</button>
         </div>
         <div class="tiny-margin-t" v-else-if="!loading">
-            <input type="text" placeholder="جست و جو با شماره" class="form-control" @keypress="isNumber($event)" @input="filter($event.target.value)"/>
+            <div class="form-row">
+                <div class="col-md-10">
+                    <input type="text" v-model="key" placeholder="جست و جو با شماره" class="form-control" @keypress="isNumber($event)" @keyup.enter="save"/>
+                </div>
+                <div class="col-md-2">
+                    <button @click="save" class="btn btn-success" :disabled="sending">جست و جو
+                        <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
             <div class="form-row tiny-margin-t">
-                <div class="col-md-6 border-left">
+                <div class="col-md-6">
                     <p>جست و جو در مشتریان</p>
                     <table class="table table-striped">
                         <thead>
@@ -24,7 +33,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-6 border-right">
+                <div class="col-md-6">
                     <p>جست و جو در کاربران دمو</p>
                     <table class="table table-striped">
                         <thead>
@@ -57,9 +66,9 @@
             return {
                 loading: true,
                 loadFailed:false,
-                customers:[],
+                sending:false,
+                key:null,
                 filterCustomers:[],
-                demoUsers:[],
                 filterDemoUsers:[],
             }
         },
@@ -79,61 +88,26 @@
                 this.init();
             },
             init(){
-                axios.get('api/demo_user')
-                    .then((res) => {
-                        this.demoUsers = res.data;
-                        axios.get('api/customer')
-                            .then(res => {
-                                this.customers = res.data;
-                                this.loading = false;
-                            })
-                            .catch(err => {
-                                this.err(err)
-                            })
-                        ;
+                this.loading = false;
+            },
+            save(){
+                this.filterDemoUsers = [];
+                this.filterCustomers = [];
+                if(this.key === null || this.key === ''){
+                    return;
+                }
+                this.saveing = true;
+                axios.post('/api/search',{key:this.key})
+                    .then(res => {
+                        this.sending = false;
+                        this.filterDemoUsers = res.data.demo;
+                        this.filterCustomers = res.data.customer;
                     })
                     .catch(err => {
-                        this.err(err);
+                        this.sending = false;
+                        this.errorHandling(err);
                     })
                 ;
-            },
-            filter(input){
-                this.filterCustomer(input);
-                this.filterDemo(input);
-            },
-            filterCustomer(input){
-                const customers = this.customers;
-                let exp = [];
-                if(input === null || input === ''){
-                    exp = [];
-                }else {
-                    for(let item in customers){
-                        if (!customers.hasOwnProperty(item)) continue;
-                        const numbers = customers[item].numbers;
-                        for(let ni in numbers){
-                            if (!numbers.hasOwnProperty(ni)) continue;
-                            if(numbers[ni].phone_number.search(input) > -1){
-                                exp.push(customers[item]);
-                            }
-                        }
-                    }
-                }
-                this.filterCustomers = exp;
-            },
-            filterDemo(input){
-                const demo = this.demoUsers;
-                let exp = [];
-                if(input === null || input === ''){
-                    exp = [];
-                }else {
-                    for(let item in demo){
-                        if (!demo.hasOwnProperty(item)) continue;
-                        if(demo[item].phone_number.search(input) > -1){
-                            exp.push(demo[item]);
-                        }
-                    }
-                }
-                this.filterDemoUsers = exp;
             }
         },
         created() {

@@ -13,6 +13,7 @@ if (request()->expectsJson()) {
         Route::apiResource('symbol', 'SymbolController')->except(['show','destroy']);
         Route::apiResource('service_group', 'ServiceGroupController');
         Route::post('charge', 'ChargeController');
+        Route::post('search', 'SearchController');
         Route::post('check_charge', 'CheckChargeController');
         Route::post('cmt', 'CMTController');
         Route::get('province', 'ProvinceController');
