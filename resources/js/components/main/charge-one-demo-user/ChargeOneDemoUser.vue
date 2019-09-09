@@ -33,10 +33,9 @@
     import Loading from "../../layout/element/Loading";
     import {mixins} from "../../../mixins";
     import axios from "axios";
-    import { ModelSelect } from 'vue-search-select';
     export default {
         name: "ChargeOneDemoUser",
-        components: {ModelSelect, Loading, DialogMessage},
+        components: {Loading, DialogMessage},
         data(){
             return {
                 sending: false,
