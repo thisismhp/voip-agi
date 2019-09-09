@@ -20,6 +20,7 @@ class CreateServicesTable extends Migration
             $table->char('m_line',50);
             $table->char('w_line',50);
             $table->tinyInteger('is_active');
+            $table->char('queue_id',50);
             $table->tinyInteger('customer_is_free')->default(0);
             $table->tinyInteger('demo_is_free')->default(0);
             $table->integer('demo_first_charge')->default(1);
