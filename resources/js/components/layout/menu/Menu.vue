@@ -11,8 +11,6 @@
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/add-customer" active-class="active">{{$t("words.addCustomer")}}</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/customer-list" active-class="active">{{$t("words.customersList")}}</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/demo-users-list" active-class="active">{{$t("words.demoUsersList")}}</router-link>
-                <router-link v-if="hasService" @click.native="menuSlideHide" to="/charge-one-customer" active-class="active">{{$t("words.ioc")}}</router-link>
-                <router-link v-if="hasService" @click.native="menuSlideHide" to="/charge-one-demo-user" active-class="active">{{$t("words.iod")}}</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/charge-multi-customer" active-class="active">{{$t("words.imc")}}</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/charge-multi-demo-user" active-class="active">{{$t("words.imd")}}</router-link>
                 <router-link v-if="hasService" @click.native="menuSlideHide" to="/no-charge-checked-list" active-class="active">{{$t("words.cNoChargeList")}}</router-link>
