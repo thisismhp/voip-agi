@@ -10,44 +10,18 @@
             <div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="phone-charge-type">نوع اعتبار</label>
-                        <select v-model="chargeData.charge_type_id" id="phone-charge-type" class="form-control">
-                            <option value="null" disabled selected>انتخاب کنید</option>
-                            <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
-                                {{chargeType.name}}
-                            </option>
-                        </select>
+                        <label for="time_value">مقدار تعدادی</label>
+                        <input @keyup.enter="save" type="text" v-model="chargeData.time_value" id="time_value" class="form-control" @keypress="isNumber($event)" />
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="value">مقدار</label>
-                        <input  @keyup.enter="save" type="text" v-model="chargeData.value" id="value" class="form-control" @keypress="isNumber($event)" />
+                        <label for="date_value">مقدار بازه ای</label>
+                        <input @keyup.enter="save" type="text" v-model="chargeData.date_value" id="date_value" class="form-control" @keypress="isNumber($event)" />
                     </div>
                 </div>
                 <div class="form-row">
                     <button @click="save" class="btn btn-success" :disabled="sending">ثبت
                         <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     </button>
-                </div>
-                <hr />
-                <div class="form-row">
-                    <h4>مشتریان</h4>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>ردیف</th>
-                            <th>شماره</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(cd, index) in cds">
-                            <td>
-                                <input :id="`cd${index}`" type="checkbox" :value="cd.id" v-model="chargeData.items"/>
-                                <label :for="`cd${index}`">{{index + 1}}</label>
-                            </td>
-                            <td>{{cd.phone_number}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -74,14 +48,10 @@
                     show:false,
                     showTime:2000
                 },
-                chargeTypes : [],
-                cds : [],
-                cdx : [],
                 chargeData : {
-                    destination_type:2,
-                    charge_type_id : null,
-                    value : null,
-                    items:this.cdx
+                    destination_type:4,
+                    time_value : 0,
+                    date_value : 0,
                 },
             }
         },
@@ -110,25 +80,7 @@
                 this.dialogVars.showTime=showTime;
             },
             initForm() {
-                axios.get('/api/charge_type?is_charge=1')
-                    .then(res => {
-                        this.chargeTypes = res.data;
-                        axios.get('/api/demo_user')
-                            .then(res => {
-                                this.cds = res.data;
-                                this.cdx = mixins.extractId(this.cds);
-                                this.chargeData.items = this.cdx;
-                                this.loading = false;
-                            })
-                            .catch(err => {
-                                this.err(err);
-                            })
-                        ;
-                    })
-                    .catch(err => {
-                        this.err(err);
-                    })
-                ;
+                this.loading = false;
             },
             errorHandling(err){
                 if(err.response){
@@ -149,12 +101,12 @@
                     .then(() => {
                         this.sending = false;
                         this.chargeData = {
-                            destination_type:2,
-                            charge_type_id : null,
-                            value : null,
-                            items:this.cdx
+                            destination_type:4,
+                            time_value : 0,
+                            date_value : 0,
                         };
                         this.showDialog(true, "ثبت موفق","اطلاعات با موفقیت ثبت شد.",'success',2000);
+                        // this.$router.replace('/demo-users-list');
                     })
                     .catch((err) => {
                         this.sending = false;
