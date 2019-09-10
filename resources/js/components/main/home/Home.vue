@@ -7,58 +7,58 @@
         <div v-else-if="!loading" id="dashboard">
             <h3>داشبورد</h3>
             <div class="row">
-                <div class="col-md-6 dashboard-col">
-                    <div class="col-md-11 dashboard-box">
-                        <h3>لیست مشتریان</h3>
-                        <div>
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>نام</th>
-                                    <th>اعتبار تعدادی</th>
-                                    <th>اعتبار بازه ای</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(customer) in customers">
-                                    <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>
-                                    <td class="text-success" v-if="customer.time_charge != null">{{customer.time_charge}}</td>
-                                    <td class="text-danger" v-else>ندارد</td>
-                                    <td class="text-success" v-if="customer.date_charge != null">{{toJalaali(customer.date_charge,' ','-')}}</td>
-                                    <td class="text-danger" v-else>ندارد</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-1"></div>
-                </div>
-                <div class="col-md-6 dashboard-col">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-11 dashboard-box">
-                        <h3>لیست کاربران دمو</h3>
-                        <div>
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>شماره</th>
-                                    <th>اعتبار تعدادی</th>
-                                    <th>اعتبار بازه ای</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(demoUser) in demoUsers">
-                                    <td>{{demoUser.phone_number}}</td>
-                                    <td class="text-success" v-if="demoUser.time_charge != null">{{demoUser.time_charge}}</td>
-                                    <td class="text-danger" v-else>ندارد</td>
-                                    <td class="text-success" v-if="demoUser.date_charge != null">{{toJalaali(demoUser.date_charge,' ','-')}}</td>
-                                    <td class="text-danger" v-else>ندارد</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="col-md-6 dashboard-col">-->
+<!--                    <div class="col-md-11 dashboard-box">-->
+<!--                        <h3>لیست مشتریان</h3>-->
+<!--                        <div>-->
+<!--                            <table class="table table-striped">-->
+<!--                                <thead>-->
+<!--                                <tr>-->
+<!--                                    <th>نام</th>-->
+<!--                                    <th>اعتبار تعدادی</th>-->
+<!--                                    <th>اعتبار بازه ای</th>-->
+<!--                                </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                <tr v-for="(customer) in customers">-->
+<!--                                    <td><router-link :to="'/customer/'+ customer.id">{{customer.name}}</router-link></td>-->
+<!--                                    <td class="text-success" v-if="customer.time_charge != null">{{customer.time_charge}}</td>-->
+<!--                                    <td class="text-danger" v-else>ندارد</td>-->
+<!--                                    <td class="text-success" v-if="customer.date_charge != null">{{toJalaali(customer.date_charge,' ','-')}}</td>-->
+<!--                                    <td class="text-danger" v-else>ندارد</td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-1"></div>-->
+<!--                </div>-->
+<!--                <div class="col-md-6 dashboard-col">-->
+<!--                    <div class="col-md-1"></div>-->
+<!--                    <div class="col-md-11 dashboard-box">-->
+<!--                        <h3>لیست کاربران دمو</h3>-->
+<!--                        <div>-->
+<!--                            <table class="table table-striped">-->
+<!--                                <thead>-->
+<!--                                <tr>-->
+<!--                                    <th>شماره</th>-->
+<!--                                    <th>اعتبار تعدادی</th>-->
+<!--                                    <th>اعتبار بازه ای</th>-->
+<!--                                </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                <tr v-for="(demoUser) in demoUsers">-->
+<!--                                    <td>{{demoUser.phone_number}}</td>-->
+<!--                                    <td class="text-success" v-if="demoUser.time_charge != null">{{demoUser.time_charge}}</td>-->
+<!--                                    <td class="text-danger" v-else>ندارد</td>-->
+<!--                                    <td class="text-success" v-if="demoUser.date_charge != null">{{toJalaali(demoUser.date_charge,' ','-')}}</td>-->
+<!--                                    <td class="text-danger" v-else>ندارد</td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <div class="row">
                 <div class="col-md-6 dashboard-col">
@@ -148,32 +148,13 @@
                         axios.get('api/no_charge?state=3')
                             .then(res => {
                                 this.ncc = res.data;
-                                axios.get('api/demo_user')
-                                    .then(res => {
-                                        this.demoUsers = res.data;
-                                        axios.get('api/customer')
-                                            .then(res => {
-                                                this.customers = res.data;
-                                                this.loading = false;
-
-                                            })
-                                            .catch(err => {
-                                                this.err(err)
-                                            })
-                                        ;
-                                    })
-                                    .catch(err => {
-                                        this.err(err)
-                                    })
-                                ;
+                                this.customers = res.data;
+                                this.loading = false;
                             })
                             .catch(err => {
                                 this.err(err)
                             })
                         ;
-                    })
-                    .catch(err => {
-                        this.err(err)
                     })
                 ;
             },
