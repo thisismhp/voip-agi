@@ -47,8 +47,8 @@ class ServiceController extends Controller
         $service->queue_id = $request->input('queue_id');
         $service->customer_is_free = $request->input('customer_is_free');
         $service->demo_is_free = $request->input('demo_is_free');
-        $service->demo_first_charge = $request->input('demo_first_charge');
-        $service->demo_charge_type_id = $request->input('demo_charge_type_id');
+        $service->demo_first_date_charge = $request->input('demo_first_date_charge');
+        $service->demo_first_time_charge = $request->input('demo_first_time_charge');
         $service->demo_use_charge_type_id = $request->input('demo_use_charge_type_id');
         $service->ws_address = $request->input('ws_address');
         $service->ws_username = $request->input('ws_username');
@@ -100,7 +100,7 @@ class ServiceController extends Controller
             abort(403);
         }
         $this->validateRequest($request, true);
-        $service->update($request->only(['name','m_line','w_line','is_active','queue_id','customer_is_free','demo_is_free','demo_first_charge','demo_charge_type_id','demo_use_charge_type_id','ws_address','ws_username','ws_password','ws_update_interval','user_id']));
+        $service->update($request->only(['name','m_line','w_line','is_active','queue_id','customer_is_free','demo_is_free','demo_first_date_charge','demo_first_time_charge','demo_use_charge_type_id','ws_address','ws_username','ws_password','ws_update_interval','user_id']));
         DefaultSymbols::truncate();
         $dss = $request->input('default_symbols');
         foreach ((array)$dss as $ds) {
@@ -155,8 +155,8 @@ class ServiceController extends Controller
             'queue_id' => ['required'],
             'customer_is_free' => ['required','boolean'],
             'demo_is_free' => ['required','boolean'],
-            'demo_first_charge' => ['required','integer','min:1'],
-            'demo_charge_type_id' => ['required','exists:manage.charge_types,id'],
+            'demo_first_time_charge' => ['required','integer'],
+            'demo_first_date_charge' => ['required','integer'],
             'demo_use_charge_type_id' => ['required','exists:manage.charge_types,id'],
             'ws_address' => ['required','string','max:250'],
             'ws_username' => ['required','string','max:250'],

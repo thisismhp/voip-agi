@@ -179,6 +179,8 @@ return [
         "priority" => "اولویت",
         "queue_id" => "شناسه صف تماس",
         "demo_use_charge_type_id" => "اعتبار سنجی دمو",
+        "demo_first_time_charge" => "اعتبار اولیه تعدادی دمو",
+        "demo_first_date_charge" => "اعتبار اولیه بازه ای دمو",
     ],
 
 ];

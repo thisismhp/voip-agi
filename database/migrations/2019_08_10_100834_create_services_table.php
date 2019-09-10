@@ -23,8 +23,8 @@ class CreateServicesTable extends Migration
             $table->char('queue_id',50);
             $table->tinyInteger('customer_is_free')->default(0);
             $table->tinyInteger('demo_is_free')->default(0);
-            $table->integer('demo_first_charge')->default(1);
-            $table->unsignedBigInteger('demo_charge_type_id');
+            $table->integer('demo_first_date_charge')->default(0);
+            $table->integer('demo_first_time_charge')->default(0);
             $table->foreign('demo_charge_type_id')->references('id')->on('charge_types');
             $table->unsignedBigInteger('demo_use_charge_type_id');
             $table->foreign('demo_use_charge_type_id')->references('id')->on('charge_types');

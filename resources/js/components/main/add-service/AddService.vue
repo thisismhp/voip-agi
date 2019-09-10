@@ -68,17 +68,12 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label for="i-service-demo_first_charge">اعتبار اولیه دمو</label>
-                        <input @keyup.enter="save" type="text" v-model="serviceData.demo_first_charge" id="i-service-demo_first_charge" class="form-control" @keypress="isNumber($event)"/>
+                        <label for="i-service-demo_first_charge">اعتبار اولیه تعدادی دمو</label>
+                        <input @keyup.enter="save" type="text" v-model="serviceData.demo_first_time_charge" id="i-service-demo_first_charge" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="i-service-demo_charge_type_id">نوع اعتبار دمو</label>
-                        <select v-model="serviceData.demo_charge_type_id" id="i-service-demo_charge_type_id" class="form-control">
-                            <option value="null" disabled selected>انتخاب کنید</option>
-                            <option v-for="chargeType in chargeTypes" v-bind:value="chargeType.id">
-                                {{chargeType.name}}
-                            </option>
-                        </select>
+                        <label for="i-service-demo_first_charge_time">اعتبار اولیه بازه ای دمو</label>
+                        <input @keyup.enter="save" type="text" v-model="serviceData.demo_first_date_charge" id="i-service-demo_first_charge_time" class="form-control" @keypress="isNumber($event)"/>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="i-service-demo_use_charge_type_id">نوع اعتبارسنجی دمو</label>
@@ -141,8 +136,8 @@
                     queue_id:null,
                     customer_is_free:false,
                     demo_is_free:false,
-                    demo_first_charge:null,
-                    demo_charge_type_id:null,
+                    demo_first_time_charge:null,
+                    demo_first_date_charge:null,
                     demo_use_charge_type_id:null,
                     ws_address:null,
                     ws_username:null,
@@ -250,8 +245,8 @@
                             queue_id:null,
                             customer_is_free:false,
                             demo_is_free:false,
-                            demo_first_charge:null,
-                            demo_use_charge_type_id:null,
+                            demo_first_time_charge:null,
+                            demo_first_date_charge:null,
                             ws_address:null,
                             ws_username:null,
                             ws_password:null,

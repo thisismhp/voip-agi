@@ -57,11 +57,12 @@ class CheckCustomer extends Command
             if($demoUser == null){
                 $demoUser = new DemoUser();
                 $demoUser->phone_number = $num;
-                if($service->demo_charge_type_id == 1){
-                    $demoUser->time_charge = $service->demo_first_charge;
-                }else{
+                if($service->demo_first_time_charge > 0){
+                    $demoUser->time_charge = $service->demo_first_time_charge;
+                }
+                if($service->demo_first_date_charge > 0){
                     $lastChargeDate = now();
-                    $demoUser->date_charge = date("Y/m/d 23:59:59",strtotime("$lastChargeDate + $service->demo_first_charge day"));
+                    $demoUser->date_charge = date("Y/m/d 23:59:59",strtotime("$lastChargeDate + $service->demo_first_date_charge day"));
                 }
                 $demoUser->save();
             }
