@@ -9,7 +9,7 @@
             </div>
             <div class="form-group col-md-12">
                 <span>نام کاربری : </span>
-                <span>{{user.name}}</span>
+                <span>{{user.username}}</span>
             </div>
             <hr />
             <h4>تغییر رمز عبور</h4>
