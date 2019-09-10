@@ -96,7 +96,7 @@
                 if(this.key === null || this.key === ''){
                     return;
                 }
-                this.saveing = true;
+                this.sending = true;
                 axios.post('/api/search',{key:this.key})
                     .then(res => {
                         this.sending = false;
