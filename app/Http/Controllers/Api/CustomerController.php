@@ -18,7 +18,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return new Response(Customer::with(['province','city'])->get());
+        return new Response(Customer::with(['province','city'])->paginate(20));
     }
 
     /**

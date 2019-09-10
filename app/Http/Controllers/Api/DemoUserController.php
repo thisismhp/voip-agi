@@ -15,6 +15,6 @@ class DemoUserController extends Controller
      */
     public function __invoke()
     {
-        return new Response(DemoUser::all());
+        return new Response(DemoUser::paginate(20));
     }
 }

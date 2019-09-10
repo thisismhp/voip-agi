@@ -38,6 +38,7 @@
                     </tbody>
                 </table>
             </div>
+            <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perpage" align="center" :disabled="changing"></b-pagination>
         </div>
     </div>
 </template>
@@ -55,6 +56,10 @@
                 loadFailed:false,
                 customers:[],
                 filterCustomers:[],
+                rows:1,
+                currentPage:1,
+                perpage:1,
+                changing:false,
             }
         },
         methods:{
@@ -72,12 +77,15 @@
                 this.loadFailed = false;
                 this.getCustomers();
             },
-            getCustomers(){
-                axios.get('api/customer')
+            getCustomers(page){
+                axios.get(`api/customer?page=${page}`)
                     .then(res => {
-                        this.customers = res.data;
+                        this.customers = res.data.data;
                         this.filterCustomers = this.customers;
+                        this.perpage = res.data.per_page;
+                        this.rows = res.data.total;
                         this.loading = false;
+                        this.changing = false;
                     })
                     .catch(err => {
                         this.err(err)
@@ -100,8 +108,21 @@
                 return exp;
             }
         },
+        watch:{
+            currentPage(val){
+                this.changing = true;
+                this.getCustomers(val);
+                this.$router.push({ path: 'customer-list', query: { page: (val == null)?1:val }})
+            }
+        },
         created() {
-            this.getCustomers();
+            let page = this.$route.query.page;
+            if(_.isInteger(page)){
+                this.currentPage = page;
+            }else{
+                this.currentPage = 1;
+            }
+            this.getCustomers(page);
         }
     }
 </script>

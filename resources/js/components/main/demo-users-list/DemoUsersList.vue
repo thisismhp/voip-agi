@@ -31,6 +31,7 @@
                 </table>
             </div>
         </div>
+        <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perpage" align="center" :disabled="changing"></b-pagination>
     </div>
 </template>
 
@@ -46,7 +47,11 @@
             return {
                 loading: true,
                 loadFailed:false,
-                demoUsers:[]
+                demoUsers:[],
+                rows:1,
+                currentPage:1,
+                perpage:1,
+                changing:false,
             }
         },
         methods:{
@@ -64,11 +69,14 @@
                 this.loadFailed = false;
                 this.getDemoUsers();
             },
-            getDemoUsers(){
-                axios.get('api/demo_user')
+            getDemoUsers(page){
+                axios.get(`api/demo_user?page=${page}`)
                     .then(res => {
-                        this.demoUsers = res.data;
+                        this.demoUsers = res.data.data;
+                        this.perpage = res.data.per_page;
+                        this.rows = res.data.total;
                         this.loading = false;
+                        this.changing = false;
                     })
                     .catch(err => {
                         this.err(err)
@@ -76,8 +84,21 @@
                 ;
             }
         },
+        watch:{
+            currentPage(val){
+                this.changing = true;
+                this.getDemoUsers(val);
+                this.$router.push({ path: 'demo-users-list', query: { page: (val == null)?1:val }})
+            }
+        },
         created() {
-            this.getDemoUsers();
+            let page = this.$route.query.page;
+            if(_.isInteger(page)){
+                this.currentPage = page;
+            }else{
+                this.currentPage = 1;
+            }
+            this.getDemoUsers(1);
         }
     }
 </script>
