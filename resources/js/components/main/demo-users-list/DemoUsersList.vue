@@ -52,6 +52,7 @@
                 currentPage:1,
                 perpage:1,
                 changing:false,
+                isFirstTime:true
             }
         },
         methods:{
@@ -86,19 +87,24 @@
         },
         watch:{
             currentPage(val){
-                this.changing = true;
-                this.getDemoUsers(val);
-                this.$router.push({ path: 'demo-users-list', query: { page: (val == null)?1:val }})
+                if(!this.isFirstTime) {
+                    this.changing = true;
+                    this.getDemoUsers(val);
+                    this.$router.push({path: 'demo-users-list', query: {page: (val == null) ? 1 : val}})
+                }else{
+                    this.isFirstTime = false;
+                }
             }
         },
         created() {
             let page = this.$route.query.page;
-            if(_.isInteger(page)){
+            if(_.isString(page) || _.isInteger(page)){
                 this.currentPage = page;
             }else{
                 this.currentPage = 1;
+                this.isFirstTime = false;
             }
-            this.getDemoUsers(1);
+            this.getDemoUsers(this.currentPage);
         }
     }
 </script>
