@@ -26,7 +26,7 @@ class Service extends Model
 
     protected $guarded = ['id','deleted_at','created_at','updated_at'];
 
-    public static $FILES = ['customer_welcome','customer_menu_start','customer_no_charge','customer_inactive', 'demo_welcome','demo_menu_start','demo_no_charge','inactive','sb'];
+    public static $FILES = ['customer_welcome','customer_menu_start','customer_no_charge','customer_inactive', 'demo_welcome','demo_menu_start','demo_no_charge','inactive','sb','opr','no_charge_sms','no_charge_opr'];
 
     public static $ZIP_FILES = ['m_numbers','w_numbers'];
 

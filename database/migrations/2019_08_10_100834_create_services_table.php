@@ -25,7 +25,6 @@ class CreateServicesTable extends Migration
             $table->tinyInteger('demo_is_free')->default(0);
             $table->integer('demo_first_date_charge')->default(0);
             $table->integer('demo_first_time_charge')->default(0);
-            $table->foreign('demo_charge_type_id')->references('id')->on('charge_types');
             $table->unsignedBigInteger('demo_use_charge_type_id');
             $table->foreign('demo_use_charge_type_id')->references('id')->on('charge_types');
             $table->string('ws_address',250);
@@ -35,6 +34,9 @@ class CreateServicesTable extends Migration
             $table->dateTime('ws_update_at')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('menu_opr_key')->nullable()->default(null);
+            $table->integer('no_charge_opr_key')->nullable()->default(null);
+            $table->integer('no_charge_sms_key')->nullable()->default(null);
             foreach (Service::$FILES as $FILE){
                 $table->tinyInteger("m_$FILE")->nullable();
                 $table->tinyInteger("w_$FILE")->nullable();

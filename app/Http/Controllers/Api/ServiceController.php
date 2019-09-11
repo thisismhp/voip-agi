@@ -55,6 +55,9 @@ class ServiceController extends Controller
         $service->ws_password = $request->input('ws_password');
         $service->ws_update_interval = $request->input('ws_update_interval');
         $service->user_id = $request->input('user_id');
+        $service->no_charge_opr_key = $request->input('no_charge_opr_key');
+        $service->no_charge_sms_key = $request->input('no_charge_sms_key');
+        $service->menu_opr_key = $request->input('menu_opr_key');
         $service->save();
         $conn = new mysqli(config("database.connections.service.host"), config("database.connections.service.username"), config("database.connections.service.password"));
         if ($conn->connect_error) {
@@ -100,7 +103,7 @@ class ServiceController extends Controller
             abort(403);
         }
         $this->validateRequest($request, true);
-        $service->update($request->only(['name','m_line','w_line','is_active','queue_id','customer_is_free','demo_is_free','demo_first_date_charge','demo_first_time_charge','demo_use_charge_type_id','ws_address','ws_username','ws_password','ws_update_interval','user_id']));
+        $service->update($request->only(['name','m_line','w_line','is_active','queue_id','customer_is_free','demo_is_free','demo_first_date_charge','demo_first_time_charge','demo_use_charge_type_id','ws_address','ws_username','ws_password','ws_update_interval','user_id','menu_opr_key','no_charge_sms_key','no_charge_opr_key']));
         DefaultSymbols::truncate();
         $dss = $request->input('default_symbols');
         foreach ((array)$dss as $ds) {
@@ -163,6 +166,9 @@ class ServiceController extends Controller
             'ws_password' => ['required','string','max:250'],
             'ws_update_interval' => ['required','integer','max:1000000'],
             'user_id' => ['required',Rule::exists('users','id')->whereNull('deleted_at')],
+            'menu_opr_key' => ['required','integer','min:0','max:9'],
+            'no_charge_opr_key' => ['required','integer','min:0','max:9'],
+            'no_charge_sms_key' => ['required','integer','min:0','max:9'],
             'default_symbols' => ['nullable','array'],
         ];
         $rules += [

@@ -237,6 +237,68 @@
                     </tr>
                 </table>
             </div>
+            <br /><br /><br />
+            <h5>تنظیمات اپراتور و پیامک</h5>
+            <table class="table table-striped border-bottom">
+                <tr>
+                    <td>عنوان</td>
+                    <td>شماره ورودی</td>
+                    <td>فایل (مرد)</td>
+                    <td>فایل (زن)</td>
+                </tr>
+                <tr>
+                    <td>وصل شدن به اپراتور (منو)</td>
+                    <td>
+                        <select v-model="serviceData.menu_opr_key" class="form-control" style="width: 50px">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="key in keys" v-bind:value="key">
+                                {{key}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <b-form-file class="serv-form" v-model="filesData.m_opr" accept=".mp3" :placeholder="(serviceData.m_opr === 1)?'ثبت شده':'ثبت نشده'"/>
+                    </td>
+                    <td>
+                        <b-form-file class="serv-form" v-model="filesData.w_opr" accept=".mp3" :placeholder="(serviceData.w_opr === 1)?'ثبت شده':'ثبت نشده'"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>وصل شدن به اپراتور (اتمام شارژ)</td>
+                    <td>
+                        <select v-model="serviceData.no_charge_opr_key" class="form-control" style="width: 50px">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="key in keys" v-bind:value="key">
+                                {{key}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <b-form-file class="serv-form" v-model="filesData.m_no_charge_opr" accept=".mp3" :placeholder="(serviceData.m_no_charge_opr === 1)?'ثبت شده':'ثبت نشده'"/>
+                    </td>
+                    <td>
+                        <b-form-file class="serv-form" v-model="filesData.w_no_charge_opr" accept=".mp3" :placeholder="(serviceData.w_no_charge_opr === 1)?'ثبت شده':'ثبت نشده'"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ارسال پیامک (اتمام شارژ)</td>
+                    <td>
+                        <select v-model="serviceData.no_charge_sms_key" class="form-control" style="width: 50px">
+                            <option value="null" disabled selected>انتخاب کنید</option>
+                            <option v-for="key in keys" v-bind:value="key">
+                                {{key}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <b-form-file class="serv-form" v-model="filesData.m_no_charge_sms" accept=".mp3" :placeholder="(serviceData.m_no_charge_sms === 1)?'ثبت شده':'ثبت نشده'"/>
+                    </td>
+                    <td>
+                        <b-form-file class="serv-form" v-model="filesData.w_no_charge_sms" accept=".mp3" :placeholder="(serviceData.w_no_charge_sms === 1)?'ثبت شده':'ثبت نشده'"/>
+                    </td>
+                </tr>
+            </table>
+            <br />
             <div class="form-row">
                 <button @click="update(id)" class="btn btn-success" :disabled="sending">ثبت
                     <span v-if="sending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -267,6 +329,7 @@
                     show: false,
                     showTime: 2000
                 },
+                keys:[1,2,3,4,5,6,7,8,9,0],
                 serviceData:{
                     name:null,
                     m_line:null,
@@ -282,6 +345,9 @@
                     ws_password:null,
                     ws_update_interval:null,
                     user_id:null,
+                    menu_opr_key:null,
+                    no_charge_opr_key:null,
+                    no_charge_sms_key:null,
                     defaultSymbols:[]
                 },
                 filesData : {
@@ -303,6 +369,12 @@
                     m_inactive : null,
                     w_sb : null,
                     m_sb : null,
+                    m_opr : null,
+                    w_opr : null,
+                    m_no_charge_sms : null,
+                    w_no_charge_sms : null,
+                    m_no_charge_opr : null,
+                    w_no_charge_opr : null,
                 },
                 m_numbers : null,
                 w_numbers : null,
@@ -441,6 +513,9 @@
                 formData.append('ws_password', raw.ws_password);
                 formData.append('ws_update_interval', raw.ws_update_interval);
                 formData.append('user_id', raw.user_id);
+                formData.append('menu_opr_key', raw.menu_opr_key);
+                formData.append('no_charge_opr_key', raw.no_charge_opr_key);
+                formData.append('no_charge_sms_key', raw.no_charge_sms_key);
                 for(let item in raw.defaultSymbols){
                     if (!raw.defaultSymbols.hasOwnProperty(item)) continue;
                     formData.append(`default_symbols[${item}][symbol_id]`, JSON.stringify(raw.defaultSymbols[item].symbol_id));
