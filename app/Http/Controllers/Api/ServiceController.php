@@ -55,9 +55,6 @@ class ServiceController extends Controller
         $service->ws_password = $request->input('ws_password');
         $service->ws_update_interval = $request->input('ws_update_interval');
         $service->user_id = $request->input('user_id');
-        $service->no_charge_opr_key = $request->input('no_charge_opr_key');
-        $service->no_charge_sms_key = $request->input('no_charge_sms_key');
-        $service->menu_opr_key = $request->input('menu_opr_key');
         $service->save();
         $conn = new mysqli(config("database.connections.service.host"), config("database.connections.service.username"), config("database.connections.service.password"));
         if ($conn->connect_error) {
@@ -166,9 +163,6 @@ class ServiceController extends Controller
             'ws_password' => ['required','string','max:250'],
             'ws_update_interval' => ['required','integer','max:1000000'],
             'user_id' => ['required',Rule::exists('users','id')->whereNull('deleted_at')],
-            'menu_opr_key' => ['required','integer','min:0','max:9'],
-            'no_charge_opr_key' => ['required','integer','min:0','max:9'],
-            'no_charge_sms_key' => ['required','integer','min:0','max:9'],
             'default_symbols' => ['nullable','array'],
         ];
         $rules += [
@@ -178,7 +172,10 @@ class ServiceController extends Controller
         if($isUpdate){
             $rules += [
                 'm_numbers' => ['nullable','mimes:zip'],
-                'w_numbers' => ['nullable','mimes:zip']
+                'w_numbers' => ['nullable','mimes:zip'],
+                'menu_opr_key' => ['required','integer','min:0','max:9'],
+                'no_charge_opr_key' => ['required','integer','min:0','max:9'],
+                'no_charge_sms_key' => ['required','integer','min:0','max:9'],
             ];
             foreach (Service::$FILES as $FILE) {
                 $rules += [
