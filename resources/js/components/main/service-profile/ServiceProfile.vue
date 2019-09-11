@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group col-md-5">
                         <label for="i-service-ws_password">رمز عبور وب سرویس</label>
-                        <input @keyup.enter="update(id)" type="password" v-model="serviceData.ws_password" id="i-service-ws_password" class="form-control" />
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.ws_password" id="i-service-ws_password" class="form-control" />
                     </div>
                     <div class="form-group col-md-2">
                         <label for="i-service-ws_password">تست</label>
@@ -239,6 +239,33 @@
             </div>
             <br /><br /><br />
             <h5>تنظیمات اپراتور و پیامک</h5>
+            <div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="i-service-sms_address">آدرس وب سرویس پیامک</label>
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.sms_address" id="i-service-sms_address" class="form-control inputUsername" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="i-service-sms_user">نام کاربری سرویس پیامک</label>
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.sms_username" id="i-service-sms_user" class="form-control inputUsername" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="i-service-sms_pass">رمز عبور سرویس پیامک</label>
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.sms_password" id="i-service-sms_pass" class="form-control inputUsername" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="i-service-sms_number">شماره خط سرویس پیامک</label>
+                        <input @keyup.enter="update(id)" type="text" v-model="serviceData.sms_number" id="i-service-sms_number" class="form-control inputUsername" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="i-service-sms_text">متن پیامک</label>
+                        <textarea @keyup.ctrl.enter="update(id)"  v-model="serviceData.sms_text" id="i-service-sms_text" class="form-control" ></textarea>
+                    </div>
+                </div>
             <table class="table table-striped border-bottom">
                 <tr>
                     <td>عنوان</td>
@@ -298,6 +325,7 @@
                     </td>
                 </tr>
             </table>
+            </div>
             <br />
             <div class="form-row">
                 <button @click="update(id)" class="btn btn-success" :disabled="sending">ثبت
@@ -344,6 +372,11 @@
                     ws_username:null,
                     ws_password:null,
                     ws_update_interval:null,
+                    sms_address:null,
+                    sms_username:null,
+                    sms_password:null,
+                    sms_number:null,
+                    sms_text:null,
                     user_id:null,
                     menu_opr_key:null,
                     no_charge_opr_key:null,
@@ -512,6 +545,11 @@
                 formData.append('ws_username', raw.ws_username);
                 formData.append('ws_password', raw.ws_password);
                 formData.append('ws_update_interval', raw.ws_update_interval);
+                formData.append('sms_address', raw.sms_address);
+                formData.append('sms_username', raw.sms_username);
+                formData.append('sms_password', raw.sms_password);
+                formData.append('sms_number', raw.sms_number);
+                formData.append('sms_text', raw.sms_text);
                 formData.append('user_id', raw.user_id);
                 formData.append('menu_opr_key', raw.menu_opr_key);
                 formData.append('no_charge_opr_key', raw.no_charge_opr_key);

@@ -100,7 +100,7 @@ class ServiceController extends Controller
             abort(403);
         }
         $this->validateRequest($request, true);
-        $service->update($request->only(['name','m_line','w_line','is_active','queue_id','customer_is_free','demo_is_free','demo_first_date_charge','demo_first_time_charge','demo_use_charge_type_id','ws_address','ws_username','ws_password','ws_update_interval','user_id','menu_opr_key','no_charge_sms_key','no_charge_opr_key']));
+        $service->update($request->only(['name','m_line','w_line','is_active','queue_id','customer_is_free','demo_is_free','demo_first_date_charge','demo_first_time_charge','demo_use_charge_type_id','ws_address','ws_username','ws_password','ws_update_interval','sms_address','sms_username','sms_password','sms_number','sms_text','user_id','menu_opr_key','no_charge_sms_key','no_charge_opr_key']));
         DefaultSymbols::truncate();
         $dss = $request->input('default_symbols');
         foreach ((array)$dss as $ds) {
@@ -173,6 +173,11 @@ class ServiceController extends Controller
             $rules += [
                 'm_numbers' => ['nullable','mimes:zip'],
                 'w_numbers' => ['nullable','mimes:zip'],
+                'sms_address' => ['required','string','max:250'],
+                'sms_username' => ['required','string','max:250'],
+                'sms_password' => ['required','string','max:250'],
+                'sms_number' => ['required','string','max:250'],
+                'sms_text' => ['required','string'],
                 'menu_opr_key' => ['required','integer','min:0','max:9'],
                 'no_charge_opr_key' => ['required','integer','min:0','max:9'],
                 'no_charge_sms_key' => ['required','integer','min:0','max:9'],

@@ -32,6 +32,11 @@ class CreateServicesTable extends Migration
             $table->string('ws_password',250);
             $table->bigInteger('ws_update_interval');
             $table->dateTime('ws_update_at')->nullable();
+            $table->string('sms_address',250)->nullable();
+            $table->string('sms_username',250)->nullable();
+            $table->string('sms_password',250)->nullable();
+            $table->string('sms_number',250)->nullable();
+            $table->longText('sms_text')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('menu_opr_key')->nullable()->default(null);
