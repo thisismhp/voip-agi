@@ -156,6 +156,9 @@
                             })
                         ;
                     })
+                    .catch(err => {
+                        this.err(err)
+                    })
                 ;
             },
             reload(){
