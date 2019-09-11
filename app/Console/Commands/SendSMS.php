@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Service;
 use Illuminate\Console\Command;
+use SoapClient;
+use SoapFault;
 
 class SendSMS extends Command
 {
@@ -35,6 +37,7 @@ class SendSMS extends Command
      * Execute the console command.
      *
      * @return mixed
+     * @throws SoapFault
      */
     public function handle()
     {
@@ -45,6 +48,20 @@ class SendSMS extends Command
             echo "NO";
             return 0;
         }
-        return $number;
+        $client = new SoapClient($service->sms_address);
+        $client->myDoSendSMS(
+            array(
+                'userId' => $service->sms_username,
+                'userPass' => $service->sms_password,
+                'Number' => $service->sms_number,
+                'cellPhones' => "$number",
+                'message' => $service->sms_text,
+                'farsi' => true,
+                'topic' => false,
+                'flash' => false,
+                'HandleBlacklist' => false
+            )
+        );
+        return true;
     }
 }
