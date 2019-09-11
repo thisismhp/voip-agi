@@ -49,7 +49,7 @@ class GetService extends Command
             }
             $lineType = 'w';
         }
-        echo "$service->id,$service->is_active,$lineType,$service->queue_id";
+        echo "$service->id,$service->is_active,$lineType,$service->queue_id,$service->menu_opr_key,$service->no_charge_opr_key,$service->no_charge_sms_key";
         return;
     }
 }
