@@ -9,6 +9,7 @@
 /public/fonts
 /public/mix-manifest.json
 /.idea
+/public/vendor
 .env
 composer.lock
 package-lock.json
